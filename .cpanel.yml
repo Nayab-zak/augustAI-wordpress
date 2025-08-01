@@ -1,7 +1,9 @@
+'YAML'
 deployment:
   tasks:
-    # 1) Set the destination path (your live web root)
+    # 1  Absolute path to your live site
     - export DEPLOY_PATH=/home/augustcom92b/public_html
 
-    # 2) Copy everything except the .git folder to public_html
+    # 2  Sync repo → live (delete files that no longer exist)
     - /bin/rsync -av --delete --exclude='.git' --exclude='.cpanel.yml' ./ $DEPLOY_PATH/
+YAML
