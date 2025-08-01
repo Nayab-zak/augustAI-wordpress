@@ -1,13 +1,11 @@
 deployment:
   tasks:
-    - /bin/echo "💫 Deploying $COMMIT to production at $(date)"
-    - /usr/bin/rsync -av --delete \
-        --exclude='.git' \
-        --exclude='.cpanel.yml' \
-        --exclude='.github' \
-        --exclude='README.md' \
-        --exclude='ssh_key.txt' \
-        --exclude='id_rsa.pub' \
-        --exclude='.gitignore' \
-        ./ public_html/
+    - export DEPLOYPATH=/home/augustcom92b/public_html
+    - /bin/echo "💫 Deploying $COMMIT to $DEPLOYPATH at $(date)"
+    - /bin/cp -rf * $DEPLOYPATH/
+    - /bin/rm -f $DEPLOYPATH/.cpanel.yml
+    - /bin/rm -f $DEPLOYPATH/.git
+    - /bin/rm -f $DEPLOYPATH/ssh_key.txt
+    - /bin/rm -f $DEPLOYPATH/id_rsa.pub
+    - /bin/rm -f $DEPLOYPATH/.gitignore
     - /bin/echo "✅ Deployment complete at $(date)"
