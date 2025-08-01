@@ -1,5 +1,8 @@
 deployment:
   tasks:
+    - /bin/echo "💫 Deploying $COMMIT to production at $(date)"
     - /usr/bin/rsync -av --delete \
         --exclude='.git' --exclude='.cpanel.yml' \
+        --exclude='.github' --exclude='README.md' \
         ./ /home/augustcom92b/public_html/
+    - /bin/echo "✅ Deployment complete at $(date)"
