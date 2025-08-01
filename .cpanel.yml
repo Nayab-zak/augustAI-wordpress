@@ -1,4 +1,5 @@
 deployment:
   tasks:
-    - export DEPLOY_PATH=/home/augustcom92b/public_html
-    - /usr/bin/rsync -av --delete --exclude='.git' --exclude='.cpanel.yml' ./ $DEPLOY_PATH/
+    - /usr/bin/rsync -av --delete \
+        --exclude='.git' --exclude='.cpanel.yml' \
+        ./ /home/augustcom92b/public_html/
