@@ -7,7 +7,7 @@ require_once 'config-simple.php';
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>augustAI — Agentic AI that gets work done | Automation, Dashboards & MVPs</title>
+    <title>augustAI — Automate Everything | AI Automation, Dashboards & MVPs</title>
     <meta name="description" content="We build agentic automations, dashboards in 10 days, and MVPs in 30 for SMEs and startups. Fixed scope. Fixed fee. Demos in week one.">
     <meta name="keywords" content="AI automation, agentic AI, dashboards, MVPs, Python automation, business intelligence">
     <meta name="author" content="augustAI">
@@ -20,14 +20,14 @@ require_once 'config-simple.php';
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://august.com.pk/">
-    <meta property="og:title" content="augustAI — Agentic AI that gets work done">
-    <meta property="og:description" content="We build agentic automations, dashboards in 10 days, and MVPs in 30 for SMEs and startups.">
+    <meta property="og:title" content="augustAI — Automate Everything">
+    <meta property="og:description" content="We build Python/AI automations, dashboards in 10 days, and MVPs in 30 for SMEs and startups.">
     
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:url" content="https://august.com.pk/">
-    <meta property="twitter:title" content="augustAI — Agentic AI that gets work done">
-    <meta property="twitter:description" content="We build agentic automations, dashboards in 10 days, and MVPs in 30 for SMEs and startups.">
+    <meta property="twitter:title" content="augustAI — Automate Everything">
+    <meta property="twitter:description" content="We build Python/AI automations, dashboards in 10 days, and MVPs in 30 for SMEs and startups.">
     
     <!-- Fonts and Icons -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -104,10 +104,10 @@ require_once 'config-simple.php';
             position: absolute;
             width: 2px;
             height: 2px;
-            background: var(--purple-light);
+            background: white;
             border-radius: 50%;
             animation: float 6s infinite linear;
-            box-shadow: 0 0 6px var(--purple-accent);
+            box-shadow: 0 0 6px rgba(255, 255, 255, 0.5);
         }
 
         @keyframes float {
@@ -422,6 +422,24 @@ require_once 'config-simple.php';
             margin-bottom: 24px;
         }
 
+        .form-input.valid {
+            border-color: #4ade80;
+        }
+
+        .form-input.invalid {
+            border-color: #ef4444;
+        }
+
+        /* Form labels */
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            color: rgba(255, 255, 255, 0.9);
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        /* Enhanced form inputs */
         .form-input {
             width: 100%;
             padding: 14px 16px;
@@ -433,19 +451,36 @@ require_once 'config-simple.php';
             transition: all 0.3s ease;
         }
 
+        .form-input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
         .form-input:focus {
             outline: none;
-            border-color: var(--glow-color);
-            box-shadow: 0 0 0 3px rgba(103, 126, 234, 0.1);
+            border-color: var(--purple-accent);
+            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
             background: rgba(255, 255, 255, 0.12);
         }
 
-        .form-input.valid {
-            border-color: #4ade80;
+        /* Select dropdown styling */
+        .form-select {
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+            background-position: right 12px center;
+            background-repeat: no-repeat;
+            background-size: 16px;
+            padding-right: 40px;
+            appearance: none;
         }
 
-        .form-input.invalid {
-            border-color: #ef4444;
+        .form-select option {
+            background: #1a1a2e;
+            color: white;
+        }
+
+        /* Textarea styling */
+        .form-textarea {
+            resize: vertical;
+            min-height: 100px;
         }
 
         .form-message {
@@ -514,12 +549,9 @@ require_once 'config-simple.php';
     <!-- Navigation -->
     <nav class="navbar" id="navbar">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center h-16">
-                <div class="flex items-center space-x-3">
-                    <div class="w-10 h-10 rounded-lg flex items-center justify-center">
-                        <img src="assets/augustai_logo_only.png" alt="augustAI Logo" class="w-10 h-10 object-contain">
-                    </div>
-                    <span class="text-xl font-bold gradient-text">augustAI</span>
+            <div class="flex justify-between items-center h-20">
+                <div class="flex items-center">
+                    <img src="assets/augustAI Logo Design on Purple Gradient.png" alt="augustAI - Automate Everything" class="h-12 md:h-16 object-contain">
                 </div>
                 <div class="hidden md:flex space-x-8">
                     <a href="#services" class="text-gray-300 hover:text-white transition-colors">Services</a>
@@ -542,16 +574,16 @@ require_once 'config-simple.php';
             </div>
             
             <div class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-full mb-8 glass">
-                <span class="text-sm font-medium">🚀 Agentic Automation • Dashboards • MVPs</span>
+                <span class="text-sm font-medium">🚀 Automate Everything • Dashboards • MVPs</span>
             </div>
             
             <h1 class="text-5xl md:text-7xl font-bold mb-6 leading-tight">
-                <span class="typewriter gradient-text">Agentic AI that gets work done.</span>
+                <span class="typewriter gradient-text">Automate Everything.</span>
             </h1>
             
             <p class="text-xl md:text-2xl text-gray-300 mb-12 max-w-4xl mx-auto leading-relaxed">
                 We build Python/AI automations, 10-day dashboards, and MVPs-in-a-month for SMEs and startups. 
-                <span class="gradient-text font-semibold">Fixed scope. Fixed fee. Demos in week one.</span>
+                <span class="gradient-text font-semibold">Automate Everything. Fixed scope. Fixed fee. Demos in week one.</span>
             </p>
             
             <div class="flex flex-col sm:flex-row gap-6 justify-center items-center mb-16">
@@ -1128,7 +1160,7 @@ require_once 'config-simple.php';
                             </div>
                             <div>
                                 <p class="font-medium">WhatsApp</p>
-                                <a href="<?php echo $contact_config['whatsapp_url']; ?>" target="_blank" class="text-green-400 hover:text-green-300">+<?php echo substr($contact_config['whatsapp_number'], 0, 3) . ' ' . substr($contact_config['whatsapp_number'], 3, 2) . ' ' . substr($contact_config['whatsapp_number'], 5, 3) . ' ' . substr($contact_config['whatsapp_number'], 8); ?></a>
+                                <a href="<?php echo $contact_config['whatsapp_url']; ?>" target="_blank" class="text-green-400 hover:text-green-300">Message us on WhatsApp</a>
                             </div>
                         </div>
                         
@@ -1138,7 +1170,7 @@ require_once 'config-simple.php';
                             </div>
                             <div>
                                 <p class="font-medium">Call Now</p>
-                                <a href="<?php echo $contact_config['phone_url']; ?>" class="text-orange-400 hover:text-orange-300">+<?php echo substr($contact_config['phone_number'], 0, 3) . ' ' . substr($contact_config['phone_number'], 3, 2) . ' ' . substr($contact_config['phone_number'], 5, 3) . ' ' . substr($contact_config['phone_number'], 8); ?></a>
+                                <a href="<?php echo $contact_config['phone_url']; ?>" class="text-orange-400 hover:text-orange-300">Call us directly</a>
                             </div>
                         </div>
                         
@@ -1166,24 +1198,30 @@ require_once 'config-simple.php';
                 
                 <div class="fade-in">
                     <form class="glass-card p-8" id="contactForm">
+                        <h3 class="text-2xl font-bold mb-6 gradient-text">Get Your Free Consultation</h3>
+                        
                         <div class="form-group">
-                            <input type="text" id="name" class="form-input" placeholder="Your Name" required>
+                            <label for="name" class="form-label">Full Name *</label>
+                            <input type="text" id="name" class="form-input" placeholder="Enter your full name" required>
                             <div class="form-message" id="name-message"></div>
                         </div>
                         
                         <div class="form-group">
-                            <input type="email" id="email" class="form-input" placeholder="Your Email" required>
+                            <label for="email" class="form-label">Email Address *</label>
+                            <input type="email" id="email" class="form-input" placeholder="your@email.com" required>
                             <div class="form-message" id="email-message"></div>
                         </div>
                         
                         <div class="form-group">
-                            <input type="text" id="company" class="form-input" placeholder="Company Name">
+                            <label for="company" class="form-label">Company / Organization</label>
+                            <input type="text" id="company" class="form-input" placeholder="Your company name">
                             <div class="form-message" id="company-message"></div>
                         </div>
                         
                         <div class="form-group">
-                            <select id="service" class="form-input" required>
-                                <option value="">Select a service</option>
+                            <label for="service" class="form-label">Service Interest *</label>
+                            <select id="service" class="form-input form-select" required>
+                                <option value="">Choose a service</option>
                                 <option value="automation">Automation Sprint</option>
                                 <option value="dashboard">Dashboard in 10 Days</option>
                                 <option value="mvp">MVP-in-a-Month</option>
@@ -1193,7 +1231,8 @@ require_once 'config-simple.php';
                         </div>
                         
                         <div class="form-group">
-                            <textarea id="message" class="form-input" rows="4" placeholder="Tell us about your project..." required></textarea>
+                            <label for="message" class="form-label">Project Details *</label>
+                            <textarea id="message" class="form-input form-textarea" rows="4" placeholder="Tell us about your project, goals, and how we can help..." required></textarea>
                             <div class="form-message" id="message-message"></div>
                         </div>
                         
@@ -1225,7 +1264,7 @@ require_once 'config-simple.php';
                 
                 <div class="text-center md:text-right">
                     <p class="text-gray-400">© <span id="current-year"></span> augustAI. All rights reserved.</p>
-                    <p class="text-sm text-gray-500 mt-1">Building the future with agentic AI</p>
+                    <p class="text-sm text-gray-500 mt-1">Automate Everything</p>
                 </div>
             </div>
         </div>
