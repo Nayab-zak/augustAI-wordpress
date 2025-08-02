@@ -692,22 +692,38 @@
                     <div class="space-y-6">
                         <div>
                             <label class="block text-sm font-medium mb-2">Hours spent on manual tasks per week</label>
-                            <input type="number" id="manual-hours" class="calculator-input" placeholder="40" value="40">
+                            <input type="number" id="manual-hours" class="calculator-input" placeholder="40" value="40" min="1" max="168">
                         </div>
                         <div>
                             <label class="block text-sm font-medium mb-2">Average hourly rate ($)</label>
-                            <input type="number" id="hourly-rate" class="calculator-input" placeholder="50" value="50">
+                            <input type="number" id="hourly-rate" class="calculator-input" placeholder="50" value="50" min="10" max="500">
                         </div>
                         <div>
                             <label class="block text-sm font-medium mb-2">Automation efficiency (%)</label>
                             <input type="range" id="efficiency" class="w-full" min="30" max="90" value="70">
-                            <span id="efficiency-value" class="text-sm text-gray-400">70%</span>
+                            <div class="flex justify-between text-sm text-gray-400 mt-1">
+                                <span>30%</span>
+                                <span id="efficiency-value" class="font-medium">70%</span>
+                                <span>90%</span>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Automation project cost ($)</label>
+                            <select id="project-cost" class="calculator-input">
+                                <option value="1200">Automation Sprint - $1,200</option>
+                                <option value="900">Dashboard in 10 Days - $900</option>
+                                <option value="3000">MVP-in-a-Month - $3,000</option>
+                            </select>
                         </div>
                     </div>
                     
                     <div class="glass p-6 rounded-xl">
                         <h3 class="text-xl font-bold mb-4">Potential Savings</h3>
                         <div class="space-y-4">
+                            <div class="flex justify-between">
+                                <span>Hours saved per week:</span>
+                                <span id="hours-saved" class="font-bold text-blue-400">28 hrs</span>
+                            </div>
                             <div class="flex justify-between">
                                 <span>Weekly savings:</span>
                                 <span id="weekly-savings" class="font-bold gradient-text">$1,400</span>
@@ -718,10 +734,14 @@
                             </div>
                             <div class="flex justify-between">
                                 <span>Annual savings:</span>
-                                <span id="annual-savings" class="font-bold gradient-text text-2xl">$72,800</span>
+                                <span id="annual-savings" class="font-bold gradient-text text-xl">$72,800</span>
                             </div>
                             <div class="pt-4 border-t border-gray-600">
                                 <div class="flex justify-between">
+                                    <span>Break-even time:</span>
+                                    <span id="break-even" class="font-bold text-yellow-400">2.4 weeks</span>
+                                </div>
+                                <div class="flex justify-between mt-2">
                                     <span>ROI in first month:</span>
                                     <span id="roi-percentage" class="font-bold text-green-400 text-xl">506%</span>
                                 </div>
@@ -1272,18 +1292,43 @@
             const manualHours = parseFloat(document.getElementById('manual-hours').value) || 0;
             const hourlyRate = parseFloat(document.getElementById('hourly-rate').value) || 0;
             const efficiency = parseFloat(document.getElementById('efficiency').value) || 0;
+            const projectCost = parseFloat(document.getElementById('project-cost').value) || 1200;
             
-            const weeklySavings = manualHours * hourlyRate * (efficiency / 100);
-            const monthlySavings = weeklySavings * 4.33;
+            // Calculate savings
+            const hoursSaved = manualHours * (efficiency / 100);
+            const weeklySavings = hoursSaved * hourlyRate;
+            const monthlySavings = weeklySavings * 4.33; // Average weeks per month
             const annualSavings = weeklySavings * 52;
-            const investmentCost = 1200; // Base automation cost
-            const roiPercentage = ((monthlySavings - investmentCost) / investmentCost) * 100;
             
-            document.getElementById('weekly-savings').textContent = '$' + weeklySavings.toLocaleString(undefined, {maximumFractionDigits: 0});
-            document.getElementById('monthly-savings').textContent = '$' + monthlySavings.toLocaleString(undefined, {maximumFractionDigits: 0});
-            document.getElementById('annual-savings').textContent = '$' + annualSavings.toLocaleString(undefined, {maximumFractionDigits: 0});
-            document.getElementById('roi-percentage').textContent = Math.max(0, roiPercentage).toFixed(0) + '%';
+            // Calculate ROI
+            const firstMonthSavings = monthlySavings;
+            const roiPercentage = projectCost > 0 ? ((firstMonthSavings - projectCost) / projectCost) * 100 : 0;
+            const breakEvenWeeks = weeklySavings > 0 ? projectCost / weeklySavings : 0;
+            
+            // Update display elements
+            document.getElementById('hours-saved').textContent = hoursSaved.toFixed(1) + ' hrs';
+            document.getElementById('weekly-savings').textContent = '$' + Math.round(weeklySavings).toLocaleString();
+            document.getElementById('monthly-savings').textContent = '$' + Math.round(monthlySavings).toLocaleString();
+            document.getElementById('annual-savings').textContent = '$' + Math.round(annualSavings).toLocaleString();
             document.getElementById('efficiency-value').textContent = efficiency + '%';
+            
+            // Break-even time
+            if (breakEvenWeeks < 1) {
+                document.getElementById('break-even').textContent = Math.round(breakEvenWeeks * 7) + ' days';
+            } else if (breakEvenWeeks < 4.33) {
+                document.getElementById('break-even').textContent = breakEvenWeeks.toFixed(1) + ' weeks';
+            } else {
+                document.getElementById('break-even').textContent = (breakEvenWeeks / 4.33).toFixed(1) + ' months';
+            }
+            
+            // ROI percentage
+            if (roiPercentage >= 0) {
+                document.getElementById('roi-percentage').textContent = Math.round(roiPercentage) + '%';
+                document.getElementById('roi-percentage').className = 'font-bold text-green-400 text-xl';
+            } else {
+                document.getElementById('roi-percentage').textContent = Math.round(Math.abs(roiPercentage)) + '% loss';
+                document.getElementById('roi-percentage').className = 'font-bold text-red-400 text-xl';
+            }
         }
 
         // FAQ functionality
@@ -1411,10 +1456,11 @@
             document.getElementById('current-year').textContent = new Date().getFullYear();
             
             // ROI Calculator event listeners
-            ['manual-hours', 'hourly-rate', 'efficiency'].forEach(id => {
+            ['manual-hours', 'hourly-rate', 'efficiency', 'project-cost'].forEach(id => {
                 const element = document.getElementById(id);
                 if (element) {
                     element.addEventListener('input', updateROICalculator);
+                    element.addEventListener('change', updateROICalculator);
                 }
             });
             
@@ -1422,7 +1468,7 @@
             updateROICalculator();
             
             // Form submission
-            document.getElementById('contactForm').addEventListener('submit', (e) => {
+            document.getElementById('contactForm').addEventListener('submit', async (e) => {
                 e.preventDefault();
                 
                 if (validateForm()) {
@@ -1430,25 +1476,65 @@
                     const submitText = document.getElementById('submitText');
                     const successMsg = document.getElementById('form-success');
                     
-                    // Simulate form submission
+                    // Show loading state
                     submitBtn.disabled = true;
                     submitText.textContent = 'Sending...';
                     
-                    setTimeout(() => {
+                    // Collect form data as FormData (not JSON)
+                    const formData = new FormData();
+                    formData.append('name', document.getElementById('name').value.trim());
+                    formData.append('email', document.getElementById('email').value.trim());
+                    formData.append('company', document.getElementById('company').value.trim());
+                    formData.append('service', document.getElementById('service').value);
+                    formData.append('message', document.getElementById('message').value.trim());
+                    
+                    try {
+                        // Send to PHP backend
+                        const response = await fetch('contact-handler.php', {
+                            method: 'POST',
+                            body: formData // Send as FormData, not JSON
+                        });
+                        
+                        const result = await response.json();
+                        
+                        if (response.ok && result.success) {
+                            // Show success message
+                            successMsg.style.display = 'block';
+                            successMsg.className = 'mt-4 p-4 bg-green-500/20 border border-green-500/50 rounded-lg text-green-400 text-center';
+                            successMsg.innerHTML = '<i class="fas fa-check-circle mr-2"></i>' + result.message;
+                            
+                            // Reset form
+                            document.getElementById('contactForm').reset();
+                            
+                            // Reset form states
+                            document.querySelectorAll('.form-input').forEach(input => {
+                                input.className = 'form-input';
+                            });
+                            document.querySelectorAll('.form-message').forEach(msg => {
+                                msg.className = 'form-message';
+                            });
+                            
+                        } else {
+                            // Show error message
+                            successMsg.style.display = 'block';
+                            successMsg.className = 'mt-4 p-4 bg-red-500/20 border border-red-500/50 rounded-lg text-red-400 text-center';
+                            successMsg.innerHTML = '<i class="fas fa-exclamation-triangle mr-2"></i>' + (result.message || 'Something went wrong. Please try again.');
+                        }
+                    } catch (error) {
+                        console.error('Form submission error:', error);
                         successMsg.style.display = 'block';
-                        document.getElementById('contactForm').reset();
-                        
-                        // Reset form states
-                        document.querySelectorAll('.form-input').forEach(input => {
-                            input.className = 'form-input';
-                        });
-                        document.querySelectorAll('.form-message').forEach(msg => {
-                            msg.className = 'form-message';
-                        });
-                        
+                        successMsg.className = 'mt-4 p-4 bg-red-500/20 border border-red-500/50 rounded-lg text-red-400 text-center';
+                        successMsg.innerHTML = '<i class="fas fa-exclamation-triangle mr-2"></i>Network error. Please check your connection and try again.';
+                    } finally {
+                        // Re-enable submit button
                         submitBtn.disabled = false;
                         submitText.textContent = 'Send Message';
-                    }, 1500);
+                        
+                        // Hide message after 8 seconds
+                        setTimeout(() => {
+                            successMsg.style.display = 'none';
+                        }, 8000);
+                    }
                 }
             });
             
