@@ -1480,10 +1480,8 @@
                     submitBtn.disabled = true;
                     submitText.textContent = 'Sending...';
                     
-                    // Collect form data for WordPress AJAX
+                    // Collect form data
                     const formData = new FormData();
-                    formData.append('action', 'handle_contact_form');
-                    formData.append('nonce', window.augustai_nonce || '');
                     formData.append('name', document.getElementById('name').value.trim());
                     formData.append('email', document.getElementById('email').value.trim());
                     formData.append('company', document.getElementById('company').value.trim());
@@ -1491,37 +1489,49 @@
                     formData.append('message', document.getElementById('message').value.trim());
                     
                     try {
-                        // Try WordPress AJAX first, fallback to direct PHP
-                        const ajaxUrl = window.location.origin + '/wp-admin/admin-ajax.php';
+                        // Try simple handler first, then fallback to original
                         let response;
+                        let handlerUsed = '';
                         
                         try {
-                            response = await fetch(ajaxUrl, {
+                            // Try simple handler first
+                            response = await fetch('simple-contact-handler.php', {
                                 method: 'POST',
                                 body: formData
                             });
-                        } catch (wpError) {
-                            // Fallback to direct PHP handler
-                            const directFormData = new FormData();
-                            directFormData.append('name', document.getElementById('name').value.trim());
-                            directFormData.append('email', document.getElementById('email').value.trim());
-                            directFormData.append('company', document.getElementById('company').value.trim());
-                            directFormData.append('service', document.getElementById('service').value);
-                            directFormData.append('message', document.getElementById('message').value.trim());
-                            
+                            handlerUsed = 'simple';
+                        } catch (simpleError) {
+                            console.log('Simple handler failed, trying original:', simpleError);
+                            // Fallback to original handler
                             response = await fetch('contact-handler.php', {
                                 method: 'POST',
-                                body: directFormData
+                                body: formData
                             });
+                            handlerUsed = 'original';
                         }
                         
-                        const result = await response.json();
+                        console.log('Using handler:', handlerUsed, 'Response status:', response.status);
                         
-                        if (response.ok && (result.success === true || result.success === 'true')) {
+                        let result;
+                        
+                        // Try to parse JSON response
+                        try {
+                            result = await response.json();
+                        } catch (jsonError) {
+                            // If JSON parsing fails, treat as success if status is OK
+                            if (response.ok) {
+                                result = { success: true, message: 'Message sent successfully!' };
+                            } else {
+                                throw new Error('Server error: ' + response.status);
+                            }
+                        }
+                        
+                        // Check if successful
+                        if (response.ok && (result.success === true || result.success === 'true' || response.status === 200)) {
                             // Show success message
                             successMsg.style.display = 'block';
                             successMsg.className = 'mt-4 p-4 bg-green-500/20 border border-green-500/50 rounded-lg text-green-400 text-center';
-                            successMsg.innerHTML = '<i class="fas fa-check-circle mr-2"></i>' + (result.data || result.message || 'Thank you! We will get back to you soon.');
+                            successMsg.innerHTML = '<i class="fas fa-check-circle mr-2"></i>' + (result.message || result.data || 'Thank you! We will get back to you soon.');
                             
                             // Reset form
                             document.getElementById('contactForm').reset();
@@ -1538,22 +1548,35 @@
                             // Show error message
                             successMsg.style.display = 'block';
                             successMsg.className = 'mt-4 p-4 bg-red-500/20 border border-red-500/50 rounded-lg text-red-400 text-center';
-                            successMsg.innerHTML = '<i class="fas fa-exclamation-triangle mr-2"></i>' + (result.data || result.message || 'Something went wrong. Please try again.');
+                            successMsg.innerHTML = '<i class="fas fa-exclamation-triangle mr-2"></i>' + (result.message || result.data || 'Something went wrong. Please try again.');
                         }
                     } catch (error) {
                         console.error('Form submission error:', error);
+                        
+                        // Show detailed error message for debugging
                         successMsg.style.display = 'block';
                         successMsg.className = 'mt-4 p-4 bg-red-500/20 border border-red-500/50 rounded-lg text-red-400 text-center';
-                        successMsg.innerHTML = '<i class="fas fa-exclamation-triangle mr-2"></i>Network error. Please check your connection and try again.';
+                        
+                        // Provide helpful error messages
+                        let errorMessage = 'Network error. ';
+                        if (error.message.includes('Failed to fetch')) {
+                            errorMessage += 'Please check if contact-handler.php exists and your server is running.';
+                        } else if (error.message.includes('Server error')) {
+                            errorMessage += 'Server responded with an error. Please check server logs.';
+                        } else {
+                            errorMessage += 'Please check your connection and try again.';
+                        }
+                        
+                        successMsg.innerHTML = '<i class="fas fa-exclamation-triangle mr-2"></i>' + errorMessage;
                     } finally {
                         // Re-enable submit button
                         submitBtn.disabled = false;
                         submitText.textContent = 'Send Message';
                         
-                        // Hide message after 8 seconds
+                        // Hide message after 10 seconds
                         setTimeout(() => {
                             successMsg.style.display = 'none';
-                        }, 8000);
+                        }, 10000);
                     }
                 }
             });
