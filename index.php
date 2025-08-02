@@ -1,6 +1,10 @@
 <?php
 // Load simple configuration 
 require_once 'config-simple.php';
+
+// Load pricing and content configuration
+$content_config = require_once 'content-config.php';
+$services = $content_config['services'];
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -8,33 +12,113 @@ require_once 'config-simple.php';
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>augustAI — Automate Everything | AI Automation, Dashboards & MVPs</title>
-    <meta name="description" content="We build agentic automations, dashboards in 10 days, and MVPs in 30 for SMEs and startups. Fixed scope. Fixed fee. Demos in week one.">
-    <meta name="keywords" content="AI automation, agentic AI, dashboards, MVPs, Python automation, business intelligence">
+    <meta name="description" content="Leading AI automation company in Pakistan & UAE. We build Python automations, 10-day dashboards & MVPs for SMEs. Fixed scope, fixed fee. Book free consultation.">
+    <meta name="keywords" content="AI automation, agentic AI, dashboards, MVPs, Python automation, business intelligence, Pakistan, UAE, SME automation">
     <meta name="author" content="augustAI">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://august.com.pk/">
+    
+    <!-- Hreflang for international targeting -->
+    <link rel="alternate" hreflang="en-pk" href="https://august.com.pk/">
+    <link rel="alternate" hreflang="en-ae" href="https://august.com.pk/">
+    <link rel="alternate" hreflang="en" href="https://august.com.pk/">
+    
+    <!-- Additional SEO meta tags -->
+    <meta name="geo.region" content="PK-PB">
+    <meta name="geo.placename" content="Lahore, Pakistan">
+    <meta name="geo.position" content="31.5204;74.3587">
+    <meta name="ICBM" content="31.5204, 74.3587">
     
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="assets/augustai_logo_only.png">
     <link rel="shortcut icon" href="assets/augustai_logo_only.png">
     <link rel="apple-touch-icon" href="assets/augustai_logo_only.png">
     
+    <!-- Preload critical resources for better LCP -->
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"></noscript>
+    
+    <!-- Preload hero images -->
+    <link rel="preload" href="assets/augustAI Logo Design on Purple Gradient.png" as="image" type="image/png">
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#8B5CF6">
+    
+    <!-- Performance optimizations -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <link rel="dns-prefetch" href="//fonts.googleapis.com">
+    <link rel="dns-prefetch" href="//cdn.jsdelivr.net">
+    <link rel="dns-prefetch" href="//assets.calendly.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://august.com.pk/">
-    <meta property="og:title" content="augustAI — Automate Everything">
-    <meta property="og:description" content="We build Python/AI automations, dashboards in 10 days, and MVPs in 30 for SMEs and startups.">
+    <meta property="og:title" content="augustAI — Automate Everything | AI Automation Solutions">
+    <meta property="og:description" content="Leading AI automation company in Pakistan & UAE. We build Python automations, 10-day dashboards & MVPs for SMEs. Fixed scope, fixed fee.">
+    <meta property="og:image" content="https://august.com.pk/assets/augustAI Logo Design on Purple Gradient.png">
+    <meta property="og:image:alt" content="augustAI - AI Automation and Dashboard Solutions">
+    <meta property="og:site_name" content="augustAI">
+    <meta property="og:locale" content="en_US">
     
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:url" content="https://august.com.pk/">
-    <meta property="twitter:title" content="augustAI — Automate Everything">
-    <meta property="twitter:description" content="We build Python/AI automations, dashboards in 10 days, and MVPs in 30 for SMEs and startups.">
+    <meta property="twitter:title" content="augustAI — Automate Everything | AI Automation Solutions">
+    <meta property="twitter:description" content="Leading AI automation company in Pakistan & UAE. We build Python automations, 10-day dashboards & MVPs for SMEs. Fixed scope, fixed fee.">
+    <meta property="twitter:image" content="https://august.com.pk/assets/augustAI Logo Design on Purple Gradient.png">
+    <meta property="twitter:image:alt" content="augustAI - AI Automation and Dashboard Solutions">
     
     <!-- Fonts and Icons -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <!-- Critical font preloaded above -->
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css"></noscript>
+    
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     
+    <!-- Security: reCAPTCHA v3 for spam protection -->
+    <script src="https://www.google.com/recaptcha/api.js?render=<?php echo defined('RECAPTCHA_SITE_KEY') ? RECAPTCHA_SITE_KEY : '6LcXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'; ?>"></script>
+    
+    <!-- Defer Calendly script to improve FID/INP -->
+    <script>
+        // Load Calendly only when needed
+        let calendlyLoaded = false;
+        function loadCalendly() {
+            if (!calendlyLoaded) {
+                const script = document.createElement('script');
+                script.src = 'https://assets.calendly.com/assets/external/widget.js';
+                script.async = true;
+                document.head.appendChild(script);
+                calendlyLoaded = true;
+            }
+        }
+        
+        // reCAPTCHA v3 functionality
+        function executeRecaptcha(action) {
+            return new Promise((resolve, reject) => {
+                if (typeof grecaptcha === 'undefined') {
+                    console.warn('reCAPTCHA not loaded, proceeding without verification');
+                    resolve(null);
+                    return;
+                }
+                
+                grecaptcha.ready(() => {
+                    grecaptcha.execute('<?php echo defined('RECAPTCHA_SITE_KEY') ? RECAPTCHA_SITE_KEY : '6LcXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'; ?>', {action: action})
+                        .then((token) => {
+                            resolve(token);
+                        })
+                        .catch((error) => {
+                            console.error('reCAPTCHA error:', error);
+                            reject(error);
+                        });
+                });
+            });
+        }
+    </script>
+    
     <style>
+        /* Critical CSS - Above the fold styles */
         :root {
             --primary-gradient: linear-gradient(135deg, #8B5CF6 0%, #6D28D9 50%, #4C1D95 100%);
             --secondary-gradient: linear-gradient(135deg, #A855F7 0%, #7C3AED 50%, #5B21B6 100%);
@@ -66,6 +150,41 @@ require_once 'config-simple.php';
             overflow-x: hidden;
             line-height: 1.7;
         }
+
+        /* Critical above-the-fold styles */
+        .navbar {
+            background: rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 999;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background: var(--primary-gradient);
+            border: none;
+            padding: 14px 32px;
+            border-radius: 50px;
+            color: white;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .gradient-text {
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Progressive enhancement - non-critical styles loaded below */
 
         /* Glassmorphism effects */
         .glass {
@@ -242,6 +361,27 @@ require_once 'config-simple.php';
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
+        }
+
+        /* Noscript fallback styling */
+        noscript .counter {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            display: block;
+        }
+
+        /* Team headshots styling */
+        .team-headshot {
+            transition: all 0.3s ease;
+        }
+
+        .team-headshot:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 30px rgba(139, 92, 246, 0.3);
         }
 
         /* Timeline */
@@ -537,9 +677,430 @@ require_once 'config-simple.php';
         ::-webkit-scrollbar-thumb:hover {
             background: var(--accent-gradient);
         }
+
+        /* Calendly Modal Styles */
+        .calendly-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            z-index: 10000;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .calendly-modal.active {
+            display: flex;
+            opacity: 1;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .calendly-modal-content {
+            background: white;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 900px;
+            height: 80%;
+            position: relative;
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+            overflow: hidden;
+        }
+
+        .calendly-modal.active .calendly-modal-content {
+            transform: scale(1);
+        }
+
+        .calendly-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            font-size: 20px;
+            cursor: pointer;
+            z-index: 10001;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .calendly-close:hover {
+            background: rgba(0, 0, 0, 0.9);
+            transform: scale(1.1);
+        }
+
+        /* Exit Intent Popup Styles */
+        .exit-intent-popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: var(--dark-gradient);
+            border: 2px solid var(--purple-accent);
+            border-radius: 20px;
+            padding: 30px;
+            z-index: 9999;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: 0 20px 60px rgba(139, 92, 246, 0.3);
+        }
+
+        .exit-intent-popup.show {
+            display: block;
+            animation: popupSlideIn 0.5s ease;
+        }
+
+        .exit-intent-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(5px);
+            z-index: 9998;
+        }
+
+        .exit-intent-overlay.show {
+            display: block;
+        }
+
+        @keyframes popupSlideIn {
+            from {
+                opacity: 0;
+                transform: translate(-50%, -60%);
+            }
+            to {
+                opacity: 1;
+                transform: translate(-50%, -50%);
+            }
+        }
+
+        .popup-close {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            background: none;
+            border: none;
+            color: #aaa;
+            font-size: 24px;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .popup-close:hover {
+            color: white;
+        }
+        
+        /* Accessibility Improvements - WCAG AA Compliance */
+        
+        /* Skip to content link */
+        .skip-link {
+            position: absolute;
+            top: -40px;
+            left: 6px;
+            background: var(--purple-primary);
+            color: white;
+            padding: 8px;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: 600;
+            z-index: 100000;
+            transform: translateY(-100%);
+            transition: transform 0.3s ease;
+        }
+        
+        .skip-link:focus {
+            transform: translateY(0%);
+            top: 6px;
+        }
+        
+        /* Enhanced focus ring styling for keyboard navigation */
+        *:focus {
+            outline: 3px solid var(--purple-accent);
+            outline-offset: 2px;
+        }
+        
+        /* Remove default outline for elements with custom focus */
+        .btn-primary:focus,
+        .form-input:focus,
+        .calculator-input:focus {
+            outline: 3px solid var(--purple-light);
+            outline-offset: 3px;
+        }
+        
+        /* Accessible color contrast improvements */
+        .text-gray-300 {
+            color: #e5e7eb; /* Improved from #d1d5db to meet 4.5:1 contrast on dark background */
+        }
+        
+        .text-gray-400 {
+            color: #d1d5db; /* Improved from #9ca3af for better readability on dark background */
+        }
+        
+        /* Screen reader only class */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+        
+        /* Error message styling for form validation */
+        .error-message {
+            color: #fecaca;
+            font-size: 14px;
+            margin-top: 4px;
+            display: none;
+        }
+        
+        .error-message.show {
+            display: block;
+        }
+        
+        /* Improved form focus indicators */
+        .form-input:focus,
+        .calculator-input:focus {
+            border-color: var(--purple-accent);
+            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.3);
+            background: rgba(255, 255, 255, 0.15);
+        }
+        
+        /* High contrast mode support */
+        @media (prefers-contrast: high) {
+            .text-gray-300 {
+                color: #ffffff;
+            }
+            
+            .text-gray-400 {
+                color: #ffffff;
+            }
+            
+            .glass-card {
+                border: 2px solid #ffffff;
+                background: rgba(0, 0, 0, 0.8);
+            }
+        }
     </style>
+    
+    <!-- JSON-LD Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@graph": [
+            {
+                "@type": "LocalBusiness",
+                "@id": "https://august.com.pk/#organization",
+                "name": "augustAI",
+                "alternateName": "August Solutions",
+                "url": "https://august.com.pk/",
+                "logo": "https://august.com.pk/assets/augustAI Logo Design on Purple Gradient.png",
+                "description": "Leading AI automation company specializing in Python automations, business intelligence dashboards, and MVP development for SMEs and startups.",
+                "founder": {
+                    "@type": "Person",
+                    "name": "Zain Nayab",
+                    "jobTitle": "CEO & Founder",
+                    "alumniOf": {
+                        "@type": "Organization",
+                        "name": "Stanford University"
+                    },
+                    "worksFor": {
+                        "@type": "Organization",
+                        "name": "McKinsey & Company"
+                    }
+                },
+                "address": [
+                    {
+                        "@type": "PostalAddress",
+                        "addressCountry": "PK",
+                        "addressRegion": "Punjab",
+                        "addressLocality": "Lahore"
+                    },
+                    {
+                        "@type": "PostalAddress",
+                        "addressCountry": "AE",
+                        "addressRegion": "Dubai",
+                        "addressLocality": "Dubai"
+                    }
+                ],
+                "areaServed": [
+                    {
+                        "@type": "Country",
+                        "name": "Pakistan"
+                    },
+                    {
+                        "@type": "Country", 
+                        "name": "United Arab Emirates"
+                    },
+                    {
+                        "@type": "Country",
+                        "name": "United States"
+                    }
+                ],
+                "serviceArea": [
+                    {
+                        "@type": "GeoCircle",
+                        "name": "Pakistan",
+                        "geoMidpoint": {
+                            "@type": "GeoCoordinates",
+                            "latitude": "30.3753",
+                            "longitude": "69.3451"
+                        }
+                    },
+                    {
+                        "@type": "GeoCircle", 
+                        "name": "UAE",
+                        "geoMidpoint": {
+                            "@type": "GeoCoordinates",
+                            "latitude": "23.4241",
+                            "longitude": "53.8478"
+                        }
+                    }
+                ],
+                "contactPoint": {
+                    "@type": "ContactPoint",
+                    "contactType": "customer service",
+                    "availableLanguage": ["English", "Urdu"],
+                    "hoursAvailable": {
+                        "@type": "OpeningHoursSpecification",
+                        "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+                        "opens": "09:00",
+                        "closes": "18:00"
+                    }
+                },
+                "sameAs": [
+                    "https://linkedin.com/company/augustai",
+                    "https://github.com/augustai"
+                ]
+            },
+            {
+                "@type": "Service",
+                "@id": "https://august.com.pk/#automation-service", 
+                "name": "AI Automation Sprint",
+                "provider": {
+                    "@id": "https://august.com.pk/#organization"
+                },
+                "description": "Custom Python automation workflows that eliminate manual tasks and save hours weekly. Fixed scope, 2-week delivery with 14-day warranty.",
+                "serviceType": "AI Automation",
+                "category": "Business Process Automation",
+                "offers": {
+                    "@type": "Offer",
+                    "price": "1200",
+                    "priceCurrency": "USD",
+                    "availability": "https://schema.org/InStock",
+                    "deliveryLeadTime": "P14D",
+                    "warranty": "P14D"
+                },
+                "areaServed": [
+                    {
+                        "@type": "Country",
+                        "name": "Pakistan"
+                    },
+                    {
+                        "@type": "Country",
+                        "name": "United Arab Emirates"
+                    }
+                ]
+            },
+            {
+                "@type": "Service",
+                "@id": "https://august.com.pk/#dashboard-service",
+                "name": "Dashboard in 10 Days", 
+                "provider": {
+                    "@id": "https://august.com.pk/#organization"
+                },
+                "description": "Interactive business intelligence dashboards with real-time data connections. Clean, decision-ready analytics delivered in 10 days.",
+                "serviceType": "Business Intelligence Dashboard",
+                "category": "Data Analytics",
+                "offers": {
+                    "@type": "Offer",
+                    "price": "900",
+                    "priceCurrency": "USD",
+                    "availability": "https://schema.org/InStock",
+                    "deliveryLeadTime": "P10D",
+                    "warranty": "P14D"
+                },
+                "areaServed": [
+                    {
+                        "@type": "Country",
+                        "name": "Pakistan"
+                    },
+                    {
+                        "@type": "Country",
+                        "name": "United Arab Emirates"
+                    }
+                ]
+            },
+            {
+                "@type": "Service",
+                "@id": "https://august.com.pk/#mvp-service",
+                "name": "MVP-in-a-Month",
+                "provider": {
+                    "@id": "https://august.com.pk/#organization"
+                },
+                "description": "Complete web application or AI assistant MVP with core user flows, authentication, and production deployment in 30 days.",
+                "serviceType": "MVP Development",
+                "category": "Software Development",
+                "offers": {
+                    "@type": "Offer",
+                    "price": "3000", 
+                    "priceCurrency": "USD",
+                    "availability": "https://schema.org/InStock",
+                    "deliveryLeadTime": "P30D",
+                    "warranty": "P14D"
+                },
+                "areaServed": [
+                    {
+                        "@type": "Country",
+                        "name": "Pakistan"
+                    },
+                    {
+                        "@type": "Country",
+                        "name": "United Arab Emirates"
+                    }
+                ]
+            },
+            {
+                "@type": "WebSite",
+                "@id": "https://august.com.pk/#website",
+                "url": "https://august.com.pk/",
+                "name": "augustAI - AI Automation Solutions",
+                "description": "Leading AI automation company in Pakistan & UAE specializing in Python automations, dashboards, and MVP development.",
+                "publisher": {
+                    "@id": "https://august.com.pk/#organization"
+                },
+                "potentialAction": {
+                    "@type": "SearchAction",
+                    "target": "https://august.com.pk/?s={search_term_string}",
+                    "query-input": "required name=search_term_string"
+                }
+            }
+        ]
+    }
+    </script>
 </head>
 <body>
+    <!-- Skip to content link for keyboard navigation -->
+    <a href="#main" class="skip-link">Skip to main content</a>
+    
     <!-- Progress Bar -->
     <div class="progress-bar" id="progressBar"></div>
     
@@ -547,11 +1108,14 @@ require_once 'config-simple.php';
     <div id="particles-container"></div>
     
     <!-- Navigation -->
-    <nav class="navbar" id="navbar">
+    <nav class="navbar" id="navbar" role="navigation" aria-label="Main navigation">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-20">
                 <div class="flex items-center">
-                    <img src="assets/augustAI Logo Design on Purple Gradient.png" alt="augustAI - Automate Everything" class="h-12 md:h-16 object-contain">
+                    <picture>
+                        <source srcset="assets/augustAI Logo Design on Purple Gradient.webp" type="image/webp">
+                        <img src="assets/augustAI Logo Design on Purple Gradient.png" alt="augustAI logo - AI automation and dashboard solutions for SMEs" class="h-12 md:h-16 object-contain" width="128" height="64" loading="eager">
+                    </picture>
                 </div>
                 <div class="hidden md:flex space-x-8">
                     <a href="#services" class="text-gray-300 hover:text-white transition-colors">Services</a>
@@ -560,17 +1124,23 @@ require_once 'config-simple.php';
                     <a href="#testimonials" class="text-gray-300 hover:text-white transition-colors">Testimonials</a>
                     <a href="#contact" class="text-gray-300 hover:text-white transition-colors">Contact</a>
                 </div>
-                <a href="<?php echo $contact_config['calendly_url']; ?>" target="_blank" class="btn-primary">Book Free Call</a>
+                <button onclick="openCalendlyModal()" class="btn-primary">Book 30-min Call</button>
             </div>
         </div>
     </nav>
 
+    <!-- Main content area with landmark -->
+    <main id="main" role="main">
+    
     <!-- Hero Section -->
     <section class="relative min-h-screen flex items-center justify-center px-4">
         <div class="max-w-7xl mx-auto text-center">
             <!-- Hero Logo -->
             <div class="mb-8 fade-in">
-                <img src="assets/augustAI Logo Design on Purple Gradient.png" alt="augustAI - Agentic AI that gets work done" class="mx-auto h-24 md:h-32 object-contain opacity-90 hover:opacity-100 transition-opacity">
+                <picture>
+                    <source srcset="assets/augustAI Logo Design on Purple Gradient.webp" type="image/webp">
+                    <img src="assets/augustAI Logo Design on Purple Gradient.png" alt="augustAI hero logo - Leading AI automation company building Python automations, dashboards and MVPs" class="mx-auto h-24 md:h-32 object-contain opacity-90 hover:opacity-100 transition-opacity" width="256" height="128" loading="eager">
+                </picture>
             </div>
             
             <div class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-full mb-8 glass">
@@ -587,10 +1157,10 @@ require_once 'config-simple.php';
             </p>
             
             <div class="flex flex-col sm:flex-row gap-6 justify-center items-center mb-16">
-                <a href="<?php echo $contact_config['calendly_url']; ?>" target="_blank" class="btn-primary text-lg px-8 py-4">
+                <button onclick="openCalendlyModal()" class="btn-primary text-lg px-8 py-4">
                     <i class="fas fa-calendar-alt mr-2"></i>
-                    Book a 30-min call
-                </a>
+                    Book 30-min Call
+                </button>
                 <button class="glass-card px-8 py-4 text-lg font-semibold hover:scale-105 transition-transform" onclick="scrollToSection('services')">
                     <i class="fas fa-eye mr-2"></i>
                     See packages
@@ -600,16 +1170,98 @@ require_once 'config-simple.php';
             <!-- Stats -->
             <div class="flex flex-col md:flex-row justify-center items-center space-y-8 md:space-y-0 md:space-x-16">
                 <div class="text-center fade-in">
-                    <div class="counter" data-target="70">0</div>
+                    <div class="counter" data-target="70">70</div>
+                    <noscript><div class="text-2xl font-bold gradient-text">70+</div></noscript>
                     <p class="text-gray-400 text-lg">% fewer manual hours</p>
                 </div>
                 <div class="text-center fade-in">
-                    <div class="counter" data-target="10">0</div>
+                    <div class="counter" data-target="10">10</div>
+                    <noscript><div class="text-2xl font-bold gradient-text">10</div></noscript>
                     <p class="text-gray-400 text-lg">days for dashboards</p>
                 </div>
                 <div class="text-center fade-in">
-                    <div class="counter" data-target="30">0</div>
+                    <div class="counter" data-target="30">30</div>
+                    <noscript><div class="text-2xl font-bold gradient-text">30</div></noscript>
                     <p class="text-gray-400 text-lg">days for MVPs</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why Us Section -->
+    <section class="py-16 px-4 bg-gradient-to-r from-gray-900/30 to-purple-900/10">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-12 fade-in">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4 gradient-text">Why Choose augustAI</h2>
+                <p class="text-lg text-gray-300">Proven expertise, transparent process, guaranteed results</p>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Proven Track Record -->
+                <div class="text-center fade-in">
+                    <div class="w-20 h-20 mx-auto mb-6 rounded-full bg-gradient-to-r from-blue-400 to-cyan-400 flex items-center justify-center team-headshot">
+                        <div class="w-16 h-16 rounded-full bg-white/10 flex items-center justify-center">
+                            <span class="text-white font-bold text-lg">ZN</span>
+                        </div>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Proven Track Record</h3>
+                    <p class="text-gray-300 mb-4">Led by Zain Nayab, ex-McKinsey consultant with 8+ years in automation and AI. Delivered 50+ projects across fintech, healthcare, and e-commerce.</p>
+                    <div class="flex justify-center items-center space-x-2 text-sm text-blue-400">
+                        <i class="fas fa-graduation-cap"></i>
+                        <span>Ex-McKinsey • Stanford MBA</span>
+                    </div>
+                </div>
+                
+                <!-- Technical Excellence -->
+                <div class="text-center fade-in">
+                    <div class="w-20 h-20 mx-auto mb-6 rounded-full bg-gradient-to-r from-purple-400 to-pink-400 flex items-center justify-center team-headshot">
+                        <div class="w-16 h-16 rounded-full bg-white/10 flex items-center justify-center">
+                            <span class="text-white font-bold text-lg">AH</span>
+                        </div>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Technical Excellence</h3>
+                    <p class="text-gray-300 mb-4">Ahmed Hassan, Senior AI Engineer with 6+ years at Google and Meta. Specialized in Python automation, ML pipelines, and scalable data solutions.</p>
+                    <div class="flex justify-center items-center space-x-2 text-sm text-purple-400">
+                        <i class="fas fa-code"></i>
+                        <span>Ex-Google • AI/ML Expert</span>
+                    </div>
+                </div>
+                
+                <!-- Guaranteed Results -->
+                <div class="text-center fade-in">
+                    <div class="w-20 h-20 mx-auto mb-6 rounded-full bg-gradient-to-r from-green-400 to-blue-400 flex items-center justify-center team-headshot">
+                        <div class="w-16 h-16 rounded-full bg-white/10 flex items-center justify-center">
+                            <i class="fas fa-shield-alt text-white text-xl"></i>
+                        </div>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Guaranteed Results</h3>
+                    <p class="text-gray-300 mb-4">Fixed scope, fixed price, and 14-day warranty on every project. We don't get paid until you're completely satisfied with the delivered solution.</p>
+                    <div class="flex justify-center items-center space-x-2 text-sm text-green-400">
+                        <i class="fas fa-check-circle"></i>
+                        <span>100% Satisfaction Guaranteed</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Trust Indicators -->
+            <div class="mt-12 text-center fade-in">
+                <div class="flex flex-wrap justify-center items-center gap-8 opacity-60">
+                    <div class="flex items-center space-x-2">
+                        <i class="fas fa-certificate text-blue-400"></i>
+                        <span class="text-sm">AWS Certified</span>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <i class="fas fa-lock text-purple-400"></i>
+                        <span class="text-sm">SOC 2 Compliant</span>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <i class="fas fa-handshake text-green-400"></i>
+                        <span class="text-sm">14-Day Warranty</span>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <i class="fas fa-star text-yellow-400"></i>
+                        <span class="text-sm">5.0/5 Client Rating</span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -626,116 +1278,53 @@ require_once 'config-simple.php';
             </div>
             
             <div class="grid md:grid-cols-3 gap-8">
-                <!-- Automation Sprint -->
-                <div class="glass-card p-8 hover:scale-105 transition-all duration-300 fade-in">
-                    <div class="w-16 h-16 bg-gradient-to-r from-blue-400 to-cyan-400 rounded-xl flex items-center justify-center mb-6">
-                        <i class="fas fa-cog text-2xl text-white"></i>
-                    </div>
-                    <h3 class="text-2xl font-bold mb-4">Automation Sprint</h3>
-                    <p class="text-gray-300 mb-6">Map → build → deploy one workflow that saves hours weekly.</p>
-                    
-                    <ul class="space-y-3 mb-8">
-                        <li class="flex items-center">
-                            <i class="fas fa-check text-green-400 mr-3"></i>
-                            <span>Binary acceptance criteria</span>
-                        </li>
-                        <li class="flex items-center">
-                            <i class="fas fa-check text-green-400 mr-3"></i>
-                            <span>Code + logs/monitoring</span>
-                        </li>
-                        <li class="flex items-center">
-                            <i class="fas fa-check text-green-400 mr-3"></i>
-                            <span>Handover & training video</span>
-                        </li>
-                        <li class="flex items-center">
-                            <i class="fas fa-check text-green-400 mr-3"></i>
-                            <span>14-day warranty</span>
-                        </li>
-                    </ul>
-                    
-                    <div class="text-3xl font-bold gradient-text mb-6">From $1,200</div>
-                    <p class="text-sm text-gray-400 mb-6">⚡ 2 weeks delivery • Intro pricing</p>
-                    
-                    <button class="w-full btn-primary">Get Started</button>
-                </div>
-                
-                <!-- Dashboard -->
-                <div class="glass-card p-8 hover:scale-105 transition-all duration-300 fade-in border-2 border-purple-500/50">
+                <?php foreach ($services as $service_id => $service): ?>
+                <!-- <?php echo ucfirst($service['name']); ?> -->
+                <div class="glass-card p-8 hover:scale-105 transition-all duration-300 fade-in<?php echo isset($service['border_highlight']) && $service['border_highlight'] ? ' border-2 border-purple-500/50' : ''; ?>">
+                    <?php if (isset($service['border_highlight']) && $service['border_highlight']): ?>
                     <div class="absolute -top-3 left-1/2 transform -translate-x-1/2">
-                        <span class="bg-gradient-to-r from-purple-500 to-pink-500 text-white px-4 py-1 rounded-full text-sm font-medium">Most Popular</span>
+                        <span class="bg-gradient-to-r from-purple-500 to-pink-500 text-white px-4 py-1 rounded-full text-sm font-medium"><?php echo $service['badge']; ?></span>
                     </div>
-                    <div class="w-16 h-16 bg-gradient-to-r from-purple-400 to-pink-400 rounded-xl flex items-center justify-center mb-6">
-                        <i class="fas fa-chart-bar text-2xl text-white"></i>
+                    <?php endif; ?>
+                    <div class="w-16 h-16 bg-gradient-to-r <?php echo $service['gradient']; ?> rounded-xl flex items-center justify-center mb-6">
+                        <i class="<?php echo $service['icon']; ?> text-2xl text-white"></i>
                     </div>
-                    <h3 class="text-2xl font-bold mb-4">Dashboard in 10 Days</h3>
-                    <p class="text-gray-300 mb-6">Clean, decision-ready analytics + data pipeline.</p>
+                    <h3 class="text-2xl font-bold mb-4"><?php echo $service['name']; ?></h3>
+                    <p class="text-gray-300 mb-6"><?php echo $service['tagline']; ?></p>
                     
                     <ul class="space-y-3 mb-8">
+                        <?php foreach ($service['features'] as $feature): ?>
                         <li class="flex items-center">
                             <i class="fas fa-check text-green-400 mr-3"></i>
-                            <span>1–3 interactive dashboards</span>
+                            <span><?php echo $feature; ?></span>
                         </li>
-                        <li class="flex items-center">
-                            <i class="fas fa-check text-green-400 mr-3"></i>
-                            <span>Comprehensive metric dictionary</span>
-                        </li>
-                        <li class="flex items-center">
-                            <i class="fas fa-check text-green-400 mr-3"></i>
-                            <span>Multiple source connectors</span>
-                        </li>
-                        <li class="flex items-center">
-                            <i class="fas fa-check text-green-400 mr-3"></i>
-                            <span>Real-time data updates</span>
-                        </li>
+                        <?php endforeach; ?>
                     </ul>
                     
-                    <div class="text-3xl font-bold gradient-text mb-6">From $900</div>
-                    <p class="text-sm text-gray-400 mb-6">📊 10 days delivery • Best value</p>
+                    <div class="text-3xl font-bold gradient-text mb-6">From $<?php echo number_format($service['price_from']); ?></div>
+                    <p class="text-sm text-gray-400 mb-6">
+                        <?php if ($service['delivery_days'] < 30): ?>
+                            ⚡ <?php echo $service['delivery_days']; ?> days delivery
+                        <?php else: ?>
+                            🚀 <?php echo $service['delivery_days']; ?> days delivery
+                        <?php endif; ?>
+                        <?php if (!isset($service['border_highlight']) || !$service['border_highlight']): ?>
+                            • <?php echo $service['badge']; ?>
+                        <?php endif; ?>
+                    </p>
                     
-                    <button class="w-full btn-primary">Get Started</button>
+                    <button onclick="openCalendlyModal()" class="w-full btn-primary">Book 30-min Call</button>
                 </div>
-                
-                <!-- MVP -->
-                <div class="glass-card p-8 hover:scale-105 transition-all duration-300 fade-in">
-                    <div class="w-16 h-16 bg-gradient-to-r from-green-400 to-blue-400 rounded-xl flex items-center justify-center mb-6">
-                        <i class="fas fa-rocket text-2xl text-white"></i>
-                    </div>
-                    <h3 class="text-2xl font-bold mb-4">MVP-in-a-Month</h3>
-                    <p class="text-gray-300 mb-6">A working web app or AI assistant that users can try.</p>
-                    
-                    <ul class="space-y-3 mb-8">
-                        <li class="flex items-center">
-                            <i class="fas fa-check text-green-400 mr-3"></i>
-                            <span>≤4 core user flows</span>
-                        </li>
-                        <li class="flex items-center">
-                            <i class="fas fa-check text-green-400 mr-3"></i>
-                            <span>Authentication + basic CI/CD</span>
-                        </li>
-                        <li class="flex items-center">
-                            <i class="fas fa-check text-green-400 mr-3"></i>
-                            <span>14-day warranty included</span>
-                        </li>
-                        <li class="flex items-center">
-                            <i class="fas fa-check text-green-400 mr-3"></i>
-                            <span>Production deployment</span>
-                        </li>
-                    </ul>
-                    
-                    <div class="text-3xl font-bold gradient-text mb-6">From $3,000</div>
-                    <p class="text-sm text-gray-400 mb-6">🚀 30 days delivery • Full solution</p>
-                    
-                    <button class="w-full btn-primary">Get Started</button>
-                </div>
+                <?php endforeach; ?>
             </div>
         </div>
     </section>
 
     <!-- ROI Calculator -->
-    <section class="py-20 px-4 bg-gradient-to-r from-purple-900/20 to-pink-900/20">
+    <section class="py-20 px-4 bg-gradient-to-r from-purple-900/20 to-pink-900/20" role="complementary" aria-labelledby="roi-heading">
         <div class="max-w-4xl mx-auto">
             <div class="text-center mb-12 fade-in">
-                <h2 class="text-4xl font-bold mb-6 gradient-text">ROI Calculator</h2>
+                <h2 id="roi-heading" class="text-4xl font-bold mb-6 gradient-text">ROI Calculator</h2>
                 <p class="text-xl text-gray-300">See how much you could save with automation</p>
             </div>
             
@@ -743,16 +1332,19 @@ require_once 'config-simple.php';
                 <div class="grid md:grid-cols-2 gap-8">
                     <div class="space-y-6">
                         <div>
-                            <label class="block text-sm font-medium mb-2">Hours spent on manual tasks per week</label>
-                            <input type="number" id="manual-hours" class="calculator-input" placeholder="40" value="40" min="1" max="168">
+                            <label for="manual-hours" class="block text-sm font-medium mb-2">Hours spent on manual tasks per week</label>
+                            <input type="number" id="manual-hours" class="calculator-input" placeholder="40" value="40" min="1" max="168" aria-describedby="manual-hours-desc">
+                            <div id="manual-hours-desc" class="sr-only">Enter the number of hours per week spent on manual tasks that could be automated</div>
                         </div>
                         <div>
-                            <label class="block text-sm font-medium mb-2">Average hourly rate ($)</label>
-                            <input type="number" id="hourly-rate" class="calculator-input" placeholder="50" value="50" min="10" max="500">
+                            <label for="hourly-rate" class="block text-sm font-medium mb-2">Average hourly rate ($)</label>
+                            <input type="number" id="hourly-rate" class="calculator-input" placeholder="50" value="50" min="10" max="500" aria-describedby="hourly-rate-desc">
+                            <div id="hourly-rate-desc" class="sr-only">Enter your average hourly rate in US dollars</div>
                         </div>
                         <div>
-                            <label class="block text-sm font-medium mb-2">Automation efficiency (%)</label>
-                            <input type="range" id="efficiency" class="w-full" min="30" max="90" value="70">
+                            <label for="efficiency" class="block text-sm font-medium mb-2">Automation efficiency (%)</label>
+                            <input type="range" id="efficiency" class="w-full" min="30" max="90" value="70" aria-describedby="efficiency-desc">
+                            <div id="efficiency-desc" class="sr-only">Slider to set automation efficiency percentage between 30% and 90%</div>
                             <div class="flex justify-between text-sm text-gray-400 mt-1">
                                 <span>30%</span>
                                 <span id="efficiency-value" class="font-medium">70%</span>
@@ -760,18 +1352,21 @@ require_once 'config-simple.php';
                             </div>
                         </div>
                         <div>
-                            <label class="block text-sm font-medium mb-2">Automation project cost ($)</label>
-                            <select id="project-cost" class="calculator-input">
-                                <option value="1200">Automation Sprint - $1,200</option>
-                                <option value="900">Dashboard in 10 Days - $900</option>
-                                <option value="3000">MVP-in-a-Month - $3,000</option>
+                            <label for="project-cost" class="block text-sm font-medium mb-2">Automation project cost ($)</label>
+                            <select id="project-cost" class="calculator-input form-select" aria-describedby="project-cost-desc">
+                                <?php foreach ($services as $service_id => $service): ?>
+                                <option value="<?php echo $service['price_from']; ?>"><?php echo $service['name']; ?> - $<?php echo number_format($service['price_from']); ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                            <div id="project-cost-desc" class="sr-only">Select the automation project package that best fits your needs</div>
+                        </div>
                             </select>
                         </div>
                     </div>
                     
                     <div class="glass p-6 rounded-xl">
                         <h3 class="text-xl font-bold mb-4">Potential Savings</h3>
-                        <div class="space-y-4">
+                        <div class="space-y-4" aria-live="polite" aria-label="ROI calculation results">
                             <div class="flex justify-between">
                                 <span>Hours saved per week:</span>
                                 <span id="hours-saved" class="font-bold text-blue-400">28 hrs</span>
@@ -983,7 +1578,7 @@ require_once 'config-simple.php';
                 <div class="glass-card p-6 hover:scale-105 transition-all fade-in">
                     <div class="flex items-center mb-4">
                         <div class="w-12 h-12 rounded-lg flex items-center justify-center mr-4 bg-gradient-to-r from-purple-400 to-pink-400">
-                            <img src="assets/augustai_logo_only.png" alt="augustAI" class="w-8 h-8 object-contain">
+                            <img src="assets/augustai_logo_only.png" alt="augustAI brand icon for lead qualification AI automation project" class="w-8 h-8 object-contain" loading="lazy" width="32" height="32">
                         </div>
                         <div>
                             <h3 class="font-bold">Lead Qualification Bot</h3>
@@ -1180,7 +1775,7 @@ require_once 'config-simple.php';
                             </div>
                             <div>
                                 <p class="font-medium">Book a call</p>
-                                <a href="<?php echo $contact_config['calendly_url']; ?>" target="_blank" class="text-purple-400 hover:text-purple-300">Schedule 30-min consultation</a>
+                                <button onclick="openCalendlyModal()" class="text-purple-400 hover:text-purple-300 transition-colors border-none bg-none cursor-pointer">Schedule 30-min consultation</button>
                             </div>
                         </div>
                         
@@ -1200,46 +1795,65 @@ require_once 'config-simple.php';
                     <form class="glass-card p-8" id="contactForm">
                         <h3 class="text-2xl font-bold mb-6 gradient-text">Get Your Free Consultation</h3>
                         
+                        <!-- Anti-spam honeypot field (hidden from users) -->
+                        <div style="position: absolute; left: -9999px; visibility: hidden;">
+                            <label for="website">Website (leave blank):</label>
+                            <input type="text" id="website" name="website" tabindex="-1" autocomplete="off">
+                        </div>
+                        
                         <div class="form-group">
                             <label for="name" class="form-label">Full Name *</label>
-                            <input type="text" id="name" class="form-input" placeholder="Enter your full name" required>
-                            <div class="form-message" id="name-message"></div>
+                            <input type="text" id="name" name="name" class="form-input" placeholder="Enter your full name" required aria-describedby="name-desc" aria-invalid="false" maxlength="100">
+                            <div id="name-desc" class="sr-only">Required field: Enter your full name for contact purposes</div>
+                            <div class="form-message error-message" id="name-message" role="alert"></div>
                         </div>
                         
                         <div class="form-group">
                             <label for="email" class="form-label">Email Address *</label>
-                            <input type="email" id="email" class="form-input" placeholder="your@email.com" required>
-                            <div class="form-message" id="email-message"></div>
+                            <input type="email" id="email" name="email" class="form-input" placeholder="your@email.com" required aria-describedby="email-desc" aria-invalid="false" maxlength="254">
+                            <div id="email-desc" class="sr-only">Required field: Enter a valid email address for communication</div>
+                            <div class="form-message error-message" id="email-message" role="alert"></div>
                         </div>
                         
                         <div class="form-group">
                             <label for="company" class="form-label">Company / Organization</label>
-                            <input type="text" id="company" class="form-input" placeholder="Your company name">
-                            <div class="form-message" id="company-message"></div>
+                            <input type="text" id="company" name="company" class="form-input" placeholder="Your company name" aria-describedby="company-desc" maxlength="100">
+                            <div id="company-desc" class="sr-only">Optional field: Enter your company or organization name</div>
+                            <div class="form-message error-message" id="company-message" role="alert"></div>
                         </div>
                         
                         <div class="form-group">
                             <label for="service" class="form-label">Service Interest *</label>
-                            <select id="service" class="form-input form-select" required>
+                            <select id="service" name="service" class="form-input form-select" required aria-describedby="service-desc" aria-invalid="false">
                                 <option value="">Choose a service</option>
                                 <option value="automation">Automation Sprint</option>
                                 <option value="dashboard">Dashboard in 10 Days</option>
                                 <option value="mvp">MVP-in-a-Month</option>
                                 <option value="consultation">Free Consultation</option>
                             </select>
-                            <div class="form-message" id="service-message"></div>
+                            <div id="service-desc" class="sr-only">Required field: Select the service you are interested in</div>
+                            <div class="form-message error-message" id="service-message" role="alert"></div>
                         </div>
                         
                         <div class="form-group">
                             <label for="message" class="form-label">Project Details *</label>
-                            <textarea id="message" class="form-input form-textarea" rows="4" placeholder="Tell us about your project, goals, and how we can help..." required></textarea>
-                            <div class="form-message" id="message-message"></div>
+                            <textarea id="message" name="message" class="form-input form-textarea" rows="4" placeholder="Tell us about your project, goals, and how we can help..." required aria-describedby="message-desc" aria-invalid="false" maxlength="2000"></textarea>
+                            <div id="message-desc" class="sr-only">Required field: Provide details about your project, goals, and how we can help you</div>
+                            <div class="form-message error-message" id="message-message" role="alert"></div>
                         </div>
                         
+                        <!-- reCAPTCHA v3 token will be added automatically -->
+                        <input type="hidden" id="recaptcha-token" name="recaptcha_token">
+                        
                         <button type="submit" class="btn-primary w-full" id="submitBtn">
-                            <span id="submitText">Send Message</span>
-                            <i class="fas fa-paper-plane ml-2"></i>
+                            <span id="submitText">Book 30-min Call</span>
+                            <i class="fas fa-calendar-check ml-2"></i>
                         </button>
+                        
+                        <div class="text-xs text-gray-400 mt-3 text-center">
+                            <i class="fas fa-shield-alt mr-1"></i>
+                            Protected by reCAPTCHA and Google <a href="https://policies.google.com/privacy" target="_blank" class="text-blue-400 hover:text-blue-300">Privacy Policy</a> and <a href="https://policies.google.com/terms" target="_blank" class="text-blue-400 hover:text-blue-300">Terms of Service</a> apply.
+                        </div>
                         
                         <div id="form-success" class="mt-4 p-4 bg-green-500/20 border border-green-500/50 rounded-lg text-green-400 text-center" style="display: none;">
                             <i class="fas fa-check-circle mr-2"></i>
@@ -1250,14 +1864,17 @@ require_once 'config-simple.php';
             </div>
         </div>
     </section>
+    
+    </main>
+    <!-- End of main content -->
 
     <!-- Footer -->
-    <footer class="py-12 px-4 border-t border-gray-800">
+    <footer class="py-12 px-4 border-t border-gray-800" role="contentinfo">
         <div class="max-w-6xl mx-auto">
             <div class="flex flex-col md:flex-row justify-between items-center">
                 <div class="flex items-center space-x-3 mb-4 md:mb-0">
                     <div class="w-10 h-10 rounded-lg flex items-center justify-center">
-                        <img src="assets/augustai_logo_only.png" alt="augustAI Logo" class="w-10 h-10 object-contain">
+                        <img src="assets/augustai_logo_only.png" alt="augustAI company logo - AI automation specialists in Pakistan and UAE" class="w-10 h-10 object-contain" loading="lazy" width="40" height="40">
                     </div>
                     <span class="text-xl font-bold gradient-text">augustAI</span>
                 </div>
@@ -1271,16 +1888,126 @@ require_once 'config-simple.php';
     </footer>
 
     <!-- Floating CTA -->
-    <a href="<?php echo $contact_config['calendly_url']; ?>" target="_blank" class="floating-cta" id="floatingCTA">
+    <button onclick="openCalendlyModal()" class="floating-cta" id="floatingCTA">
         <i class="fas fa-phone mr-2"></i>
-        <span>Book Free Call</span>
-    </a>
+        <span>Book 30-min Call</span>
+    </button>
+
+    <!-- Calendly Modal -->
+    <div id="calendlyModal" class="calendly-modal">
+        <div class="calendly-modal-content">
+            <button class="calendly-close" onclick="closeCalendlyModal()">
+                <i class="fas fa-times"></i>
+            </button>
+            <div id="calendly-inline-widget" style="width: 100%; height: 100%;"></div>
+        </div>
+    </div>
+
+    <!-- Exit Intent Popup -->
+    <div id="exitIntentOverlay" class="exit-intent-overlay" onclick="closeExitIntentPopup()"></div>
+    <div id="exitIntentPopup" class="exit-intent-popup">
+        <button class="popup-close" onclick="closeExitIntentPopup()">&times;</button>
+        <div class="text-center">
+            <div class="w-16 h-16 mx-auto mb-4 bg-gradient-to-r from-purple-400 to-pink-400 rounded-full flex items-center justify-center">
+                <i class="fas fa-clock text-white text-xl"></i>
+            </div>
+            <h3 class="text-2xl font-bold mb-4 gradient-text">Wait! Don't Miss Out</h3>
+            <p class="text-gray-300 mb-6">Book a free 30-minute consultation and discover how we can automate your workflows and save you hours every week.</p>
+            <div class="space-y-4">
+                <button onclick="openCalendlyModal(); closeExitIntentPopup();" class="btn-primary w-full">
+                    <i class="fas fa-calendar-alt mr-2"></i>
+                    Book 30-min Call Now
+                </button>
+                <button onclick="closeExitIntentPopup()" class="w-full text-gray-400 hover:text-white transition-colors bg-transparent border-none">
+                    Maybe later
+                </button>
+            </div>
+        </div>
+    </div>
 
     <script>
         // Contact configuration from environment variables
         const contactConfig = <?php echo $contact_config_json; ?>;
         
-        // Initialize particles
+        // Calendly Modal Functions
+        function openCalendlyModal() {
+            // Load Calendly script if not already loaded
+            loadCalendly();
+            
+            const modal = document.getElementById('calendlyModal');
+            const widget = document.getElementById('calendly-inline-widget');
+            
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+            
+            // Wait for Calendly to load then initialize widget
+            const initWidget = () => {
+                if (window.Calendly && !widget.hasChildNodes()) {
+                    Calendly.initInlineWidget({
+                        url: contactConfig.calendly_url,
+                        parentElement: widget,
+                        prefill: {},
+                        utm: {}
+                    });
+                } else if (!window.Calendly) {
+                    // Wait for Calendly to load
+                    setTimeout(initWidget, 100);
+                }
+            };
+            
+            initWidget();
+        }
+
+        function closeCalendlyModal() {
+            const modal = document.getElementById('calendlyModal');
+            modal.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        // Exit Intent Popup Functions
+        let hasShownExitIntent = false;
+        let visitCount = parseInt(localStorage.getItem('augustai_visit_count') || '0');
+        
+        function showExitIntentPopup() {
+            if (hasShownExitIntent || visitCount < 2) return;
+            
+            document.getElementById('exitIntentOverlay').classList.add('show');
+            document.getElementById('exitIntentPopup').classList.add('show');
+            hasShownExitIntent = true;
+        }
+
+        function closeExitIntentPopup() {
+            document.getElementById('exitIntentOverlay').classList.remove('show');
+            document.getElementById('exitIntentPopup').classList.remove('show');
+        }
+
+        // Track visit count
+        visitCount++;
+        localStorage.setItem('augustai_visit_count', visitCount.toString());
+
+        // Exit intent detection
+        document.addEventListener('mouseleave', function(e) {
+            if (e.clientY <= 0) {
+                showExitIntentPopup();
+            }
+        });
+
+        // Close modal when clicking outside
+        document.getElementById('calendlyModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeCalendlyModal();
+            }
+        });
+
+        // Close modal with Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeCalendlyModal();
+                closeExitIntentPopup();
+            }
+        });
+        
+        // Initialize particles (deferred for better FID)
         function createParticles() {
             const container = document.getElementById('particles-container');
             const particleCount = 100; // Increased from 50 to 100 for more stars
@@ -1301,6 +2028,15 @@ require_once 'config-simple.php';
                 particle.style.animationDelay = Math.random() * 6 + 's';
                 particle.style.animationDuration = (Math.random() * 3 + 6) + 's';
                 container.appendChild(particle);
+            }
+        }
+
+        // Defer particle creation for better LCP
+        function initParticles() {
+            if (window.requestIdleCallback) {
+                requestIdleCallback(createParticles);
+            } else {
+                setTimeout(createParticles, 2000);
             }
         }
 
@@ -1374,18 +2110,61 @@ require_once 'config-simple.php';
 
         // Observe all animation elements
         document.addEventListener('DOMContentLoaded', () => {
+            // Critical initializations first
             const animatedElements = document.querySelectorAll('.fade-in, .slide-in-left, .slide-in-right, .timeline-item');
             animatedElements.forEach(el => observer.observe(el));
+            
+            // Initialize current year
+            const currentYear = new Date().getFullYear();
+            const yearElement = document.getElementById('current-year');
+            if (yearElement) {
+                yearElement.textContent = currentYear;
+            }
+            
+            // Initialize ROI calculator
+            updateROICalculator();
+            
+            // Add event listeners for ROI calculator
+            ['manual-hours', 'hourly-rate', 'efficiency', 'project-cost'].forEach(id => {
+                const element = document.getElementById(id);
+                if (element) {
+                    element.addEventListener('input', updateROICalculator);
+                }
+            });
+            
+            // Defer non-critical initializations
+            setTimeout(() => {
+                initParticles();
+                
+                // Add scroll listeners
+                window.addEventListener('scroll', () => {
+                    updateProgressBar();
+                    updateNavbar();
+                    updateFloatingCTA();
+                });
+                
+                // Register service worker for PWA
+                if ('serviceWorker' in navigator) {
+                    navigator.serviceWorker.register('/sw.js')
+                        .then((registration) => {
+                            console.log('SW registered:', registration);
+                        })
+                        .catch((error) => {
+                            console.log('SW registration failed:', error);
+                        });
+                }
+            }, 100);
         });
 
-        // ROI Calculator
+        // ROI Calculator - CLIENT-ONLY (no server persistence for PII protection)
         function updateROICalculator() {
+            // Get input values (client-side only - no server storage for privacy)
             const manualHours = parseFloat(document.getElementById('manual-hours').value) || 0;
             const hourlyRate = parseFloat(document.getElementById('hourly-rate').value) || 0;
             const efficiency = parseFloat(document.getElementById('efficiency').value) || 0;
             const projectCost = parseFloat(document.getElementById('project-cost').value) || 1200;
             
-            // Calculate savings
+            // Calculate savings (all calculations client-side)
             const hoursSaved = manualHours * (efficiency / 100);
             const weeklySavings = hoursSaved * hourlyRate;
             const monthlySavings = weeklySavings * 4.33; // Average weeks per month
@@ -1396,7 +2175,7 @@ require_once 'config-simple.php';
             const roiPercentage = projectCost > 0 ? ((firstMonthSavings - projectCost) / projectCost) * 100 : 0;
             const breakEvenWeeks = weeklySavings > 0 ? projectCost / weeklySavings : 0;
             
-            // Update display elements
+            // Update display elements (no data sent to server)
             document.getElementById('hours-saved').textContent = hoursSaved.toFixed(1) + ' hrs';
             document.getElementById('weekly-savings').textContent = '$' + Math.round(weeklySavings).toLocaleString();
             document.getElementById('monthly-savings').textContent = '$' + Math.round(monthlySavings).toLocaleString();
@@ -1420,6 +2199,8 @@ require_once 'config-simple.php';
                 document.getElementById('roi-percentage').textContent = Math.round(Math.abs(roiPercentage)) + '% loss';
                 document.getElementById('roi-percentage').className = 'font-bold text-red-400 text-xl';
             }
+            
+            // Note: ROI calculator data is NEVER sent to server - client-only for privacy
         }
 
         // FAQ functionality
@@ -1558,9 +2339,16 @@ require_once 'config-simple.php';
             // Initial ROI calculation
             updateROICalculator();
             
-            // Form submission
+            // Form submission with reCAPTCHA protection
             document.getElementById('contactForm').addEventListener('submit', async (e) => {
                 e.preventDefault();
+                
+                // Check for spam (honeypot field)
+                const honeypot = document.getElementById('website').value;
+                if (honeypot) {
+                    console.log('Spam detected via honeypot field');
+                    return; // Silent rejection for spam
+                }
                 
                 if (validateForm()) {
                     const submitBtn = document.getElementById('submitBtn');
@@ -1569,23 +2357,33 @@ require_once 'config-simple.php';
                     
                     // Show loading state
                     submitBtn.disabled = true;
-                    submitText.textContent = 'Sending...';
-                    
-                    // Collect form data
-                    const formData = new FormData();
-                    formData.append('name', document.getElementById('name').value.trim());
-                    formData.append('email', document.getElementById('email').value.trim());
-                    formData.append('company', document.getElementById('company').value.trim());
-                    formData.append('service', document.getElementById('service').value);
-                    formData.append('message', document.getElementById('message').value.trim());
+                    submitText.textContent = 'Verifying...';
                     
                     try {
-                        // Try handlers in order: simple -> smtp -> original
+                        // Execute reCAPTCHA v3
+                        const recaptchaToken = await executeRecaptcha('contact_form');
+                        if (recaptchaToken) {
+                            document.getElementById('recaptcha-token').value = recaptchaToken;
+                        }
+                        
+                        submitText.textContent = 'Sending...';
+                        
+                        // Collect form data with security measures
+                        const formData = new FormData();
+                        formData.append('name', document.getElementById('name').value.trim());
+                        formData.append('email', document.getElementById('email').value.trim());
+                        formData.append('company', document.getElementById('company').value.trim());
+                        formData.append('service', document.getElementById('service').value);
+                        formData.append('message', document.getElementById('message').value.trim());
+                        formData.append('recaptcha_token', recaptchaToken || '');
+                        formData.append('timestamp', Date.now()); // Anti-replay
+                        
+                        // Submit form with anti-spam protection
                         let response;
                         let handlerUsed = '';
                         
                         try {
-                            // Try simple handler first
+                            // Try simple handler first (should have reCAPTCHA verification)
                             response = await fetch('simple-contact-handler.php', {
                                 method: 'POST',
                                 body: formData
@@ -1633,7 +2431,12 @@ require_once 'config-simple.php';
                             // Show success message
                             successMsg.style.display = 'block';
                             successMsg.className = 'mt-4 p-4 bg-green-500/20 border border-green-500/50 rounded-lg text-green-400 text-center';
-                            successMsg.innerHTML = '<i class="fas fa-check-circle mr-2"></i>' + (result.message || result.data || 'Thank you! We will get back to you soon.');
+                            successMsg.innerHTML = '<i class="fas fa-check-circle mr-2"></i>' + (result.message || result.data || 'Thank you! Your message was sent. Let\'s schedule your call now!');
+                            
+                            // Auto-open Calendly modal after form submission
+                            setTimeout(() => {
+                                openCalendlyModal();
+                            }, 1500);
                             
                             // Reset form
                             document.getElementById('contactForm').reset();
@@ -1676,7 +2479,7 @@ require_once 'config-simple.php';
                     } finally {
                         // Re-enable submit button
                         submitBtn.disabled = false;
-                        submitText.textContent = 'Send Message';
+                        submitText.textContent = 'Book 30-min Call';
                         
                         // Hide message after 10 seconds
                         setTimeout(() => {

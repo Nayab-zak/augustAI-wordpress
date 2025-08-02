@@ -1,0 +1,35 @@
+{
+  "name": "augustAI - Automate Everything",
+  "short_name": "augustAI",
+  "description": "We build agentic automations, dashboards in 10 days, and MVPs in 30 for SMEs and startups.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0F0A1A",
+  "theme_color": "#8B5CF6",
+  "orientation": "portrait-primary",
+  "categories": ["business", "productivity", "developer"],
+  "lang": "en",
+  "scope": "/",
+  "icons": [
+    {
+      "src": "assets/augustai_logo_only.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "assets/augustai_logo_only.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "assets/augustAI Logo Design on Purple Gradient.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "label": "augustAI Homepage"
+    }
+  ]
+}

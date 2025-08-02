@@ -1,11 +1,17 @@
 <?php
 /**
- * Simple Contact Form Handler
+ * Simple Contact Form Handler with reCAPTCHA v3 Protection
  * Works with both WordPress constants and .env files
  */
 
 // Load WordPress-compatible configuration
 require_once 'wp-config.php';
+
+// Security headers
+header('X-Content-Type-Options: nosniff');
+header('X-Frame-Options: DENY');
+header('X-XSS-Protection: 1; mode=block');
+header('Referrer-Policy: strict-origin-when-cross-origin');
 
 // Enable CORS for testing
 header('Access-Control-Allow-Origin: *');
@@ -20,32 +26,102 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     exit;
 }
 
+// Rate limiting - simple time-based check
+session_start();
+$now = time();
+$rate_limit_window = 300; // 5 minutes
+$max_requests = 3;
+
+if (!isset($_SESSION['form_submissions'])) {
+    $_SESSION['form_submissions'] = [];
+}
+
+// Clean old submissions
+$_SESSION['form_submissions'] = array_filter($_SESSION['form_submissions'], function($timestamp) use ($now, $rate_limit_window) {
+    return ($now - $timestamp) < $rate_limit_window;
+});
+
+if (count($_SESSION['form_submissions']) >= $max_requests) {
+    http_response_code(429);
+    echo json_encode(['success' => false, 'message' => 'Too many requests. Please wait 5 minutes before submitting again.']);
+    exit;
+}
+
+// Anti-spam: Check honeypot field
+$honeypot = isset($_POST['website']) ? trim($_POST['website']) : '';
+if (!empty($honeypot)) {
+    // Silent rejection for spam
+    echo json_encode(['success' => true, 'message' => 'Message received']);
+    exit;
+}
+
 // Get POST data
 $name = isset($_POST['name']) ? trim($_POST['name']) : '';
 $email = isset($_POST['email']) ? trim($_POST['email']) : '';
 $company = isset($_POST['company']) ? trim($_POST['company']) : '';
 $service = isset($_POST['service']) ? trim($_POST['service']) : '';
 $message = isset($_POST['message']) ? trim($_POST['message']) : '';
+$recaptcha_token = isset($_POST['recaptcha_token']) ? trim($_POST['recaptcha_token']) : '';
 
 // Validate required fields
 $errors = [];
-if (empty($name) || strlen($name) < 2) {
-    $errors[] = 'Name is required and must be at least 2 characters';
+if (empty($name) || strlen($name) < 2 || strlen($name) > 100) {
+    $errors[] = 'Name is required and must be between 2-100 characters';
 }
-if (empty($email) || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+if (empty($email) || !filter_var($email, FILTER_VALIDATE_EMAIL) || strlen($email) > 254) {
     $errors[] = 'Valid email address is required';
 }
-if (empty($message) || strlen($message) < 10) {
-    $errors[] = 'Message is required and must be at least 10 characters';
+if (empty($message) || strlen($message) < 10 || strlen($message) > 2000) {
+    $errors[] = 'Message is required and must be between 10-2000 characters';
 }
 if (empty($service)) {
     $errors[] = 'Please select a service';
+}
+
+// Validate reCAPTCHA v3 if token provided
+if (!empty($recaptcha_token)) {
+    $recaptcha_secret = defined('RECAPTCHA_SECRET_KEY') ? RECAPTCHA_SECRET_KEY : '';
+    
+    if (!empty($recaptcha_secret)) {
+        $recaptcha_url = 'https://www.google.com/recaptcha/api/siteverify';
+        $recaptcha_data = [
+            'secret' => $recaptcha_secret,
+            'response' => $recaptcha_token,
+            'remoteip' => $_SERVER['REMOTE_ADDR']
+        ];
+        
+        $recaptcha_options = [
+            'http' => [
+                'header' => "Content-type: application/x-www-form-urlencoded\r\n",
+                'method' => 'POST',
+                'content' => http_build_query($recaptcha_data),
+                'timeout' => 10
+            ]
+        ];
+        
+        $recaptcha_context = stream_context_create($recaptcha_options);
+        $recaptcha_result = file_get_contents($recaptcha_url, false, $recaptcha_context);
+        
+        if ($recaptcha_result !== false) {
+            $recaptcha_response = json_decode($recaptcha_result, true);
+            
+            if (!$recaptcha_response['success'] || $recaptcha_response['score'] < 0.5) {
+                $errors[] = 'Security verification failed. Please try again.';
+            }
+        }
+    }
+} else {
+    // If no reCAPTCHA token provided, add to errors
+    $errors[] = 'Security verification required';
 }
 
 if (!empty($errors)) {
     echo json_encode(['success' => false, 'message' => implode(', ', $errors)]);
     exit;
 }
+
+// Record successful submission for rate limiting
+$_SESSION['form_submissions'][] = $now;
 
 // Sanitize data
 $name = htmlspecialchars($name);
