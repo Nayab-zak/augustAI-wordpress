@@ -82,6 +82,34 @@ your-wordpress-site/
 3. **Check email delivery** - visit `/test-email.php`
 4. **Monitor logs** - check `contact_log.txt`
 
+### 🚨 Troubleshooting HTTP 500 Errors
+
+If you get "HTTP ERROR 500":
+
+1. **Test basic functionality**:
+   ```
+   http://yoursite.com/test-simple.php
+   http://yoursite.com/debug.php
+   ```
+
+2. **Check file permissions**:
+   ```bash
+   chmod 644 *.php
+   chmod 644 *.html
+   chmod 755 assets/
+   ```
+
+3. **Common fixes**:
+   - **Missing WordPress constants**: Add constants to wp-config.php
+   - **File path issues**: Ensure all files uploaded correctly
+   - **PHP version**: Requires PHP 7.4+ 
+   - **Missing files**: Check if logo files uploaded to /assets/
+
+4. **Fallback options**:
+   - Use `index.html` instead of `index.php` (static version)
+   - Check server error logs in cPanel/hosting panel
+   - Contact hosting provider if PHP errors persist
+
 ## 🔄 Alternative Methods
 
 ### Method 1: WordPress Constants (Recommended)
