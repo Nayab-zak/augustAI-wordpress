@@ -1,6 +1,6 @@
 <?php
-// Load configuration - WordPress compatible
-require_once 'wp-config.php';
+// Load simple configuration 
+require_once 'config-simple.php';
 ?>
 <!DOCTYPE html>
 <html lang="en">
