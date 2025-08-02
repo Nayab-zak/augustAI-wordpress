@@ -1,117 +1,680 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>AugustAI – Automation & MVPs in Days</title>
-  <meta name="description" content="AugustAI delivers automation, dashboards, and MVPs in record time. Book a free 20-min call today." />
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@3.3.0/dist/tailwind.min.css" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
-  <style>
-    html { scroll-behavior: smooth; }
-    .btn-gradient {
-      @apply bg-gradient-to-r from-blue-500 to-green-400 text-white px-6 py-2 rounded-full font-semibold hover:opacity-90 transition;
-    }
-    .input {
-      @apply w-full p-3 rounded-md bg-gray-800 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AugustAI - AI-Powered Business Solutions | Automation & Development</title>
+    <meta name="description" content="Transform your business with AugustAI's expert automation, dashboard development, and MVP creation services. Get results in 7-30 days with our proven processes.">
+    <meta name="keywords" content="AI automation, business dashboards, MVP development, workflow optimization, artificial intelligence">
+    <meta property="og:title" content="AugustAI - AI-Powered Business Solutions">
+    <meta property="og:description" content="Transform your business with expert automation, dashboard development, and MVP creation services.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://august.com.pk">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="AugustAI - AI-Powered Business Solutions">
+    <meta name="twitter:description" content="Transform your business with expert automation, dashboard development, and MVP creation services.">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        navy: {
+                            900: '#0f172a',
+                            800: '#1e293b',
+                            700: '#334155'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        
+        .gradient-bg {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
+        }
+        
+        .gradient-text {
+            background: linear-gradient(135deg, #3b82f6, #10b981);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .gradient-border {
+            background: linear-gradient(135deg, #3b82f6, #10b981);
+            padding: 1px;
+            border-radius: 0.75rem;
+        }
+        
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(59, 130, 246, 0.1);
+        }
+        
+        .animate-float {
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+        
+        .animate-fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+        
+        .animate-fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .demo-badge {
+            background: linear-gradient(45deg, #3b82f6, #10b981, #3b82f6);
+            background-size: 200% 200%;
+            animation: gradientShift 3s ease infinite;
+        }
+        
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+    </style>
 </head>
-<body class="bg-[#0A0F1F] text-white font-sans">
+<body class="bg-navy-900 text-white">
+    <!-- Header -->
+    <header class="fixed top-0 w-full z-50 bg-navy-900/80 backdrop-blur-md border-b border-navy-700">
+        <nav class="container mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="text-2xl font-bold gradient-text">AugustAI</div>
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#services" class="hover:text-blue-400 transition-colors">Services</a>
+                    <a href="#process" class="hover:text-blue-400 transition-colors">Process</a>
+                    <a href="#cases" class="hover:text-blue-400 transition-colors">Case Studies</a>
+                    <a href="#faq" class="hover:text-blue-400 transition-colors">FAQ</a>
+                    <a href="/wp" class="hover:text-blue-400 transition-colors">Blog</a>
+                    <a href="#contact" class="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-lg transition-colors">Contact</a>
+                </div>
+                <button class="md:hidden" onclick="toggleMobileMenu()">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </button>
+            </div>
+            <div id="mobile-menu" class="hidden md:hidden mt-4 space-y-4">
+                <a href="#services" class="block hover:text-blue-400 transition-colors">Services</a>
+                <a href="#process" class="block hover:text-blue-400 transition-colors">Process</a>
+                <a href="#cases" class="block hover:text-blue-400 transition-colors">Case Studies</a>
+                <a href="#faq" class="block hover:text-blue-400 transition-colors">FAQ</a>
+                <a href="/wp" class="block hover:text-blue-400 transition-colors">Blog</a>
+                <a href="#contact" class="block bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-lg transition-colors text-center">Contact</a>
+            </div>
+        </nav>
+    </header>
 
-  <!-- Hero Section -->
-  <section class="min-h-screen flex flex-col justify-center items-center text-center px-6">
-    <h1 class="text-4xl md:text-6xl font-bold mb-4 animate-fadeIn">AugustAI</h1>
-    <p class="text-lg md:text-xl mb-6 max-w-xl animate-fadeIn delay-100">Automation, Dashboards, and MVPs delivered in days—not months.</p>
-    <span class="inline-block bg-gradient-to-r from-green-400 to-blue-500 text-black px-4 py-1 rounded-full mb-4 animate-pulse">🚀 Demo Available</span>
-    <a href="https://calendly.com/augustai/20min" target="_blank" class="btn-gradient">Book a 20-min call</a>
-  </section>
+    <!-- Hero Section -->
+    <section class="gradient-bg min-h-screen flex items-center justify-center pt-20">
+        <div class="container mx-auto px-6 text-center">
+            <div class="animate-fade-in">
+                <div class="demo-badge inline-flex items-center px-4 py-2 rounded-full text-sm font-medium text-white mb-8">
+                    <span class="w-2 h-2 bg-green-400 rounded-full mr-2 animate-pulse"></span>
+                    Live Demo Available
+                </div>
+                <h1 class="text-4xl md:text-6xl lg:text-7xl font-bold mb-6">
+                    Transform Your Business with 
+                    <span class="gradient-text">AI-Powered Solutions</span>
+                </h1>
+                <p class="text-xl md:text-2xl text-gray-300 mb-12 max-w-4xl mx-auto">
+                    From automation sprints to complete MVPs, we deliver results in 7-30 days using cutting-edge AI and proven development processes.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                    <a href="https://calendly.com/augustai/20min" target="_blank" class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-lg text-lg font-semibold transition-colors">
+                        Book a 20-min Call
+                    </a>
+                    <a href="#services" class="border border-blue-600 text-blue-400 hover:bg-blue-600 hover:text-white px-8 py-4 rounded-lg text-lg font-semibold transition-colors">
+                        View Services
+                    </a>
+                </div>
+            </div>
+            <div class="mt-16 animate-float">
+                <div class="gradient-border inline-block">
+                    <div class="bg-navy-800 p-8 rounded-xl">
+                        <svg class="w-24 h-24 mx-auto text-blue-400" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M3 3a1 1 0 000 2v8a2 2 0 002 2h2.586l-1.293 1.293a1 1 0 101.414 1.414L10 15.414l2.293 2.293a1 1 0 001.414-1.414L12.414 15H15a2 2 0 002-2V5a1 1 0 100-2H3zm11.707 4.707a1 1 0 00-1.414-1.414L10 9.586 8.707 8.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                        </svg>
+                        <p class="text-sm text-gray-400 mt-4">AI-Powered Development</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-  <!-- Packages -->
-  <section class="py-16 px-6">
-    <h2 class="text-3xl font-bold text-center mb-10">Our Packages</h2>
-    <div class="grid md:grid-cols-3 gap-6">
-      <div class="bg-gray-900 rounded-xl p-6 shadow-md hover:shadow-lg transition">
-        <h3 class="text-xl font-semibold mb-2">Automation Sprint</h3>
-        <p>Rapid automation of repetitive workflows using AI and integrations.</p>
-      </div>
-      <div class="bg-gray-900 rounded-xl p-6 shadow-md hover:shadow-lg transition">
-        <h3 class="text-xl font-semibold mb-2">Dashboard-in-10</h3>
-        <p>Custom analytics dashboards delivered in 10 days using modern stacks.</p>
-      </div>
-      <div class="bg-gray-900 rounded-xl p-6 shadow-md hover:shadow-lg transition">
-        <h3 class="text-xl font-semibold mb-2">MVP-in-30</h3>
-        <p>Launch-ready MVPs built in 30 days with scalable architecture.</p>
-      </div>
-    </div>
-  </section>
+    <!-- Contact Section -->
+    <section id="contact" class="py-20 bg-navy-900">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16 animate-fade-in">
+                <h2 class="text-4xl md:text-5xl font-bold mb-4">Let's Build Something <span class="gradient-text">Amazing</span></h2>
+                <p class="text-xl text-gray-300 max-w-3xl mx-auto">Ready to transform your business? Get in touch and let's discuss your project.</p>
+            </div>
+            
+            <div class="max-w-2xl mx-auto">
+                <div class="gradient-border">
+                    <div class="bg-navy-800 p-8 rounded-xl">
+                        <form id="contact-form" class="space-y-6">
+                            <div class="grid md:grid-cols-2 gap-6">
+                                <div>
+                                    <label class="block text-sm font-medium mb-2">Name *</label>
+                                    <input type="text" name="name" required class="w-full px-4 py-3 bg-navy-900 border border-navy-700 rounded-lg focus:border-blue-500 focus:outline-none">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium mb-2">Company</label>
+                                    <input type="text" name="company" class="w-full px-4 py-3 bg-navy-900 border border-navy-700 rounded-lg focus:border-blue-500 focus:outline-none">
+                                </div>
+                            </div>
+                            
+                            <div class="grid md:grid-cols-2 gap-6">
+                                <div>
+                                    <label class="block text-sm font-medium mb-2">Email *</label>
+                                    <input type="email" name="email" required class="w-full px-4 py-3 bg-navy-900 border border-navy-700 rounded-lg focus:border-blue-500 focus:outline-none">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium mb-2">Phone</label>
+                                    <input type="tel" name="phone" class="w-full px-4 py-3 bg-navy-900 border border-navy-700 rounded-lg focus:border-blue-500 focus:outline-none">
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium mb-2">Service Interested In</label>
+                                <select name="service" class="w-full px-4 py-3 bg-navy-900 border border-navy-700 rounded-lg focus:border-blue-500 focus:outline-none">
+                                    <option value="">Select a service</option>
+                                    <option value="automation-sprint">Automation Sprint (7 days)</option>
+                                    <option value="dashboard-in-10">Dashboard-in-10 (10 days)</option>
+                                    <option value="mvp-in-30">MVP-in-30 (30 days)</option>
+                                    <option value="custom">Custom Solution</option>
+                                </select>
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium mb-2">Project Details *</label>
+                                <textarea name="message" rows="5" required placeholder="Tell us about your project, goals, and any specific requirements..." class="w-full px-4 py-3 bg-navy-900 border border-navy-700 rounded-lg focus:border-blue-500 focus:outline-none resize-none"></textarea>
+                            </div>
+                            
+                            <div class="flex flex-col sm:flex-row gap-4">
+                                <button type="submit" class="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-3 px-6 rounded-lg font-semibold transition-colors">
+                                    Send Message
+                                </button>
+                                <a href="https://calendly.com/augustai/20min" target="_blank" class="flex-1 border border-blue-600 text-blue-400 hover:bg-blue-600 hover:text-white py-3 px-6 rounded-lg font-semibold transition-colors text-center">
+                                    Book a Call
+                                </a>
+                            </div>
+                        </form>
+                        
+                        <div id="form-status" class="mt-4 text-center hidden"></div>
+                    </div>
+                </div>
+                
+                <div class="text-center mt-12 animate-fade-in">
+                    <p class="text-gray-400 mb-4">Or reach out directly:</p>
+                    <a href="mailto:hello@august.com.pk" class="text-blue-400 hover:text-blue-300 text-lg font-medium">hello@august.com.pk</a>
+                </div>
+            </div>
+        </div>
+    </section>
 
-  <!-- Process -->
-  <section class="py-16 px-6 bg-gray-800 rounded-xl mx-4">
-    <h2 class="text-3xl font-bold text-center mb-10">Our Process</h2>
-    <div class="grid md:grid-cols-5 gap-4 text-center">
-      <div>🔍 Discovery</div>
-      <div>🧠 Strategy</div>
-      <div>⚙️ Build</div>
-      <div>🚀 Launch</div>
-      <div>📈 Optimize</div>
-    </div>
-  </section>
+    <!-- Footer -->
+    <footer class="bg-navy-800 border-t border-navy-700 py-12">
+        <div class="container mx-auto px-6">
+            <div class="grid md:grid-cols-4 gap-8">
+                <div>
+                    <div class="text-2xl font-bold gradient-text mb-4">AugustAI</div>
+                    <p class="text-gray-300">Transforming businesses with AI-powered solutions and rapid development.</p>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">Services</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#services" class="text-gray-300 hover:text-blue-400 transition-colors">Automation Sprint</a></li>
+                        <li><a href="#services" class="text-gray-300 hover:text-blue-400 transition-colors">Dashboard-in-10</a></li>
+                        <li><a href="#services" class="text-gray-300 hover:text-blue-400 transition-colors">MVP-in-30</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">Company</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#process" class="text-gray-300 hover:text-blue-400 transition-colors">Process</a></li>
+                        <li><a href="#cases" class="text-gray-300 hover:text-blue-400 transition-colors">Case Studies</a></li>
+                        <li><a href="/wp" class="text-gray-300 hover:text-blue-400 transition-colors">Blog</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">Contact</h4>
+                    <ul class="space-y-2">
+                        <li><a href="mailto:hello@august.com.pk" class="text-gray-300 hover:text-blue-400 transition-colors">hello@august.com.pk</a></li>
+                        <li><a href="#contact" class="text-gray-300 hover:text-blue-400 transition-colors">Get in Touch</a></li>
+                        <li><a href="https://calendly.com/augustai/20min" target="_blank" class="text-gray-300 hover:text-blue-400 transition-colors">Book a Call</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-navy-700 mt-8 pt-8 text-center text-gray-400">
+                <p>&copy; 2025 AugustAI. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
 
-  <!-- Case Studies -->
-  <section class="py-16 px-6">
-    <h2 class="text-3xl font-bold text-center mb-10">Case Studies</h2>
-    <div class="grid md:grid-cols-2 gap-6">
-      <div class="bg-gray-900 rounded-xl p-6 shadow-md">
-        <h3 class="text-xl font-semibold mb-2">Retail Automation</h3>
-        <p>Reduced manual work by 80% for a regional chain using AI workflows.</p>
-      </div>
-      <div class="bg-gray-900 rounded-xl p-6 shadow-md">
-        <h3 class="text-xl font-semibold mb-2">Startup MVP</h3>
-        <p>Built and launched a SaaS MVP in 28 days with full CI/CD pipeline.</p>
-      </div>
-    </div>
-  </section>
+    <script>
+        // Mobile menu toggle
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        }
 
-  <!-- FAQ -->
-  <section class="py-16 px-6 bg-gray-800 rounded-xl mx-4">
-    <h2 class="text-3xl font-bold text-center mb-10">FAQ</h2>
-    <div x-data="{ open: null }" class="space-y-4">
-      <div>
-        <button @click="open = open === 1 ? null : 1" class="w-full text-left font-semibold">How fast can you start?</button>
-        <div x-show="open === 1" class="mt-2 text-gray-300">We typically begin within 48 hours of kickoff.</div>
-      </div>
-      <div>
-        <button @click="open = open === 2 ? null : 2" class="w-full text-left font-semibold">Do you offer support?</button>
-        <div x-show="open === 2" class="mt-2 text-gray-300">Yes, we offer post-launch support and optimization.</div>
-      </div>
-    </div>
-  </section>
+        // FAQ toggle
+        function toggleFAQ(index) {
+            const faqs = document.querySelectorAll('#faq .bg-navy-900');
+            const faq = faqs[index];
+            const content = faq.querySelector('div:last-child');
+            const icon = faq.querySelector('svg');
+            
+            content.classList.toggle('hidden');
+            icon.classList.toggle('rotate-180');
+        }
 
-  <!-- Contact Form -->
-  <section class="py-16 px-6">
-    <h2 class="text-3xl font-bold text-center mb-10">Contact Us</h2>
-    <form action="/contact.php" method="POST" class="max-w-xl mx-auto space-y-4">
-      <input type="text" name="name" placeholder="Your Name" required class="input" />
-      <input type="email" name="email" placeholder="Your Email" required class="input" />
-      <textarea name="message" placeholder="Your Message" required class="input"></textarea>
-      <button type="submit" class="btn-gradient">Send Message</button>
-    </form>
-  </section>
+        // Intersection Observer for animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
 
-  <!-- Tech & Workflow -->
-  <section class="py-16 px-6 bg-gray-900 rounded-xl mx-4">
-    <h2 class="text-2xl font-semibold mb-4">Tech & Workflow</h2>
-    <ul class="list-disc pl-5 space-y-2 text-gray-300">
-      <li><strong>Git Auto-Deploy:</strong> Push to Git → cPanel Git hooks → site updates instantly.</li>
-      <li><strong>Email Deliverability:</strong> SPF, DKIM, and DMARC records configured to ensure inbox delivery from hello@august.com.pk.</li>
-    </ul>
-  </section>
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
 
-  <!-- Footer -->
-  <footer class="py-8 text-center text-gray-400">
-    <p>&copy; 2025 AugustAI. <a href="/wp" class="underline">Blog</a></p>
-  </footer>
+        // Observe all elements with animate-fade-in class
+        document.querySelectorAll('.animate-fade-in').forEach(el => {
+            observer.observe(el);
+        });
 
+        // Contact form handling
+        document.getElementById('contact-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            const statusDiv = document.getElementById('form-status');
+            const submitBtn = this.querySelector('button[type="submit"]');
+            
+            // Show loading state
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Sending...';
+            statusDiv.className = 'mt-4 text-center';
+            statusDiv.textContent = 'Sending your message...';
+            
+            try {
+                // Create the email content
+                const emailData = {
+                    to: 'hello@august.com.pk',
+                    subject: `New Contact Form Submission from ${formData.get('name')}`,
+                    body: `
+                        New contact form submission:
+                        
+                        Name: ${formData.get('name')}
+                        Company: ${formData.get('company') || 'Not provided'}
+                        Email: ${formData.get('email')}
+                        Phone: ${formData.get('phone') || 'Not provided'}
+                        Service: ${formData.get('service') || 'Not specified'}
+                        
+                        Message:
+                        ${formData.get('message')}
+                    `
+                };
+                
+                // This would typically send to a PHP script for email processing
+                // For now, we'll simulate the success
+                await new Promise(resolve => setTimeout(resolve, 1000));
+                
+                statusDiv.className = 'mt-4 text-center text-green-400';
+                statusDiv.textContent = 'Message sent successfully! We\'ll get back to you soon.';
+                this.reset();
+                
+            } catch (error) {
+                statusDiv.className = 'mt-4 text-center text-red-400';
+                statusDiv.textContent = 'There was an error sending your message. Please try again or email us directly.';
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Send Message';
+            }
+        });
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                    
+                    // Close mobile menu if open
+                    const mobileMenu = document.getElementById('mobile-menu');
+                    mobileMenu.classList.add('hidden');
+                }
+            });
+        });
+    </script>
 </body>
 </html>
+
+    <!-- Services Section -->
+    <section id="services" class="py-20 bg-navy-800">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16 animate-fade-in">
+                <h2 class="text-4xl md:text-5xl font-bold mb-4">Fixed-Scope <span class="gradient-text">Packages</span></h2>
+                <p class="text-xl text-gray-300 max-w-3xl mx-auto">Choose from our three proven packages designed to deliver maximum value in minimum time.</p>
+            </div>
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Automation Sprint -->
+                <div class="animate-fade-in card-hover">
+                    <div class="gradient-border">
+                        <div class="bg-navy-900 p-8 rounded-xl h-full">
+                            <h3 class="text-2xl font-bold mb-4 text-blue-400">Automation Sprint</h3>
+                            <div class="text-3xl font-bold mb-2">7 Days</div>
+                            <p class="text-gray-300 mb-6">Streamline one critical business process with AI-powered automation.</p>
+                            <ul class="space-y-3 mb-8">
+                                <li class="flex items-start">
+                                    <svg class="w-5 h-5 text-green-400 mr-3 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                                    </svg>
+                                    Process analysis & optimization
+                                </li>
+                                <li class="flex items-start">
+                                    <svg class="w-5 h-5 text-green-400 mr-3 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                                    </svg>
+                                    Custom automation solution
+                                </li>
+                                <li class="flex items-start">
+                                    <svg class="w-5 h-5 text-green-400 mr-3 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                                    </svg>
+                                    Team training & handover
+                                </li>
+                                <li class="flex items-start">
+                                    <svg class="w-5 h-5 text-green-400 mr-3 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                                    </svg>
+                                    30-day support included
+                                </li>
+                            </ul>
+                            <a href="#contact" class="block w-full bg-blue-600 hover:bg-blue-700 text-center py-3 rounded-lg font-semibold transition-colors">Get Started</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Dashboard-in-10 -->
+                <div class="animate-fade-in card-hover">
+                    <div class="gradient-border">
+                        <div class="bg-navy-900 p-8 rounded-xl h-full relative">
+                            <div class="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-green-500 text-white px-4 py-1 rounded-full text-sm font-medium">
+                                Most Popular
+                            </div>
+                            <h3 class="text-2xl font-bold mb-4 text-green-400">Dashboard-in-10</h3>
+                            <div class="text-3xl font-bold mb-2">10 Days</div>
+                            <p class="text-gray-300 mb-6">Complete business intelligence dashboard with real-time analytics.</p>
+                            <ul class="space-y-3 mb-8">
+                                <li class="flex items-start">
+                                    <svg class="w-5 h-5 text-green-400 mr-3 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                                    </svg>
+                                    Data source integration
+                                </li>
+                                <li class="flex items-start">
+                                    <svg class="w-5 h-5 text-green-400 mr-3 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                                    </svg>
+                                    Interactive visualizations
+                                </li>
+                                <li class="flex items-start">
+                                    <svg class="w-5 h-5 text-green-400 mr-3 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                                    </svg>
+                                    Mobile-responsive design
+                                </li>
+                                <li class="flex items-start">
+                                    <svg class="w-5 h-5 text-green-400 mr-3 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                                    </svg>
+                                    User access controls
+                                </li>
+                                <li class="flex items-start">
+                                    <svg class="w-5 h-5 text-green-400 mr-3 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                                    </svg>
+                                    60-day support included
+                                </li>
+                            </ul>
+                            <a href="#contact" class="block w-full bg-green-600 hover:bg-green-700 text-center py-3 rounded-lg font-semibold transition-colors">Get Started</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- MVP-in-30 -->
+                <div class="animate-fade-in card-hover">
+                    <div class="gradient-border">
+                        <div class="bg-navy-900 p-8 rounded-xl h-full">
+                            <h3 class="text-2xl font-bold mb-4 text-purple-400">MVP-in-30</h3>
+                            <div class="text-3xl font-bold mb-2">30 Days</div>
+                            <p class="text-gray-300 mb-6">Full minimum viable product ready for market launch.</p>
+                            <ul class="space-y-3 mb-8">
+                                <li class="flex items-start">
+                                    <svg class="w-5 h-5 text-green-400 mr-3 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                                    </svg>
+                                    Product discovery & planning
+                                </li>
+                                <li class="flex items-start">
+                                    <svg class="w-5 h-5 text-green-400 mr-3 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                                    </svg>
+                                    Full-stack development
+                                </li>
+                                <li class="flex items-start">
+                                    <svg class="w-5 h-5 text-green-400 mr-3 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                                    </svg>
+                                    Testing & deployment
+                                </li>
+                                <li class="flex items-start">
+                                    <svg class="w-5 h-5 text-green-400 mr-3 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                                    </svg>
+                                    User documentation
+                                </li>
+                                <li class="flex items-start">
+                                    <svg class="w-5 h-5 text-green-400 mr-3 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                                    </svg>
+                                    90-day support included
+                                </li>
+                            </ul>
+                            <a href="#contact" class="block w-full bg-purple-600 hover:bg-purple-700 text-center py-3 rounded-lg font-semibold transition-colors">Get Started</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Process Section -->
+    <section id="process" class="py-20 bg-navy-900">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16 animate-fade-in">
+                <h2 class="text-4xl md:text-5xl font-bold mb-4">Our Proven <span class="gradient-text">Process</span></h2>
+                <p class="text-xl text-gray-300 max-w-3xl mx-auto">A streamlined approach that ensures quality delivery and client satisfaction.</p>
+            </div>
+            <div class="grid md:grid-cols-4 gap-8">
+                <div class="text-center animate-fade-in">
+                    <div class="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <span class="text-2xl font-bold">1</span>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">Discovery</h3>
+                    <p class="text-gray-300">We analyze your needs and identify the best solution approach.</p>
+                </div>
+                <div class="text-center animate-fade-in">
+                    <div class="w-16 h-16 bg-green-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <span class="text-2xl font-bold">2</span>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">Design</h3>
+                    <p class="text-gray-300">Create detailed specifications and user experience flows.</p>
+                </div>
+                <div class="text-center animate-fade-in">
+                    <div class="w-16 h-16 bg-purple-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <span class="text-2xl font-bold">3</span>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">Develop</h3>
+                    <p class="text-gray-300">Build your solution using cutting-edge AI and development tools.</p>
+                </div>
+                <div class="text-center animate-fade-in">
+                    <div class="w-16 h-16 bg-orange-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <span class="text-2xl font-bold">4</span>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">Deploy</h3>
+                    <p class="text-gray-300">Launch your solution with training and ongoing support.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tech & Workflow Section -->
+    <section class="py-20 bg-navy-800">
+        <div class="container mx-auto px-6">
+            <div class="max-w-4xl mx-auto text-center animate-fade-in">
+                <h2 class="text-3xl md:text-4xl font-bold mb-8">Tech & <span class="gradient-text">Workflow</span></h2>
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div class="bg-navy-900 p-6 rounded-xl">
+                        <h3 class="text-xl font-semibold mb-4 text-blue-400">Git Auto-Deploy</h3>
+                        <p class="text-gray-300">Seamless deployment through cPanel Git integration ensures your updates go live instantly with zero downtime.</p>
+                    </div>
+                    <div class="bg-navy-900 p-6 rounded-xl">
+                        <h3 class="text-xl font-semibold mb-4 text-green-400">Email Deliverability</h3>
+                        <p class="text-gray-300">Full SPF, DKIM, and DMARC configuration ensures your business emails reach inboxes, not spam folders.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Case Studies Section -->
+    <section id="cases" class="py-20 bg-navy-900">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16 animate-fade-in">
+                <h2 class="text-4xl md:text-5xl font-bold mb-4">Success <span class="gradient-text">Stories</span></h2>
+                <p class="text-xl text-gray-300 max-w-3xl mx-auto">Real results from businesses that trusted AugustAI with their digital transformation.</p>
+            </div>
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="bg-navy-800 p-8 rounded-xl card-hover animate-fade-in">
+                    <div class="text-4xl mb-4">📊</div>
+                    <h3 class="text-xl font-semibold mb-4">E-commerce Analytics Dashboard</h3>
+                    <p class="text-gray-300 mb-4">Increased data-driven decisions by 300% with real-time sales and inventory tracking.</p>
+                    <div class="text-sm text-blue-400">Dashboard-in-10 Package</div>
+                </div>
+                <div class="bg-navy-800 p-8 rounded-xl card-hover animate-fade-in">
+                    <div class="text-4xl mb-4">🤖</div>
+                    <h3 class="text-xl font-semibold mb-4">Customer Service Automation</h3>
+                    <p class="text-gray-300 mb-4">Reduced response time by 80% and improved customer satisfaction scores.</p>
+                    <div class="text-sm text-green-400">Automation Sprint Package</div>
+                </div>
+                <div class="bg-navy-800 p-8 rounded-xl card-hover animate-fade-in">
+                    <div class="text-4xl mb-4">🚀</div>
+                    <h3 class="text-xl font-semibold mb-4">SaaS Platform Launch</h3>
+                    <p class="text-gray-300 mb-4">Launched in 30 days and acquired 1000+ users in the first month.</p>
+                    <div class="text-sm text-purple-400">MVP-in-30 Package</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section id="faq" class="py-20 bg-navy-800">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16 animate-fade-in">
+                <h2 class="text-4xl md:text-5xl font-bold mb-4">Frequently Asked <span class="gradient-text">Questions</span></h2>
+            </div>
+            <div class="max-w-4xl mx-auto space-y-6">
+                <div class="bg-navy-900 rounded-xl overflow-hidden animate-fade-in">
+                    <button class="w-full p-6 text-left flex justify-between items-center hover:bg-navy-700 transition-colors" onclick="toggleFAQ(0)">
+                        <span class="font-semibold">What's included in the fixed pricing?</span>
+                        <svg class="w-5 h-5 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </button>
+                    <div class="hidden p-6 pt-0 text-gray-300">
+                        All our packages include everything listed in the service description with no hidden costs. You get the complete solution, support period, and any necessary training or documentation.
+                    </div>
+                </div>
+                
+                <div class="bg-navy-900 rounded-xl overflow-hidden animate-fade-in">
+                    <button class="w-full p-6 text-left flex justify-between items-center hover:bg-navy-700 transition-colors" onclick="toggleFAQ(1)">
+                        <span class="font-semibold">Do you work with existing systems?</span>
+                        <svg class="w-5 h-5 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </button>
+                    <div class="hidden p-6 pt-0 text-gray-300">
+                        Yes! We specialize in integrating with your existing tools and systems. Whether it's CRM, ERP, databases, or third-party APIs, we ensure seamless connectivity.
+                    </div>
+                </div>
+                
+                <div class="bg-navy-900 rounded-xl overflow-hidden animate-fade-in">
+                    <button class="w-full p-6 text-left flex justify-between items-center hover:bg-navy-700 transition-colors" onclick="toggleFAQ(2)">
+                        <span class="font-semibold">What happens after the delivery?</span>
+                        <svg class="w-5 h-5 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </button>
+                    <div class="hidden p-6 pt-0 text-gray-300">
+                        Each package includes a support period (30-90 days) for bug fixes and minor adjustments. We also offer ongoing maintenance and enhancement contracts for long-term partnerships.
+                    </div>
+                </div>
+                
+                <div class="bg-navy-900 rounded-xl overflow-hidden animate-fade-in">
+                    <button class="w-full p-6 text-left flex justify-between items-center hover:bg-navy-700 transition-colors" onclick="toggleFAQ(3)">
+                        <span class="font-semibold">Can you handle urgent projects?</span>
+                        <svg class="w-5 h-5 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </button>
+                    <div class="hidden p-6 pt-0 text-gray-300">
+                        Absolutely. Our Automation Sprint can be completed in as little as 7 days, and we offer rush delivery options for all packages when needed.
+                    </div>
+                </div>
+                
+                <div class="bg-navy-900 rounded-xl overflow-hidden animate-fade-in">
+                    <button class="w-full p-6 text-left flex justify-between items-center hover:bg-navy-700 transition-colors" onclick="toggleFAQ(4)">
+                        <span class="font-semibold">What technologies do you use?</span>
+                        <svg class="w-5 h-5 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </button>
+                    <div class="hidden p-6 pt-0 text-gray-300">
+                        We use modern tech stacks including React, Node.js, Python, cloud platforms (AWS, Google Cloud), and cutting-edge AI tools to ensure scalable, maintainable solutions.
+                    </div>
+                </div>
