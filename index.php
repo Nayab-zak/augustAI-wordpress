@@ -828,18 +828,126 @@ $services = $content_config['services'];
             top: 6px;
         }
         
+        /* 8-Point Spacing Scale for Consistent Vertical Rhythm */
+        .space-8 { margin: 8px; }
+        .space-16 { margin: 16px; }
+        .space-24 { margin: 24px; }
+        .space-32 { margin: 32px; }
+        .space-40 { margin: 40px; }
+        .space-48 { margin: 48px; }
+        .space-56 { margin: 56px; }
+        .space-64 { margin: 64px; }
+        .space-80 { margin: 80px; }
+        .space-96 { margin: 96px; }
+        
+        .mt-8 { margin-top: 8px; }
+        .mt-16 { margin-top: 16px; }
+        .mt-24 { margin-top: 24px; }
+        .mt-32 { margin-top: 32px; }
+        .mt-48 { margin-top: 48px; }
+        .mt-64 { margin-top: 64px; }
+        .mt-80 { margin-top: 80px; }
+        .mt-96 { margin-top: 96px; }
+        
+        .mb-8 { margin-bottom: 8px; }
+        .mb-16 { margin-bottom: 16px; }
+        .mb-24 { margin-bottom: 24px; }
+        .mb-32 { margin-bottom: 32px; }
+        .mb-48 { margin-bottom: 48px; }
+        .mb-64 { margin-bottom: 64px; }
+        .mb-80 { margin-bottom: 80px; }
+        .mb-96 { margin-bottom: 96px; }
+        
+        .py-80 { padding-top: 80px; padding-bottom: 80px; }
+        .py-96 { padding-top: 96px; padding-bottom: 96px; }
+        .py-128 { padding-top: 128px; padding-bottom: 128px; }
+        
         /* Enhanced focus ring styling for keyboard navigation */
         *:focus {
             outline: 3px solid var(--purple-accent);
             outline-offset: 2px;
         }
         
-        /* Remove default outline for elements with custom focus */
-        .btn-primary:focus,
+        /* Enhanced button focus states - WCAG AA compliant */
+        .btn-primary:focus {
+            outline: 3px solid var(--purple-light);
+            outline-offset: 3px;
+            box-shadow: 0 0 0 6px rgba(139, 92, 246, 0.2);
+        }
+        
+        /* Button disabled state */
+        .btn-primary:disabled {
+            background: rgba(139, 92, 246, 0.3);
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn-primary:disabled::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+            animation: loading-shimmer 1.5s infinite;
+        }
+        
+        @keyframes loading-shimmer {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+        
+        /* Form input focus states */
         .form-input:focus,
         .calculator-input:focus {
             outline: 3px solid var(--purple-light);
             outline-offset: 3px;
+        }
+        
+        /* Intro pricing badge */
+        .intro-pricing-badge {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            color: white;
+            font-size: 11px;
+            font-weight: 600;
+            padding: 4px 8px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(245, 158, 11, 0.3);
+            animation: subtle-pulse 2s infinite;
+            white-space: nowrap;
+        }
+        
+        @keyframes subtle-pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        /* Urgency indicator */
+        .urgency-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            color: #f59e0b;
+            font-size: 12px;
+            font-weight: 500;
+            margin-top: 8px;
+        }
+        
+        .urgency-indicator::before {
+            content: '⚡';
+            animation: flash 1.5s infinite;
+        }
+        
+        @keyframes flash {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0.3; }
         }
         
         /* Accessible color contrast improvements */
@@ -862,6 +970,15 @@ $services = $content_config['services'];
             clip: rect(0, 0, 0, 0);
             white-space: nowrap;
             border: 0;
+        }
+        
+        /* Services dropdown styling */
+        .services-dropdown {
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+        
+        .services-dropdown a:hover {
+            background: rgba(139, 92, 246, 0.1);
         }
         
         /* Error message styling for form validation */
@@ -1118,7 +1235,37 @@ $services = $content_config['services'];
                     </picture>
                 </div>
                 <div class="hidden md:flex space-x-8">
-                    <a href="#services" class="text-gray-300 hover:text-white transition-colors">Services</a>
+                    <div class="relative group">
+                        <a href="#services" class="text-gray-300 hover:text-white transition-colors flex items-center">
+                            Services
+                            <i class="fas fa-chevron-down ml-1 text-xs group-hover:rotate-180 transition-transform"></i>
+                        </a>
+                        <!-- Services Dropdown -->
+                        <div class="absolute top-full left-0 mt-2 w-64 bg-gray-900/95 backdrop-blur-lg border border-gray-700/50 rounded-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform translate-y-2 group-hover:translate-y-0 z-50 services-dropdown">
+                            <div class="p-2">
+                                <a href="#llm" onclick="scrollToSection('llm')" class="flex items-center px-4 py-3 text-gray-300 hover:text-white hover:bg-gray-800/50 rounded-lg transition-all">
+                                    <i class="fas fa-comments text-blue-400 w-5 mr-3"></i>
+                                    <span>LLM & Chatbots</span>
+                                </a>
+                                <a href="#automation" onclick="scrollToSection('automation')" class="flex items-center px-4 py-3 text-gray-300 hover:text-white hover:bg-gray-800/50 rounded-lg transition-all">
+                                    <i class="fas fa-robot text-purple-400 w-5 mr-3"></i>
+                                    <span>Agentic Automation</span>
+                                </a>
+                                <a href="#dashboards" onclick="scrollToSection('dashboards')" class="flex items-center px-4 py-3 text-gray-300 hover:text-white hover:bg-gray-800/50 rounded-lg transition-all">
+                                    <i class="fas fa-chart-bar text-green-400 w-5 mr-3"></i>
+                                    <span>Data & Dashboards</span>
+                                </a>
+                                <a href="#mvp" onclick="scrollToSection('mvp')" class="flex items-center px-4 py-3 text-gray-300 hover:text-white hover:bg-gray-800/50 rounded-lg transition-all">
+                                    <i class="fas fa-rocket text-orange-400 w-5 mr-3"></i>
+                                    <span>MVP Build</span>
+                                </a>
+                                <a href="#consulting" onclick="scrollToSection('consulting')" class="flex items-center px-4 py-3 text-gray-300 hover:text-white hover:bg-gray-800/50 rounded-lg transition-all">
+                                    <i class="fas fa-lightbulb text-yellow-400 w-5 mr-3"></i>
+                                    <span>Consulting & Training</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
                     <a href="#process" class="text-gray-300 hover:text-white transition-colors">Process</a>
                     <a href="#portfolio" class="text-gray-300 hover:text-white transition-colors">Portfolio</a>
                     <a href="#testimonials" class="text-gray-300 hover:text-white transition-colors">Testimonials</a>
@@ -1189,9 +1336,9 @@ $services = $content_config['services'];
     </section>
 
     <!-- Why Us Section -->
-    <section class="py-16 px-4 bg-gradient-to-r from-gray-900/30 to-purple-900/10">
+    <section class="py-20 px-4 bg-gradient-to-r from-gray-900/30 to-purple-900/10">
         <div class="max-w-6xl mx-auto">
-            <div class="text-center mb-12 fade-in">
+            <div class="text-center mb-16 fade-in">
                 <h2 class="text-3xl md:text-4xl font-bold mb-4 gradient-text">Why Choose augustAI</h2>
                 <p class="text-lg text-gray-300">Proven expertise, transparent process, guaranteed results</p>
             </div>
@@ -1277,15 +1424,23 @@ $services = $content_config['services'];
                 </p>
             </div>
             
-            <div class="grid md:grid-cols-3 gap-8">
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                 <?php foreach ($services as $service_id => $service): ?>
                 <!-- <?php echo ucfirst($service['name']); ?> -->
-                <div class="glass-card p-8 hover:scale-105 transition-all duration-300 fade-in<?php echo isset($service['border_highlight']) && $service['border_highlight'] ? ' border-2 border-purple-500/50' : ''; ?>">
+                <div id="<?php echo $service_id; ?>" class="glass-card p-8 hover:scale-105 transition-all duration-300 fade-in relative<?php echo isset($service['border_highlight']) && $service['border_highlight'] ? ' border-2 border-purple-500/50' : ''; ?>">
                     <?php if (isset($service['border_highlight']) && $service['border_highlight']): ?>
                     <div class="absolute -top-3 left-1/2 transform -translate-x-1/2">
                         <span class="bg-gradient-to-r from-purple-500 to-pink-500 text-white px-4 py-1 rounded-full text-sm font-medium"><?php echo $service['badge']; ?></span>
                     </div>
                     <?php endif; ?>
+                    
+                    <?php if (isset($service['intro_pricing']) && $service['intro_pricing']): ?>
+                    <!-- Intro pricing badge for services with early bird pricing -->
+                    <div class="intro-pricing-badge">
+                        <?php echo $service['intro_note']; ?>
+                    </div>
+                    <?php endif; ?>
+                    
                     <div class="w-16 h-16 bg-gradient-to-r <?php echo $service['gradient']; ?> rounded-xl flex items-center justify-center mb-6">
                         <i class="<?php echo $service['icon']; ?> text-2xl text-white"></i>
                     </div>
@@ -1294,28 +1449,59 @@ $services = $content_config['services'];
                     
                     <ul class="space-y-3 mb-8">
                         <?php foreach ($service['features'] as $feature): ?>
-                        <li class="flex items-center">
-                            <i class="fas fa-check text-green-400 mr-3"></i>
-                            <span><?php echo $feature; ?></span>
+                        <li class="flex items-start">
+                            <i class="fas fa-check text-green-400 mt-1 mr-3 flex-shrink-0"></i>
+                            <span class="text-gray-300 text-sm"><?php echo $feature; ?></span>
                         </li>
                         <?php endforeach; ?>
                     </ul>
                     
-                    <div class="text-3xl font-bold gradient-text mb-6">From $<?php echo number_format($service['price_from']); ?></div>
-                    <p class="text-sm text-gray-400 mb-6">
-                        <?php if ($service['delivery_days'] < 30): ?>
-                            ⚡ <?php echo $service['delivery_days']; ?> days delivery
+                    <div class="mb-6">
+                        <?php if (isset($service['price_to'])): ?>
+                            <div class="text-2xl font-bold gradient-text"><?php echo $service['intro_note']; ?>: $<?php echo number_format($service['price_from']); ?> – $<?php echo number_format($service['price_to']); ?></div>
+                        <?php elseif (isset($service['price_workshop'])): ?>
+                            <div class="text-xl font-bold gradient-text">Workshop: $<?php echo number_format($service['price_workshop']); ?> • DD: $<?php echo number_format($service['price_dd']); ?></div>
                         <?php else: ?>
-                            🚀 <?php echo $service['delivery_days']; ?> days delivery
+                            <div class="text-2xl font-bold gradient-text">From $<?php echo number_format($service['price_from']); ?></div>
                         <?php endif; ?>
-                        <?php if (!isset($service['border_highlight']) || !$service['border_highlight']): ?>
-                            • <?php echo $service['badge']; ?>
-                        <?php endif; ?>
-                    </p>
+                        <p class="text-sm text-gray-400">
+                            <?php if ($service['delivery_days'] < 30): ?>
+                                ⚡ <?php echo $service['delivery_days']; ?> days delivery
+                            <?php else: ?>
+                                🚀 <?php echo $service['delivery_days']; ?> days delivery
+                            <?php endif; ?>
+                        </p>
+                    </div>
                     
-                    <button onclick="openCalendlyModal()" class="w-full btn-primary">Book 30-min Call</button>
+                    <button onclick="openCalendlyModal()" class="w-full btn-primary">
+                        <?php echo isset($service['cta_text']) ? $service['cta_text'] : 'Book 30-min Call'; ?>
+                    </button>
                 </div>
                 <?php endforeach; ?>
+            </div>
+            
+            <!-- Service Overview -->
+            <div class="mt-16 text-center fade-in">
+                <div class="bg-gray-800/30 rounded-xl p-8 border border-gray-700/30">
+                    <h3 class="text-xl font-bold mb-6">Why Choose Our Fixed-Scope Approach?</h3>
+                    <div class="grid md:grid-cols-3 gap-6">
+                        <div class="text-center">
+                            <i class="fas fa-clock text-blue-400 text-2xl mb-3"></i>
+                            <h4 class="font-semibold mb-2">Predictable Timeline</h4>
+                            <p class="text-gray-400 text-sm">Fixed delivery dates, no scope creep</p>
+                        </div>
+                        <div class="text-center">
+                            <i class="fas fa-dollar-sign text-green-400 text-2xl mb-3"></i>
+                            <h4 class="font-semibold mb-2">Fixed Investment</h4>
+                            <p class="text-gray-400 text-sm">Know exactly what you'll pay upfront</p>
+                        </div>
+                        <div class="text-center">
+                            <i class="fas fa-shield-check text-purple-400 text-2xl mb-3"></i>
+                            <h4 class="font-semibold mb-2">Guaranteed Results</h4>
+                            <p class="text-gray-400 text-sm">14-day warranty on every project</p>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
@@ -1345,7 +1531,7 @@ $services = $content_config['services'];
                             <label for="efficiency" class="block text-sm font-medium mb-2">Automation efficiency (%)</label>
                             <input type="range" id="efficiency" class="w-full" min="30" max="90" value="70" aria-describedby="efficiency-desc">
                             <div id="efficiency-desc" class="sr-only">Slider to set automation efficiency percentage between 30% and 90%</div>
-                            <div class="flex justify-between text-sm text-gray-400 mt-1">
+                            <div class="flex justify-between text-sm text-gray-400 mt-2">
                                 <span>30%</span>
                                 <span id="efficiency-value" class="font-medium">70%</span>
                                 <span>90%</span>
@@ -1360,7 +1546,13 @@ $services = $content_config['services'];
                             </select>
                             <div id="project-cost-desc" class="sr-only">Select the automation project package that best fits your needs</div>
                         </div>
-                            </select>
+                        <div>
+                            <button id="compute-roi" class="btn-primary w-full" onclick="calculateROI()">
+                                <span class="compute-text">
+                                    <i class="fas fa-calculator mr-2"></i>
+                                    Compute Savings
+                                </span>
+                            </button>
                         </div>
                     </div>
                     
@@ -1386,6 +1578,35 @@ $services = $content_config['services'];
                             <div class="pt-4 border-t border-gray-600">
                                 <div class="flex justify-between">
                                     <span>Break-even time:</span>
+                                    <span id="break-even" class="font-bold text-green-400">5 days</span>
+                                </div>
+                                <div class="flex justify-between mt-2">
+                                    <span>ROI after 1 month:</span>
+                                    <span id="roi-percentage" class="font-bold text-green-400">405%</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+                            </div>
+                            <div class="flex justify-between">
+                                <span>Weekly savings:</span>
+                                <span id="weekly-savings" class="font-bold gradient-text">$1,400</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span>Monthly savings:</span>
+                                <span id="monthly-savings" class="font-bold gradient-text">$6,067</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span>Annual savings:</span>
+                                <span id="annual-savings" class="font-bold gradient-text text-xl">$72,800</span>
+                            </div>
+                            <div class="pt-16 border-t border-gray-600">
+                                <div class="flex justify-between">
+                                    <span>Break-even time:</span>
                                     <span id="break-even" class="font-bold text-yellow-400">2.4 weeks</span>
                                 </div>
                                 <div class="flex justify-between mt-2">
@@ -1403,8 +1624,8 @@ $services = $content_config['services'];
     <!-- Process Section -->
     <section id="process" class="py-20 px-4">
         <div class="max-w-6xl mx-auto">
-            <div class="text-center mb-16 fade-in">
-                <h2 class="text-4xl md:text-5xl font-bold mb-6 gradient-text">Our Process</h2>
+            <div class="text-center mb-64 fade-in">
+                <h2 class="text-4xl md:text-5xl font-bold mb-24 gradient-text">Our Process</h2>
                 <p class="text-xl text-gray-300 max-w-3xl mx-auto">
                     A proven 4-step methodology that delivers results quickly and reliably
                 </p>
@@ -1513,8 +1734,8 @@ $services = $content_config['services'];
     <!-- Technology Stack -->
     <section class="py-20 px-4 bg-gradient-to-r from-gray-900/50 to-blue-900/20">
         <div class="max-w-6xl mx-auto">
-            <div class="text-center mb-16 fade-in">
-                <h2 class="text-4xl font-bold mb-6 gradient-text">Technology Stack</h2>
+            <div class="text-center mb-64 fade-in">
+                <h2 class="text-4xl font-bold mb-24 gradient-text">Technology Stack</h2>
                 <p class="text-xl text-gray-300">We use cutting-edge technologies to deliver world-class solutions</p>
             </div>
             
@@ -1550,8 +1771,8 @@ $services = $content_config['services'];
     <!-- Portfolio -->
     <section id="portfolio" class="py-20 px-4">
         <div class="max-w-6xl mx-auto">
-            <div class="text-center mb-16 fade-in">
-                <h2 class="text-4xl md:text-5xl font-bold mb-6 gradient-text">Success Stories</h2>
+            <div class="text-center mb-64 fade-in">
+                <h2 class="text-4xl md:text-5xl font-bold mb-24 gradient-text">Success Stories</h2>
                 <p class="text-xl text-gray-300 max-w-3xl mx-auto">
                     Real results from real clients who trusted us with their automation and development needs
                 </p>
@@ -1615,8 +1836,8 @@ $services = $content_config['services'];
     <!-- Testimonials -->
     <section id="testimonials" class="py-20 px-4 bg-gradient-to-r from-purple-900/20 to-pink-900/20">
         <div class="max-w-4xl mx-auto">
-            <div class="text-center mb-16 fade-in">
-                <h2 class="text-4xl font-bold mb-6 gradient-text">What Our Clients Say</h2>
+            <div class="text-center mb-64 fade-in">
+                <h2 class="text-4xl font-bold mb-24 gradient-text">What Our Clients Say</h2>
                 <p class="text-xl text-gray-300">Don't just take our word for it</p>
             </div>
             
@@ -1668,12 +1889,12 @@ $services = $content_config['services'];
     <!-- FAQ Section -->
     <section class="py-20 px-4">
         <div class="max-w-4xl mx-auto">
-            <div class="text-center mb-16 fade-in">
-                <h2 class="text-4xl font-bold mb-6 gradient-text">Frequently Asked Questions</h2>
+            <div class="text-center mb-64 fade-in">
+                <h2 class="text-4xl font-bold mb-24 gradient-text">Frequently Asked Questions</h2>
                 <p class="text-xl text-gray-300">Everything you need to know about working with us</p>
             </div>
             
-            <div class="space-y-4">
+            <div class="space-y-16">
                 <div class="faq-item glass-card p-6">
                     <div class="faq-question" onclick="toggleFAQ(0)">
                         <span>Can you work with UAE companies while based in Dubai?</span>
@@ -1730,8 +1951,8 @@ $services = $content_config['services'];
     <!-- Contact Section -->
     <section id="contact" class="py-20 px-4 bg-gradient-to-r from-gray-900/50 to-purple-900/20">
         <div class="max-w-4xl mx-auto">
-            <div class="text-center mb-16 fade-in">
-                <h2 class="text-4xl md:text-5xl font-bold mb-6 gradient-text">Let's Build Something Amazing</h2>
+            <div class="text-center mb-64 fade-in">
+                <h2 class="text-4xl md:text-5xl font-bold mb-24 gradient-text">Let's Build Something Amazing</h2>
                 <p class="text-xl text-gray-300">Ready to automate your workflows and accelerate your business?</p>
             </div>
             
@@ -2180,6 +2401,40 @@ $services = $content_config['services'];
             document.getElementById('weekly-savings').textContent = '$' + Math.round(weeklySavings).toLocaleString();
             document.getElementById('monthly-savings').textContent = '$' + Math.round(monthlySavings).toLocaleString();
             document.getElementById('annual-savings').textContent = '$' + Math.round(annualSavings).toLocaleString();
+            
+            // Update efficiency display
+            document.getElementById('efficiency-value').textContent = efficiency + '%';
+        }
+        
+        // Enhanced calculate ROI function with button states
+        function calculateROI() {
+            const button = document.getElementById('compute-roi');
+            const buttonText = button.querySelector('.compute-text');
+            
+            // Disable button and show loading state
+            button.disabled = true;
+            buttonText.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Computing...';
+            
+            // Simulate calculation delay for UX
+            setTimeout(() => {
+                updateROICalculator();
+                
+                // Re-enable button
+                button.disabled = false;
+                buttonText.innerHTML = '<i class="fas fa-calculator mr-2"></i>Compute Savings';
+                
+                // Add success feedback
+                button.style.background = 'linear-gradient(135deg, #10b981 0%, #059669 100%)';
+                buttonText.innerHTML = '<i class="fas fa-check mr-2"></i>Calculated!';
+                
+                // Reset button after 2 seconds
+                setTimeout(() => {
+                    button.style.background = '';
+                    buttonText.innerHTML = '<i class="fas fa-calculator mr-2"></i>Compute Savings';
+                }, 2000);
+                
+            }, 800); // Simulate processing time
+        }
             document.getElementById('efficiency-value').textContent = efficiency + '%';
             
             // Break-even time
@@ -2335,6 +2590,15 @@ $services = $content_config['services'];
                     element.addEventListener('change', updateROICalculator);
                 }
             });
+            
+            // Efficiency slider real-time update
+            const efficiencySlider = document.getElementById('efficiency');
+            if (efficiencySlider) {
+                efficiencySlider.addEventListener('input', function() {
+                    document.getElementById('efficiency-value').textContent = this.value + '%';
+                    updateROICalculator();
+                });
+            }
             
             // Initial ROI calculation
             updateROICalculator();
