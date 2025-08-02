@@ -7,10 +7,15 @@ require_once 'wp-config.php';
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>augustAI — Agentic AI that gets work done</title>
+    <title>augustAI — Agentic AI that gets work done | Automation, Dashboards & MVPs</title>
     <meta name="description" content="We build agentic automations, dashboards in 10 days, and MVPs in 30 for SMEs and startups. Fixed scope. Fixed fee. Demos in week one.">
     <meta name="keywords" content="AI automation, agentic AI, dashboards, MVPs, Python automation, business intelligence">
     <meta name="author" content="augustAI">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="assets/augustai_logo_only.png">
+    <link rel="shortcut icon" href="assets/augustai_logo_only.png">
+    <link rel="apple-touch-icon" href="assets/augustai_logo_only.png">
     
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
@@ -31,12 +36,17 @@ require_once 'wp-config.php';
     
     <style>
         :root {
-            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            --secondary-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-            --accent-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-            --dark-gradient: linear-gradient(135deg, #0c0c0c 0%, #1a1a2e 100%);
-            --card-gradient: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%);
-            --glow-color: rgba(103, 126, 234, 0.3);
+            --primary-gradient: linear-gradient(135deg, #8B5CF6 0%, #6D28D9 50%, #4C1D95 100%);
+            --secondary-gradient: linear-gradient(135deg, #A855F7 0%, #7C3AED 50%, #5B21B6 100%);
+            --accent-gradient: linear-gradient(135deg, #C084FC 0%, #9333EA 50%, #6B21A8 100%);
+            --dark-gradient: linear-gradient(135deg, #0F0A1A 0%, #1E1B3A 50%, #2D1B4E 100%);
+            --card-gradient: linear-gradient(135deg, rgba(139, 92, 246, 0.1) 0%, rgba(109, 40, 217, 0.05) 100%);
+            --glow-color: rgba(139, 92, 246, 0.4);
+            --purple-primary: #8B5CF6;
+            --purple-secondary: #6D28D9;
+            --purple-accent: #A855F7;
+            --purple-dark: #4C1D95;
+            --purple-light: #C084FC;
         }
 
         * {
@@ -94,9 +104,10 @@ require_once 'wp-config.php';
             position: absolute;
             width: 2px;
             height: 2px;
-            background: rgba(103, 126, 234, 0.6);
+            background: var(--purple-light);
             border-radius: 50%;
             animation: float 6s infinite linear;
+            box-shadow: 0 0 6px var(--purple-accent);
         }
 
         @keyframes float {
@@ -505,8 +516,8 @@ require_once 'wp-config.php';
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-16">
                 <div class="flex items-center space-x-3">
-                    <div class="w-10 h-10 bg-gradient-to-r from-purple-400 to-pink-400 rounded-lg flex items-center justify-center">
-                        <i class="fas fa-robot text-white"></i>
+                    <div class="w-10 h-10 rounded-lg flex items-center justify-center">
+                        <img src="assets/augustai_logo_only.png" alt="augustAI Logo" class="w-10 h-10 object-contain">
                     </div>
                     <span class="text-xl font-bold gradient-text">augustAI</span>
                 </div>
@@ -525,6 +536,11 @@ require_once 'wp-config.php';
     <!-- Hero Section -->
     <section class="relative min-h-screen flex items-center justify-center px-4">
         <div class="max-w-7xl mx-auto text-center">
+            <!-- Hero Logo -->
+            <div class="mb-8 fade-in">
+                <img src="assets/augustAI Logo Design on Purple Gradient.png" alt="augustAI - Agentic AI that gets work done" class="mx-auto h-24 md:h-32 object-contain opacity-90 hover:opacity-100 transition-opacity">
+            </div>
+            
             <div class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-full mb-8 glass">
                 <span class="text-sm font-medium">🚀 Agentic Automation • Dashboards • MVPs</span>
             </div>
@@ -934,8 +950,8 @@ require_once 'wp-config.php';
                 
                 <div class="glass-card p-6 hover:scale-105 transition-all fade-in">
                     <div class="flex items-center mb-4">
-                        <div class="w-12 h-12 bg-gradient-to-r from-purple-400 to-pink-400 rounded-lg flex items-center justify-center mr-4">
-                            <i class="fas fa-robot text-white"></i>
+                        <div class="w-12 h-12 rounded-lg flex items-center justify-center mr-4 bg-gradient-to-r from-purple-400 to-pink-400">
+                            <img src="assets/augustai_logo_only.png" alt="augustAI" class="w-8 h-8 object-contain">
                         </div>
                         <div>
                             <h3 class="font-bold">Lead Qualification Bot</h3>
@@ -1201,8 +1217,8 @@ require_once 'wp-config.php';
         <div class="max-w-6xl mx-auto">
             <div class="flex flex-col md:flex-row justify-between items-center">
                 <div class="flex items-center space-x-3 mb-4 md:mb-0">
-                    <div class="w-10 h-10 bg-gradient-to-r from-purple-400 to-pink-400 rounded-lg flex items-center justify-center">
-                        <i class="fas fa-robot text-white"></i>
+                    <div class="w-10 h-10 rounded-lg flex items-center justify-center">
+                        <img src="assets/augustai_logo_only.png" alt="augustAI Logo" class="w-10 h-10 object-contain">
                     </div>
                     <span class="text-xl font-bold gradient-text">augustAI</span>
                 </div>
@@ -1228,11 +1244,20 @@ require_once 'wp-config.php';
         // Initialize particles
         function createParticles() {
             const container = document.getElementById('particles-container');
-            const particleCount = 50;
+            const particleCount = 100; // Increased from 50 to 100 for more stars
             
             for (let i = 0; i < particleCount; i++) {
                 const particle = document.createElement('div');
                 particle.className = 'particle';
+                
+                // Random size for variety (small, medium, large stars)
+                const size = Math.random() < 0.7 ? 2 : Math.random() < 0.9 ? 3 : 4;
+                particle.style.width = size + 'px';
+                particle.style.height = size + 'px';
+                
+                // Random opacity for twinkling effect
+                particle.style.opacity = Math.random() * 0.8 + 0.2;
+                
                 particle.style.left = Math.random() * 100 + '%';
                 particle.style.animationDelay = Math.random() * 6 + 's';
                 particle.style.animationDuration = (Math.random() * 3 + 6) + 's';
