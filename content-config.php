@@ -243,11 +243,14 @@ return [
         'output_dir' => 'dist',
         'routes' => [
             '/' => 'index.php',
-            '/blog' => 'pages/blog.php',
-            '/case-studies' => 'pages/case-studies.php',
-            '/careers' => 'pages/careers.php',
-            '/about' => 'pages/about.php',
-            '/contact' => 'pages/contact.php'
+            '/services' => 'components/services.php',
+            '/about' => 'components/about-us.php',
+            '/process' => 'components/process.php',
+            '/roi-calculator' => 'components/roi-calculator.php',
+            '/contact' => 'components/contact.php',
+            '/portfolio' => 'components/portfolio.php',
+            '/testimonials' => 'components/testimonials.php',
+            '/privacy' => 'components/privacy-policy.php'
         ],
         'dynamic_routes' => [
             'blog_posts' => '/blog/{slug}',

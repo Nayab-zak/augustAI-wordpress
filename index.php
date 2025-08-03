@@ -2101,6 +2101,11 @@ $services = $content_config['services'];
                 </div>
                 
                 <div class="text-center md:text-right">
+                    <div class="flex justify-center md:justify-end space-x-6 mb-2 text-sm">
+                        <a href="privacy.php" class="text-gray-400 hover:text-purple-400 transition-colors">Privacy Policy</a>
+                        <a href="#contact" class="text-gray-400 hover:text-purple-400 transition-colors">Contact</a>
+                        <a href="#services" class="text-gray-400 hover:text-purple-400 transition-colors">Services</a>
+                    </div>
                     <p class="text-gray-400">© <span id="current-year"></span> augustAI. All rights reserved.</p>
                     <p class="text-sm text-gray-500 mt-1">Automate Everything</p>
                 </div>

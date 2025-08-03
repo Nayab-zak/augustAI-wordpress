@@ -55,7 +55,21 @@ class StaticSiteGenerator {
             
             // Capture output from PHP file
             ob_start();
-            include $file;
+            
+            if ($route === '/') {
+                // Main index page
+                include $file;
+            } elseif ($route === '/privacy') {
+                // Privacy policy page with full layout
+                include 'privacy.php';
+            } else {
+                // Component pages - use standalone renderer
+                require_once 'components/renderer.php';
+                $renderer = new ComponentRenderer();
+                $component_name = basename($file, '.php');
+                $renderer->renderStandalone($component_name);
+            }
+            
             $content = ob_get_clean();
             
             // Create directory if needed
