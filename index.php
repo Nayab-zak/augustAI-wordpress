@@ -1270,6 +1270,7 @@ $services = $content_config['services'];
                     <a href="#portfolio" class="text-gray-300 hover:text-white transition-colors">Portfolio</a>
                     <a href="#testimonials" class="text-gray-300 hover:text-white transition-colors">Testimonials</a>
                     <a href="#contact" class="text-gray-300 hover:text-white transition-colors">Contact</a>
+                    <a href="privacy.php" class="text-gray-300 hover:text-white transition-colors">Privacy</a>
                 </div>
                 <button onclick="openCalendlyModal()" class="btn-primary">Book 30-min Call</button>
             </div>
@@ -1417,6 +1418,14 @@ $services = $content_config['services'];
     <!-- Services Section -->
     <section id="services" class="py-20 px-4">
         <div class="max-w-7xl mx-auto">
+            <!-- Debug: Services Count -->
+            <?php if (isset($_GET['debug']) && $_GET['debug'] === 'services'): ?>
+            <div style="background: #333; color: #fff; padding: 10px; margin-bottom: 20px; font-family: monospace;">
+                <strong>DEBUG:</strong> Services loaded: <?php echo count($services); ?><br>
+                Service IDs: <?php echo implode(', ', array_keys($services)); ?>
+            </div>
+            <?php endif; ?>
+            
             <div class="text-center mb-16 fade-in">
                 <h2 class="text-4xl md:text-5xl font-bold mb-6 gradient-text">Our Services</h2>
                 <p class="text-xl text-gray-300 max-w-3xl mx-auto">
