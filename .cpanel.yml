@@ -1,11 +1,32 @@
+---
 deployment:
   tasks:
     - export DEPLOYPATH=/home/augustcom92b/public_html
-    - /bin/echo "💫 Deploying $COMMIT to $DEPLOYPATH at $(date)"
-    - /bin/cp -rf * $DEPLOYPATH/
-    - /bin/rm -f $DEPLOYPATH/.cpanel.yml
-    - /bin/rm -f $DEPLOYPATH/.git
-    - /bin/rm -f $DEPLOYPATH/ssh_key.txt
-    - /bin/rm -f $DEPLOYPATH/id_rsa.pub
-    - /bin/rm -f $DEPLOYPATH/.gitignore
-    - /bin/echo "✅ Deployment complete at $(date)"
+
+    # Make sure the destination path exists
+    - mkdir -p $DEPLOYPATH
+
+    # Copy individual files
+    - install -m 644 index.php $DEPLOYPATH/index.php
+    - install -m 644 privacy.php $DEPLOYPATH/privacy.php
+    - install -m 644 .htaccess $DEPLOYPATH/.htaccess
+    - install -m 644 content-config.php $DEPLOYPATH/content-config.php
+    - install -m 644 diagnostic.php $DEPLOYPATH/diagnostic.php
+    - install -m 644 diagnostic-static.html $DEPLOYPATH/diagnostic-static.html
+    - install -m 644 manifest.json $DEPLOYPATH/manifest.json
+    - install -m 644 offline.html $DEPLOYPATH/offline.html
+    - install -m 644 sw.js $DEPLOYPATH/sw.js
+
+    # Remove existing directories (optional clean deploy)
+    - rm -rf $DEPLOYPATH/assets
+    - rm -rf $DEPLOYPATH/components
+    - rm -rf $DEPLOYPATH/includes
+    - rm -rf $DEPLOYPATH/api
+    - rm -rf $DEPLOYPATH/_configs
+
+    # Re-copy entire directories
+    - cp -a assets $DEPLOYPATH/
+    - cp -a components $DEPLOYPATH/
+    - cp -a includes $DEPLOYPATH/
+    - cp -a api $DEPLOYPATH/
+    - cp -a _configs $DEPLOYPATH/
