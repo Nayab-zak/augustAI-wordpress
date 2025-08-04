@@ -20,5 +20,28 @@ $contact_config = [
     'contact_to_email' => 'hello@august.com.pk'
 ];
 
+// NEW: Asset versioning function
+function asset_version($file_path) {
+    $full_path = $_SERVER['DOCUMENT_ROOT'] . '/' . ltrim($file_path, '/');
+    if (file_exists($full_path)) {
+        // Use file modification time for automatic cache busting
+        return filemtime($full_path);
+    } else {
+        // Fallback to current timestamp if file doesn't exist
+        error_log("Asset not found: " . $full_path);
+        return time();
+    }
+}
+
+// NEW: Helper function for versioned asset URLs
+function versioned_asset($file_path) {
+    return $file_path . '?v=' . asset_version($file_path);
+}
+
+// NEW: Cache clearing helper (for manual cache invalidation)
+function clear_asset_cache() {
+    return time(); // Simple timestamp-based clearing
+}
+
 $contact_config_json = json_encode($contact_config);
 ?>

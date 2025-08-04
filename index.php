@@ -37,9 +37,9 @@ if (isset($_GET['debug'])) {
     <meta name="ICBM" content="31.5204, 74.3587">
     
     <!-- Favicon -->
-    <link rel="icon" type="image/png" href="assets/augustai_logo_only.png?v=<?php echo time(); ?>">
-    <link rel="shortcut icon" href="assets/augustai_logo_only.png?v=<?php echo time(); ?>">
-    <link rel="apple-touch-icon" href="assets/augustai_logo_only.png?v=<?php echo time(); ?>">\n
+    <link rel="icon" type="image/png" href="assets/augustai_logo_only.png?v=2025080401">
+    <link rel="shortcut icon" href="assets/augustai_logo_only.png?v=2025080401">
+    <link rel="apple-touch-icon" href="assets/augustai_logo_only.png?v=2025080401">
     
     <!-- Preload critical resources for better LCP -->
     <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">

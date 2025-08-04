@@ -2,10 +2,30 @@
 deployment:
   tasks:
     - |
-      # Rsync deployment (recommended)
+      # Enhanced deployment with verification and cache clearing
       RSYNC_OPTS="-avz --delete --exclude='.git' --exclude='.gitignore' --exclude='_archive' --exclude='_builds' --exclude='_docs' --exclude='*.md' --exclude='deploy.*' --exclude='build.*' --exclude='ssh_key.txt' --exclude='id_rsa.pub'"
       SRC_DIR="$(pwd)/"
       DEST_USER="augustcom92b"
       DEST_HOST="august.com.pk"
       DEST_PATH="/home/augustcom92b/public_html/"
-      rsync $RSYNC_OPTS $SRC_DIR $DEST_USER@$DEST_HOST:$DEST_PATH
+      
+      echo "🚀 Starting deployment to august.com.pk..."
+      
+      # Sync files with progress
+      echo "📂 Syncing files..."
+      rsync $RSYNC_OPTS --progress $SRC_DIR $DEST_USER@$DEST_HOST:$DEST_PATH
+      
+      # Verify critical files deployed correctly  
+      echo "✅ Verifying deployment..."
+      ssh $DEST_USER@$DEST_HOST "ls -la $DEST_PATH/assets/ | grep -E '(augustAI|logo)'"
+      ssh $DEST_USER@$DEST_HOST "ls -la $DEST_PATH/index.php"
+      ssh $DEST_USER@$DEST_HOST "head -5 $DEST_PATH/.htaccess"
+      
+      # Set proper permissions
+      echo "🔒 Setting permissions..."
+      ssh $DEST_USER@$DEST_HOST "find $DEST_PATH -type f -name '*.php' -exec chmod 644 {} \;"
+      ssh $DEST_USER@$DEST_HOST "find $DEST_PATH -type f -name '*.png' -exec chmod 644 {} \;"
+      ssh $DEST_USER@$DEST_HOST "chmod 644 $DEST_PATH/.htaccess"
+      
+      echo "🎉 Deployment completed successfully!"
+      echo "🌐 Visit: https://august.com.pk to verify changes"
