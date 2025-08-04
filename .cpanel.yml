@@ -1,25 +1,11 @@
----
 deployment:
   tasks:
-    - export DEPLOYPATH=/home/augustcom92b/public_html/
-
-    # Create DEPLOYPATH if not exists
-    - mkdir -p $DEPLOYPATH
-
-    # Copy single files
-    - cp -f index.php $DEPLOYPATH
-    - cp -f privacy.php $DEPLOYPATH
-    - cp -f .htaccess $DEPLOYPATH
-    - cp -f content-config.php $DEPLOYPATH
-    - cp -f diagnostic.php $DEPLOYPATH
-    - cp -f diagnostic-static.html $DEPLOYPATH
-    - cp -f manifest.json $DEPLOYPATH
-    - cp -f offline.html $DEPLOYPATH
-    - cp -f sw.js $DEPLOYPATH
-
-    # Copy directories recursively
-    - cp -Rf assets $DEPLOYPATH/
-    - cp -Rf components $DEPLOYPATH/
-    - cp -Rf includes $DEPLOYPATH/
-    - cp -Rf api $DEPLOYPATH/
-    - cp -Rf _configs $DEPLOYPATH/
+    - export DEPLOYPATH=/home/augustcom92b/public_html
+    - /bin/echo "💫 Deploying $COMMIT to $DEPLOYPATH at $(date)"
+    - /bin/cp -rf * $DEPLOYPATH/
+    - /bin/rm -f $DEPLOYPATH/.cpanel.yml
+    - /bin/rm -f $DEPLOYPATH/.git
+    - /bin/rm -f $DEPLOYPATH/ssh_key.txt
+    - /bin/rm -f $DEPLOYPATH/id_rsa.pub
+    - /bin/rm -f $DEPLOYPATH/.gitignore
+    - /bin/echo "✅ Deployment complete at $(date)"
