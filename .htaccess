@@ -1,0 +1,26 @@
+# augustAI Website Configuration
+# Force PHP files to load first
+DirectoryIndex index.php index.html
+
+# Enable URL Rewriting
+RewriteEngine On
+
+# Privacy policy clean URL
+RewriteRule ^privacy/?$ privacy.php [L,QSA]
+
+# Security Headers
+Header always set X-Content-Type-Options nosniff
+Header always set X-Frame-Options DENY
+Header always set X-XSS-Protection "1; mode=block"
+
+# Cache Control - No cache for development
+<FilesMatch "\.(php|html)$">
+    Header set Cache-Control "no-cache, no-store, must-revalidate"
+    Header set Pragma "no-cache"
+    Header set Expires 0
+</FilesMatch>
+
+# Cache assets for better performance
+<FilesMatch "\.(css|js|png|jpg|jpeg|gif|ico|svg)$">
+    Header set Cache-Control "public, max-age=3600"
+</FilesMatch>

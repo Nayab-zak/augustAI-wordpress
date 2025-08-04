@@ -1,6 +1,6 @@
 <?php
 // Load simple configuration 
-require_once 'config-simple.php';
+require_once '_configs/config-simple.php';
 
 // Load pricing and content configuration
 $content_config = require_once 'content-config.php';
