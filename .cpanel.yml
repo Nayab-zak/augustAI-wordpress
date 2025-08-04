@@ -30,3 +30,7 @@ deployment:
     - cp -a includes $DEPLOYPATH/
     - cp -a api $DEPLOYPATH/
     - cp -a _configs $DEPLOYPATH/
+    
+    # Clear any server caches
+    - touch $DEPLOYPATH/index.php
+    - find $DEPLOYPATH -name "*.php" -exec touch {} \;
