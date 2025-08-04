@@ -4,7 +4,7 @@
 param(
     [string]$ServerHost = "augustai.com",
     [string]$ServerUser = "augustcom92b", 
-    [string]$RemotePath = "/home/augustcom92b/public_html",
+    [string]$RemotePath = "public_html",
     [string]$SSHKeyPath = "_archive/id_rsa.pub"
 )
 
