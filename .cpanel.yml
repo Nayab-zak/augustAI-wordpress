@@ -2,6 +2,24 @@
 deployment:
   tasks:
     - export DEPLOYPATH=/home/augustcom92b/public_html/
-    - /bin/cp -R dist/* $DEPLOYPATH
-    - /bin/cp .htaccess $DEPLOYPATH
 
+    # Create DEPLOYPATH if not exists
+    - mkdir -p $DEPLOYPATH
+
+    # Copy single files
+    - cp -f index.php $DEPLOYPATH
+    - cp -f privacy.php $DEPLOYPATH
+    - cp -f .htaccess $DEPLOYPATH
+    - cp -f content-config.php $DEPLOYPATH
+    - cp -f diagnostic.php $DEPLOYPATH
+    - cp -f diagnostic-static.html $DEPLOYPATH
+    - cp -f manifest.json $DEPLOYPATH
+    - cp -f offline.html $DEPLOYPATH
+    - cp -f sw.js $DEPLOYPATH
+
+    # Copy directories recursively
+    - cp -Rf assets $DEPLOYPATH/
+    - cp -Rf components $DEPLOYPATH/
+    - cp -Rf includes $DEPLOYPATH/
+    - cp -Rf api $DEPLOYPATH/
+    - cp -Rf _configs $DEPLOYPATH/
