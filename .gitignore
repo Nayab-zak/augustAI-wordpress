@@ -1,3 +1,11 @@
+# Ignore development and backup folders
+_archive/
+_builds/
+_docs/
+_tests/
+deploy.bat
+deploy.ps1
+deploy.sh
 # SSH Keys and sensitive files
 ssh_key.txt
 id_rsa.pub
