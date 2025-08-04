@@ -1,5 +1,5 @@
----
-deployment:
+﻿deployment:
   tasks:
-    - export DEPLOYPATH=/home/augustcom92b/public_html/
+    - export DEPLOYPATH=/home/augustcom92b/public_html
     - /bin/cp -R * $DEPLOYPATH
+    - /bin/rm -f $DEPLOYPATH/.cpanel.yml
