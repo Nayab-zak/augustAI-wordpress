@@ -5,6 +5,13 @@ require_once 'config-simple.php';
 // Load pricing and content configuration
 $content_config = require_once 'content-config.php';
 $services = $content_config['services'];
+
+// Debug information (remove in production)
+if (isset($_GET['debug'])) {
+    error_reporting(E_ALL);
+    ini_set('display_errors', 1);
+    echo "<!-- DEBUG: PHP is working, Services count: " . count($services) . " -->";
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -30,9 +37,9 @@ $services = $content_config['services'];
     <meta name="ICBM" content="31.5204, 74.3587">
     
     <!-- Favicon -->
-    <link rel="icon" type="image/png" href="assets/augustai_logo_only.png">
-    <link rel="shortcut icon" href="assets/augustai_logo_only.png">
-    <link rel="apple-touch-icon" href="assets/augustai_logo_only.png">
+    <link rel="icon" type="image/png" href="assets/augustai_logo_only.png?v=<?php echo time(); ?>">
+    <link rel="shortcut icon" href="assets/augustai_logo_only.png?v=<?php echo time(); ?>">
+    <link rel="apple-touch-icon" href="assets/augustai_logo_only.png?v=<?php echo time(); ?>">\n
     
     <!-- Preload critical resources for better LCP -->
     <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
