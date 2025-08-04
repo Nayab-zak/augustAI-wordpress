@@ -2,17 +2,6 @@
 deployment:
   tasks:
     - export DEPLOYPATH=/home/augustcom92b/public_html/
-    - /bin/cp index.php $DEPLOYPATH
-    - /bin/cp privacy.php $DEPLOYPATH
+    - /bin/cp -R dist/* $DEPLOYPATH
     - /bin/cp .htaccess $DEPLOYPATH
-    - /bin/cp content-config.php $DEPLOYPATH
-    - /bin/cp diagnostic.php $DEPLOYPATH
-    - /bin/cp diagnostic-static.html $DEPLOYPATH
-    - /bin/cp manifest.json $DEPLOYPATH
-    - /bin/cp offline.html $DEPLOYPATH
-    - /bin/cp sw.js $DEPLOYPATH
-    - /bin/cp -R assets $DEPLOYPATH
-    - /bin/cp -R components $DEPLOYPATH
-    - /bin/cp -R includes $DEPLOYPATH
-    - /bin/cp -R api $DEPLOYPATH
-    - /bin/cp -R _configs $DEPLOYPATH
+
