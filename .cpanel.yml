@@ -1,0 +1,32 @@
+---
+deployment:
+  tasks:
+    # Create WordPress plugin directory structure
+    - export DEPLOYPATH=/home/augustcom92b/public_html/
+    
+    # Copy all files to WordPress root
+    - /bin/cp -R * $DEPLOYPATH
+    
+    # Set proper permissions for WordPress
+    - find $DEPLOYPATH -type d -exec chmod 755 {} \;
+    - find $DEPLOYPATH -type f -exec chmod 644 {} \;
+    
+    # Make specific files executable if needed
+    - chmod 755 $DEPLOYPATH/server.js
+    
+    # Install Node.js dependencies (if Node.js is available on your hosting)
+    - cd $DEPLOYPATH && npm install --production
+    
+    # Create uploads directory if it doesn't exist
+    - mkdir -p $DEPLOYPATH/wp-content/uploads
+    - chmod 755 $DEPLOYPATH/wp-content/uploads
+    
+    # Set environment file permissions (secure)
+    - chmod 600 $DEPLOYPATH/.env
+    
+    # Clean up any unnecessary files
+    - rm -f $DEPLOYPATH/.git*
+    - rm -f $DEPLOYPATH/README.md
+    
+    # Ensure index.html is the main file (for static hosting alternative)
+    - cp $DEPLOYPATH/index.html $DEPLOYPATH/index.php
