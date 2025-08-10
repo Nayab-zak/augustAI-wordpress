@@ -1,32 +1,59 @@
 
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
+import { Dialog, DialogTrigger, DialogContent } from '@/components/ui/dialog';
 
 /**
- * Service details page
- * - Minimal structural changes, content tightened
- * - "Start Free" opens an in-page modal that offers WhatsApp or Calendly (new tab) so users don't lose context
- * - Email updated to info@august.com.pk
- * - Replace WHATSAPP_NUMBER and CALENDLY_URL with your real values
+ * Option B — Plan-first stepper
+ *
+ * - Pricing buttons open a 2–3 step "Plan → Constraints → Contact" wizard.
+ * - Enterprise shortcut: "Talk to an Architect" opens Calendly popup directly (skips steps).              <h4 className="text-base font-semibold text-foreground">Step 3 — Choose how to connect</h4>
+              <p className="text-sm text-muted-foreground">Pick the channel that works best. We'll include your plan and context automatically.</p>* - Hero "Start Free" opens the wizard preselecting Starter.
+ * - All contact actions open in popups so users don't lose context.
+ * - WhatsApp + Calendly + Email (info@august.com.pk) supported.
+ *
+ * Replace WHATSAPP_NUMBER a                    title="Choose WhatsApp, Calendly popup, or Email next — you won't lose this page."d CALENDLY_URL_* with your real values.
  */
 
-const WHATSAPP_NUMBER = 'YOUR_WHATSAPP_NUMBER_IN_E164_FORMAT'; // e.g., '923000691169' (no +, no spaces)
-const CALENDLY_URL = 'https://calendly.com/your-org/intro-30'; // replace with your actual Calendly link
+const WHATSAPP_NUMBER = '923000691169'; // E.164 without '+' (example)
+const CALENDLY_URL = 'https://calendly.com/admin-august/30min'; // Use the same URL as HomePage
 
-const openWhatsApp = (serviceTitle) => {
+/* ---------- Utility: channel openers ---------- */
+const openWhatsApp = (payload) => {
   const msg = encodeURIComponent(
-    `Hi August,\n\nI’m interested in the Free Discovery Pack for: ${serviceTitle}.\nCan we schedule a quick call?\n\nThanks!`
+`Hi August,
+
+I'm interested in ${payload.service} — ${payload.plan}.
+Country: ${payload.country || '-'}
+Team size: ${payload.teamSize || '-'}
+Primary tools: ${payload.tools?.length ? payload.tools.join(', ') : '-'}
+
+Can we schedule a quick call?`
   );
   const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${msg}`;
   window.open(url, '_blank', 'noopener,noreferrer');
 };
 
-const openCalendly = () => {
-  window.open(CALENDLY_URL, '_blank', 'noopener,noreferrer');
+const openEmail = (payload) => {
+  const subject = encodeURIComponent(`Discovery — ${payload.service} (${payload.plan})`);
+  const body = encodeURIComponent(
+`Hi August,
+
+I’m interested in ${payload.service} — ${payload.plan}.
+
+Country: ${payload.country || '-'}
+Team size: ${payload.teamSize || '-'}
+Primary tools: ${payload.tools?.length ? payload.tools.join(', ') : '-'}
+
+Please share next steps.
+
+Thanks!`
+  );
+  window.open(`mailto:info@august.com.pk?subject=${subject}&body=${body}`, '_blank');
 };
 
-// ---- Content (kept close to your original but de-risked and SEO-friendly) ----
+/* ---------- Content ---------- */
 const serviceData = {
   'intelligent-chatbots': {
     title: 'Intelligent Chatbots',
@@ -84,7 +111,7 @@ const serviceData = {
     deliverables: [
       'Process mapping and optimization recommendations',
       'Trigger‑based automations across your tools',
-      'Human‑in‑the‑loop approvals where needed',
+      'Human‑in‑the-loop approvals where needed',
       'Monitoring, retries, and alerts',
       'Documentation and handover'
     ],
@@ -287,22 +314,194 @@ const serviceData = {
   }
 };
 
+/* ---------- Wizard (Stepper) ---------- */
+const Stepper = ({
+  open,
+  onClose,
+  serviceTitle,
+  initialPlan = 'Starter',
+  onChannel // optional callback for analytics
+}) => {
+  const [step, setStep] = useState(1);
+  const [plan, setPlan] = useState(initialPlan);
+  const [country, setCountry] = useState('');
+  const [teamSize, setTeamSize] = useState('1-10');
+  const [tools, setTools] = useState([]);
+
+  const payload = useMemo(() => ({
+    service: serviceTitle,
+    plan, country, teamSize, tools
+  }), [serviceTitle, plan, country, teamSize, tools]);
+
+  const toggleTool = (t) => {
+    setTools(prev => prev.includes(t) ? prev.filter(x => x !== t) : [...prev, t]);
+  };
+
+  const next = () => setStep(s => Math.min(3, s + 1));
+  const back = () => setStep(s => Math.max(1, s - 1));
+
+  if (!open) return null;
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
+      <div className="w-full max-w-2xl rounded-2xl card-dark shadow-2xl border border-[var(--august-green)] border-opacity-30">
+        {/* Header */}
+        <div className="flex items-center justify-between px-6 py-4 border-b">
+          <div>
+            <p className="text-xs uppercase tracking-widest text-muted-foreground">Discovery</p>
+            <h3 className="text-lg font-bold text-foreground">{serviceTitle}</h3>
+          </div>
+          <button onClick={onClose} aria-label="Close" className="text-muted-foreground hover:text-foreground">✕</button>
+        </div>
+
+        {/* Steps */}
+        <div className="px-6 py-5">
+          {/* Step indicators */}
+          <div className="flex items-center gap-3 mb-6">
+            {[1,2,3].map(n => (
+              <div key={n} className={`h-2 rounded-full ${n <= step ? 'bg-[var(--august-green)]' : 'border border-[var(--august-blue)] border-opacity-30'}`} style={{flex: 1}} />
+            ))}
+          </div>
+
+          {step === 1 && (
+            <div className="space-y-6">
+              <h4 className="text-base font-semibold text-foreground">Step 1 — Confirm your plan</h4>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                {['Starter', 'Professional', 'Enterprise'].map(p => (
+                  <button
+                    key={p}
+                    onClick={() => setPlan(p)}
+                    className={`rounded-xl border p-4 text-left hover:shadow transition-all duration-200 ${plan === p ? 'border-[var(--august-green)] ring-2 ring-[var(--august-green)] ring-opacity-30' : 'border-[var(--august-blue)] border-opacity-30'} card-darker`}
+                  >
+                    <div className="flex items-center justify-between">
+                      <span className="font-semibold">{p}</span>
+                      {plan === p && <span className="text-xs brand-gradient-bg text-white rounded-full px-2 py-0.5">Selected</span>}
+                    </div>
+                    <p className="text-sm text-muted-foreground mt-1">
+                      {p === 'Starter' && 'Evaluate fit quickly with a scoped discovery.'}
+                      {p === 'Professional' && 'Implementation for a defined scope and timeline.'}
+                      {p === 'Enterprise' && 'Architecture discussion for complex needs.'}
+                    </p>
+                  </button>
+                ))}
+              </div>
+
+              {plan !== 'Enterprise' && (
+                <div className="card-darker border border-[var(--august-blue)] border-opacity-30 rounded-xl p-4">
+                  <h5 className="font-semibold text-foreground mb-2">Step 2 — Add a bit of context</h5>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div>
+                      <label className="text-sm text-muted-foreground">Country</label>
+                      <input value={country} onChange={e => setCountry(e.target.value)} placeholder="US / UK / CA / UAE / ..." className="mt-1 w-full rounded-lg border border-[var(--august-blue)] border-opacity-30 focus:border-[var(--august-green)] bg-background text-foreground px-3 py-2" />
+                    </div>
+                    <div>
+                      <label className="text-sm text-muted-foreground">Team size</label>
+                      <select value={teamSize} onChange={e => setTeamSize(e.target.value)} className="mt-1 w-full rounded-lg border border-[var(--august-blue)] border-opacity-30 focus:border-[var(--august-green)] bg-background text-foreground px-3 py-2">
+                        <option>1-10</option><option>11-50</option><option>51-200</option><option>200+</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label className="text-sm text-muted-foreground">Primary tools</label>
+                      <div className="mt-1 flex flex-wrap gap-2">
+                        {['Salesforce','HubSpot','Slack','MS Teams','Zendesk','Intercom','G Suite','O365'].map(t => (
+                          <button key={t} type="button" onClick={() => toggleTool(t)} className={`px-3 py-1.5 text-sm rounded-full border transition-colors duration-200 ${tools.includes(t) ? 'border-[var(--august-green)] bg-[var(--august-green)] bg-opacity-20 text-[var(--august-green)]' : 'border-[var(--august-blue)] border-opacity-30 hover:border-[var(--august-green)] hover:border-opacity-50'}`}>{t}</button>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              <div className="flex items-center justify-end gap-3">
+                <button onClick={onClose} className="px-4 py-2 rounded-lg border border-[var(--august-blue)] border-opacity-30 hover:border-opacity-50 text-muted-foreground hover:text-foreground transition-colors duration-200">Cancel</button>
+                {plan === 'Enterprise' ? (
+                  <button
+                    onClick={() => {
+                      onChannel && onChannel('calendly', { plan });
+                      openCalendlyPopup(plan, { service: serviceTitle, plan });
+                      onClose();
+                    }}
+                    className="px-4 py-2 rounded-lg brand-gradient-bg text-white hover:opacity-90 transition-opacity duration-200"
+                  >
+                    Talk to an Architect
+                  </button>
+                ) : (
+                  <button onClick={() => setStep(2)} className="px-4 py-2 rounded-lg brand-gradient-bg text-white hover:opacity-90 transition-opacity duration-200">Continue</button>
+                )}
+              </div>
+            </div>
+          )}
+
+          {step === 2 && (
+            <div className="space-y-6">
+              <h4 className="text-base font-semibold text-slate-900">Step 3 — Choose how to connect</h4>
+              <p className="text-sm text-slate-600">Pick the channel that works best. We’ll include your plan and context automatically.</p>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <button
+                  onClick={() => { onChannel && onChannel('calendly', payload); openCalendlyPopup(plan, payload); }}
+                  className="rounded-xl border p-4 text-left hover:shadow border-slate-200"
+                >
+                  <div className="font-semibold">Book on Calendly</div>
+                  <p className="text-sm text-slate-600 mt-1">30–45 min. We come prepared with a draft plan.</p>
+                </button>
+                <button
+                  onClick={() => { onChannel && onChannel('whatsapp', payload); openWhatsApp(payload); }}
+                  className="rounded-xl border p-4 text-left hover:shadow border-slate-200"
+                >
+                  <div className="font-semibold">Chat on WhatsApp</div>
+                  <p className="text-sm text-slate-600 mt-1">Instant conversation with context pre-filled.</p>
+                </button>
+                <button
+                  onClick={() => { onChannel && onChannel('email', payload); openEmail(payload); }}
+                  className="rounded-xl border p-4 text-left hover:shadow border-slate-200"
+                >
+                  <div className="font-semibold">Email Us</div>
+                  <p className="text-sm text-slate-600 mt-1">Sends a summary to info@august.com.pk.</p>
+                </button>
+              </div>
+              <div className="flex items-center justify-between">
+                <button onClick={() => setStep(1)} className="px-4 py-2 rounded-lg bg-slate-100 hover:bg-slate-200">Back</button>
+                <button onClick={onClose} className="px-4 py-2 rounded-lg bg-slate-100 hover:bg-slate-200">Close</button>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+/* ---------- Page ---------- */
 const ServiceDetail = () => {
   const { slug } = useParams();
-  const [showStartFree, setShowStartFree] = useState(false);
+  const [wizardOpen, setWizardOpen] = useState(false);
+  const [wizardPlan, setWizardPlan] = useState('Starter');
+  const [calendlyOpen, setCalendlyOpen] = useState(false);
   const service = serviceData[slug];
+
+  // Function to open Calendly popup instead of new tab
+  const openCalendlyPopup = (plan, payload = {}) => {
+    setCalendlyOpen(true);
+  };
+
+  // super-simple analytics stub
+  const track = (event, payload) => {
+    try { window?.posthog?.capture?.(event, payload); } catch {}
+    console.log('[analytics]', event, payload);
+  };
 
   if (!service) {
     return (
-      <div className="pt-20 max-w-2xl mx-auto py-20 text-center">
-        <h1 className="text-3xl font-bold mb-4">Service Not Found</h1>
-        <p className="text-lg">Sorry, the service you are looking for does not exist.</p>
+      <div className="pt-20 max-w-2xl mx-auto py-20 text-center bg-background min-h-screen">
+        <h1 className="text-3xl font-bold mb-4 text-foreground">Service Not Found</h1>
+        <p className="text-lg text-muted-foreground">Sorry, the service you are looking for does not exist.</p>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-white">
+    <div className="min-h-screen bg-background">
+      {/* SEO */}
       <Helmet>
         <title>{service.seo.title}</title>
         <meta name="description" content={service.seo.description} />
@@ -313,29 +512,29 @@ const ServiceDetail = () => {
         <meta property="og:locale" content="en_US" />
       </Helmet>
 
-      {/* Hero Section */}
-      <section className="pt-24 pb-16 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900 text-white">
+      {/* Hero */}
+      <section className="pt-24 pb-16 px-4 sm:px-6 lg:px-8 surface-gradient-light">
         <div className="max-w-4xl mx-auto text-center">
           <h1 className="text-4xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-white to-blue-200 bg-clip-text text-transparent">
             {service.title}
           </h1>
-          <p className="text-xl md:text-2xl text-slate-300 mb-8 leading-relaxed">
+          <p className="text-xl md:text-2xl text-muted-foreground mb-8 leading-relaxed">
             {service.oneLiner}
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-8">
-            <span className="text-lg text-slate-400">Starting from</span>
-            <span className="text-3xl md:text-4xl font-bold text-teal-400">{service.priceFrom}</span>
+            <span className="text-lg text-muted-foreground">Starting from</span>
+            <span className="text-3xl md:text-4xl font-bold text-[var(--august-green)]">{service.priceFrom}</span>
           </div>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <button
-              onClick={() => setShowStartFree(true)}
+              onClick={() => { setWizardPlan('Starter'); setWizardOpen(true); track('cta_open', { location: 'hero', plan: 'Starter', service: service.title }); }}
               className="bg-white text-slate-900 font-semibold px-8 py-4 rounded-lg shadow-lg hover:bg-slate-100 transition-all duration-200 transform hover:scale-105"
             >
-              Start Free
+              Start Discovery (Free)
             </button>
             <button
               onClick={() => document.getElementById('pricing-section')?.scrollIntoView({ behavior: 'smooth' })}
-              className="bg-teal-500 text-white font-semibold px-8 py-4 rounded-lg shadow-lg hover:bg-teal-600 transition-all duration-200 transform hover:scale-105"
+              className="brand-gradient-bg text-white font-semibold px-8 py-4 rounded-lg shadow-lg hover:opacity-90 transition-all duration-200 transform hover:scale-105"
             >
               See Plans
             </button>
@@ -344,21 +543,21 @@ const ServiceDetail = () => {
       </section>
 
       {/* Outcomes */}
-      <section className="py-16 px-4 sm:px-6 lg:px-8">
+      <section className="py-16 px-4 sm:px-6 lg:px-8 surface-primary">
         <div className="max-w-6xl mx-auto">
-          <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-12 text-center">
+          <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-12 text-center">
             Business Outcomes You Can Expect
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {service.outcomes.map((outcome, index) => (
-              <div key={index} className="bg-white p-6 rounded-xl shadow-lg border border-slate-200 hover:shadow-xl transition-shadow duration-200">
+              <div key={index} className="card-dark p-6 rounded-xl shadow-lg border border-[var(--august-green)] border-opacity-20 hover:shadow-xl hover:border-opacity-40 transition-all duration-200">
                 <div className="flex items-start gap-4">
-                  <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
-                    <svg className="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <div className="w-8 h-8 bg-gradient-to-r from-[var(--august-green)] to-[var(--august-blue)] rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                    <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
                     </svg>
                   </div>
-                  <p className="text-slate-700 font-medium">{outcome}</p>
+                  <p className="text-foreground font-medium">{outcome}</p>
                 </div>
               </div>
             ))}
@@ -367,34 +566,34 @@ const ServiceDetail = () => {
       </section>
 
       {/* What You Get */}
-      <section className="py-16 px-4 sm:px-6 lg:px-8 bg-slate-50">
+      <section className="py-16 px-4 sm:px-6 lg:px-8 surface-secondary">
         <div className="max-w-6xl mx-auto">
-          <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-12 text-center">
+          <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-12 text-center">
             What You Get
           </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {service.deliverables.map((deliverable, index) => (
-              <div key={index} className="flex items-start gap-4 bg-white p-6 rounded-lg shadow-sm">
-                <div className="w-6 h-6 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
-                  <div className="w-2 h-2 bg-blue-600 rounded-full"></div>
-                </div>
-                <p className="text-slate-700 font-medium">{deliverable}</p>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          {service.deliverables.map((deliverable, index) => (
+            <div key={index} className="flex items-start gap-4 card-dark p-6 rounded-lg shadow-sm border border-[var(--august-blue)] border-opacity-20 hover:shadow-md transition-all duration-200">
+              <div className="w-6 h-6 bg-gradient-to-r from-[var(--august-blue)] to-[var(--august-green)] rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                <div className="w-2 h-2 bg-white rounded-full"></div>
               </div>
-            ))}
-          </div>
+              <p className="text-foreground font-medium">{deliverable}</p>
+            </div>
+          ))}
+        </div>
         </div>
       </section>
 
       {/* Integrations */}
-      <section className="py-16 px-4 sm:px-6 lg:px-8">
+      <section className="py-16 px-4 sm:px-6 lg:px-8 surface-primary">
         <div className="max-w-6xl mx-auto">
-          <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-12 text-center">
+          <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-12 text-center">
             Seamless Integrations
           </h2>
           <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
             {service.integrations.map((integration, index) => (
-              <div key={index} className="bg-white p-4 rounded-lg shadow-sm border border-slate-200 text-center hover:shadow-md transition-shadow duration-200">
-                <p className="text-slate-700 font-medium text-sm">{integration}</p>
+              <div key={index} className="card-dark p-4 rounded-lg shadow-sm border border-[var(--august-green)] border-opacity-20 text-center hover:shadow-md hover:border-opacity-40 transition-all duration-200">
+                <p className="text-foreground font-medium text-sm">{integration}</p>
               </div>
             ))}
           </div>
@@ -422,63 +621,73 @@ const ServiceDetail = () => {
         </div>
       </section>
 
-      {/* Pricing */}
-      <section id="pricing-section" className="py-16 px-4 sm:px-6 lg:px-8">
+      {/* Pricing with plan-first actions */}
+      <section id="pricing-section" className="py-16 px-4 sm:px-6 lg:px-8 surface-secondary">
         <div className="max-w-6xl mx-auto">
-          <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-12 text-center">
+          <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-12 text-center">
             Plans & Pricing
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {service.pricing.map((tier) => (
-              <div
-                key={tier.tier}
-                className={`flex flex-col rounded-2xl shadow-xl border ${
-                  tier.tier === 'Professional'
-                    ? 'border-2 border-teal-500 scale-105 z-10 bg-gradient-to-br from-teal-50 to-white'
-                    : 'border-slate-200 bg-white'
-                } p-8 relative transition-transform duration-300 hover:scale-105`}
-              >
-                {tier.tier === 'Professional' && (
-                  <span className="absolute -top-4 left-1/2 -translate-x-1/2 bg-teal-600 text-white text-xs font-bold px-4 py-1 rounded-full shadow-lg uppercase tracking-widest">Most Popular</span>
-                )}
-                <h3 className="text-2xl font-bold mb-2 text-center text-slate-900">{tier.tier}</h3>
-                <div className="text-center mb-6">
-                  <span className="text-4xl font-extrabold text-slate-900">{tier.price}</span>
-                </div>
-                <ul className="flex-1 mb-6 space-y-3 text-slate-700 text-sm">
-                  {tier.features.map((f, i) => (
-                    <li key={i} className="flex items-center gap-2">
-                      <svg className="w-5 h-5 text-teal-500 flex-shrink-0" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
-                      <span>{f}</span>
-                    </li>
-                  ))}
-                </ul>
-                <button
-                  className={`mt-auto font-semibold rounded-lg px-6 py-3 transition-colors duration-200 ${
-                    tier.tier === 'Professional'
-                      ? 'bg-teal-600 text-white hover:bg-teal-700'
-                      : 'bg-slate-100 text-slate-900 hover:bg-slate-200'
-                  } shadow`}
+            {service.pricing.map((tier) => {
+              const isPro = tier.tier === 'Professional';
+              const isEnt = tier.tier === 'Enterprise';
+              const ctaLabel = tier.tier === 'Starter' ? 'Start Discovery (Free)'
+                              : isPro ? 'Continue with Pro'
+                              : 'Talk to an Architect';
+              const onClick = () => {
+                track('cta_open', { location: 'pricing', plan: tier.tier, service: service.title });
+                if (isEnt) {
+                  openCalendlyPopup('Enterprise', { service: service.title, plan: 'Enterprise' });
+                } else {
+                  setWizardPlan(tier.tier);
+                  setWizardOpen(true);
+                }
+              };
+              return (
+                <div
+                  key={tier.tier}
+                  className={`flex flex-col rounded-2xl shadow-xl border ${isPro ? 'border-2 border-[var(--august-green)] scale-105 z-10 card-dark' : 'border-[var(--august-blue)] border-opacity-30 card-dark'} p-8 relative transition-transform duration-300 hover:scale-105`}
                 >
-                  Get Started
-                </button>
-              </div>
-            ))}
+                  {isPro && (
+                    <span className="absolute -top-4 left-1/2 -translate-x-1/2 brand-gradient-bg text-white text-xs font-bold px-4 py-1 rounded-full shadow-lg uppercase tracking-widest">Most Popular</span>
+                  )}
+                  <h3 className="text-2xl font-bold mb-2 text-center text-foreground">{tier.tier}</h3>
+                  <div className="text-center mb-6">
+                    <span className="text-4xl font-extrabold text-[var(--august-green)]">{tier.price}</span>
+                  </div>
+                  <ul className="flex-1 mb-6 space-y-3 text-muted-foreground text-sm">
+                    {tier.features.map((f, i) => (
+                      <li key={i} className="flex items-center gap-2">
+                        <svg className="w-5 h-5 text-[var(--august-green)] flex-shrink-0" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
+                        <span>{f}</span>
+                      </li>
+                    ))}
+                  </ul>
+                  <button
+                    onClick={onClick}
+                    className={`mt-auto font-semibold rounded-lg px-6 py-3 transition-all duration-200 shadow ${isPro ? 'brand-gradient-bg text-white hover:opacity-90' : 'border border-[var(--august-green)] border-opacity-50 text-[var(--august-green)] hover:bg-[var(--august-green)] hover:text-white'}`}
+                    title="Choose WhatsApp, Calendly, or Email next — you won’t lose this page."
+                  >
+                    {ctaLabel}
+                  </button>
+                </div>
+              );
+            })}
           </div>
         </div>
       </section>
 
       {/* FAQ */}
-      <section className="py-16 px-4 sm:px-6 lg:px-8 bg-slate-50">
+      <section className="py-16 px-4 sm:px-6 lg:px-8 surface-primary">
         <div className="max-w-4xl mx-auto">
-          <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-12 text-center">
+          <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-12 text-center">
             Frequently Asked Questions
           </h2>
           <div className="space-y-6">
             {service.faq.map((item, index) => (
-              <div key={index} className="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
-                <h3 className="text-lg font-semibold text-slate-900 mb-3">{item.question}</h3>
-                <p className="text-slate-700 leading-relaxed">{item.answer}</p>
+              <div key={index} className="card-dark p-6 rounded-xl shadow-sm border border-[var(--august-blue)] border-opacity-20">
+                <h3 className="text-lg font-semibold text-foreground mb-3">{item.question}</h3>
+                <p className="text-muted-foreground leading-relaxed">{item.answer}</p>
               </div>
             ))}
           </div>
@@ -492,17 +701,17 @@ const ServiceDetail = () => {
             Ready to Transform Your Business?
           </h2>
           <p className="text-xl mb-8 text-blue-100">
-            Start with a Free Discovery Pack — a quick way to see fit, scope, and timeline.
+            Start with a Free Discovery Pack — we’ll return a brief in 48–72 hours.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <button
-              onClick={() => setShowStartFree(true)}
+              onClick={() => { setWizardPlan('Starter'); setWizardOpen(true); track('cta_open', { location: 'footer', plan: 'Starter', service: service.title }); }}
               className="bg-white text-blue-600 font-semibold px-8 py-4 rounded-lg shadow-lg hover:bg-blue-50 transition-all duration-200 transform hover:scale-105"
             >
-              Start Free
+              Start Discovery (Free)
             </button>
             <button
-              onClick={() => openCalendly()}
+              onClick={() => openCalendly('Professional', { service: service.title, plan: 'Professional' })}
               className="bg-blue-800 text-white font-semibold px-8 py-4 rounded-lg shadow-lg hover:bg-blue-900 transition-all duration-200 transform hover:scale-105 border border-blue-400"
             >
               Book on Calendly
@@ -511,58 +720,30 @@ const ServiceDetail = () => {
         </div>
       </section>
 
-      {/* Start Free Modal */}
-      {showStartFree && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
-          <div className="w-full max-w-lg rounded-2xl bg-white shadow-2xl p-6">
-            <div className="flex items-start justify-between mb-4">
-              <h3 className="text-xl font-bold text-slate-900">Free Discovery Pack</h3>
-              <button onClick={() => setShowStartFree(false)} aria-label="Close" className="text-slate-500 hover:text-slate-700">✕</button>
-            </div>
-            <p className="text-slate-700 mb-4">
-              We’ll run a fast, no‑cost scoping for <strong>{service.title}</strong>:
-            </p>
-            <ul className="list-disc pl-5 space-y-2 text-slate-700 mb-6">
-              <li>30‑minute discovery call to define goals and constraints</li>
-              <li>Feasibility brief within 48–72 hours (approach, risks, and timeline)</li>
-              <li>Mini‑roadmap and quote options (Starter/Pro/Enterprise)</li>
-              <li>Optional sample output or mock (where applicable)</li>
-            </ul>
-            <div className="flex flex-col sm:flex-row gap-3">
-              <button
-                onClick={() => openWhatsApp(service.title)}
-                className="flex-1 text-center bg-green-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-green-700"
-              >
-                WhatsApp Us
-              </button>
-              <button
-                onClick={() => openCalendly()}
-                className="flex-1 text-center bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700"
-              >
-                Book on Calendly
-              </button>
-            </div>
-            <div className="mt-4 text-center">
-              <a
-                href="mailto:info@august.com.pk?subject=Free%20Discovery%20Pack&body=Hi%20August%2C%0A%0AI%E2%80%99m%20interested%20in%20the%20Free%20Discovery%20Pack.%20Service%3A%20{{service}}%0A%0AThanks!"
-                onClick={(e) => {
-                  // simple replacement so body includes current service
-                  const link = e.currentTarget;
-                  link.href = link.href.replace('{{service}}', encodeURIComponent(service.title));
-                }}
-                className="text-sm text-slate-600 hover:text-slate-800 underline"
-                target="_blank" rel="noopener noreferrer"
-              >
-                Or email info@august.com.pk
-              </a>
-            </div>
-            <p className="text-xs text-slate-500 mt-4">No credit card. Typical turnaround 2–3 business days.</p>
-          </div>
-        </div>
-      )}
+      {/* Wizard overlay */}
+      <Stepper
+        open={wizardOpen}
+        onClose={() => setWizardOpen(false)}
+        serviceTitle={service.title}
+        initialPlan={wizardPlan}
+        onChannel={(ch, payload) => track('cta_channel_select', { channel: ch, plan: payload.plan, service: payload.service })}
+      />
+
+      {/* Calendly Dialog */}
+      <Dialog open={calendlyOpen} onOpenChange={setCalendlyOpen}>
+        <DialogContent className="max-w-2xl w-full p-0 overflow-hidden bg-background">
+          <iframe
+            src={CALENDLY_URL}
+            title="Schedule a Meeting"
+            width="100%"
+            height="600"
+            style={{ border: 'none', minHeight: 500 }}
+            allow="camera; microphone; fullscreen"
+          />
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
 
 export default ServiceDetail;
-
