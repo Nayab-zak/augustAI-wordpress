@@ -13,25 +13,25 @@ const ContactForm = ({ className = "" }) => {
 
   if (state.succeeded) {
     return (
-      <Card className={`shadow-lg border-0 ${className}`}>
+      <Card className={`shadow-lg border-0 card-dark ${className}`}>
         <CardHeader>
-          <CardTitle className="text-2xl font-bold text-gray-900 flex items-center space-x-2">
-            <CheckCircle className="h-6 w-6 text-green-600" />
+          <CardTitle className="text-2xl font-bold text-foreground flex items-center space-x-2">
+            <CheckCircle className="h-6 w-6 text-success" />
             <span>Thank you!</span>
           </CardTitle>
-          <p className="text-gray-600">Your message has been sent. We'll get back to you within 24 hours.</p>
+          <p className="text-muted-foreground">Your message has been sent. We'll get back to you within 24 hours.</p>
         </CardHeader>
       </Card>
     );
   }
   return (
-    <Card className={`shadow-lg border-0 ${className}`}>
+    <Card className={`shadow-lg border-0 card-dark ${className}`}>
       <CardHeader>
-        <CardTitle className="text-2xl font-bold text-gray-900 flex items-center space-x-2">
+        <CardTitle className="text-2xl font-bold text-foreground flex items-center space-x-2">
           <Mail className="h-6 w-6 copper-accent" />
           <span>Get in Touch</span>
         </CardTitle>
-        <p className="text-gray-600">
+        <p className="text-muted-foreground">
           Ready to automate your workflows? Let's discuss your project and see how we can help.
         </p>
       </CardHeader>

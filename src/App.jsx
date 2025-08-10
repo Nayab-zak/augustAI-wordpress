@@ -9,6 +9,7 @@ import HomePage from './pages/HomePage'
 import ServicesPage from './pages/ServicesPage'
 import ROICalculatorPage from './pages/ROICalculatorPage'
 import PrivacyPage from './pages/PrivacyPage'
+import ServiceDetail from './pages/ServiceDetail'
 import LiveChat from './components/LiveChat'
 
 function App() {
@@ -20,6 +21,7 @@ function App() {
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/services" element={<ServicesPage />} />
+            <Route path="/services/:slug" element={<ServiceDetail />} />
             <Route path="/roi" element={<ROICalculatorPage />} />
             <Route path="/privacy" element={<PrivacyPage />} />
           </Routes>

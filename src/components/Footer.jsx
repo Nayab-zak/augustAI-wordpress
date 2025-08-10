@@ -1,15 +1,14 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Mail, Phone, MapPin, MessageCircle, Calendar } from 'lucide-react'
+import { Dialog, DialogTrigger, DialogContent } from '@/components/ui/dialog'
 import augustaiLogo from '../assets/augustai-logo.png'
 
 const Footer = () => {
+  const [calendlyOpen, setCalendlyOpen] = useState(false)
+  
   const openWhatsApp = () => {
     window.open('https://wa.me/971554483607', '_blank')
-  }
-
-  const openCalendly = () => {
-    window.open('https://calendly.com/admin-august/30min', '_blank')
   }
 
   const callPhone = () => {
@@ -34,8 +33,8 @@ const Footer = () => {
               />
             </div>
             <p className="text-gray-600 text-sm leading-relaxed">
-              A results-driven AI studio based in Pakistan, serving clients worldwide. 
-              Automate everything, focus on what matters.
+              Smarter Solutions, Seamlessly. That’s our promise. 
+              AI business solutions for forward-looking companies worldwide.
             </p>
             <div className="flex space-x-4">
               <button
@@ -52,13 +51,26 @@ const Footer = () => {
               >
                 <Phone className="h-5 w-5" />
               </button>
-              <button
-                onClick={openCalendly}
-                className="p-2 rounded-full copper-accent-bg text-white hover:opacity-80 transition-opacity"
-                aria-label="Schedule Meeting"
-              >
-                <Calendar className="h-5 w-5" />
-              </button>
+              <Dialog open={calendlyOpen} onOpenChange={setCalendlyOpen}>
+                <DialogTrigger asChild>
+                  <button
+                    className="p-2 rounded-full copper-accent-bg text-white hover:opacity-80 transition-opacity"
+                    aria-label="Schedule Meeting"
+                  >
+                    <Calendar className="h-5 w-5" />
+                  </button>
+                </DialogTrigger>
+                <DialogContent className="max-w-2xl w-full p-0 overflow-hidden bg-background">
+                  <iframe
+                    src="https://calendly.com/admin-august/30min"
+                    title="Schedule a Meeting"
+                    width="100%"
+                    height="600"
+                    style={{ border: 'none', minHeight: 500 }}
+                    allow="camera; microphone; fullscreen"
+                  />
+                </DialogContent>
+              </Dialog>
             </div>
           </div>
 
@@ -127,12 +139,23 @@ const Footer = () => {
               Ready to automate your workflows? Let's discuss your project.
             </p>
             <div className="space-y-2">
-              <button
-                onClick={openCalendly}
-                className="w-full brand-gradient-bg text-white py-2 px-4 rounded-lg hover:opacity-90 transition-opacity font-medium"
-              >
-                Book a Call
-              </button>
+              <Dialog open={calendlyOpen} onOpenChange={setCalendlyOpen}>
+                <DialogTrigger asChild>
+                  <button className="w-full brand-gradient-bg text-white py-2 px-4 rounded-lg hover:opacity-90 transition-opacity font-medium">
+                    Book a Call
+                  </button>
+                </DialogTrigger>
+                <DialogContent className="max-w-2xl w-full p-0 overflow-hidden bg-background">
+                  <iframe
+                    src="https://calendly.com/admin-august/30min"
+                    title="Schedule a Meeting"
+                    width="100%"
+                    height="600"
+                    style={{ border: 'none', minHeight: 500 }}
+                    allow="camera; microphone; fullscreen"
+                  />
+                </DialogContent>
+              </Dialog>
               <button
                 onClick={openWhatsApp}
                 className="w-full border border-green-500 text-green-600 py-2 px-4 rounded-lg hover:bg-green-50 transition-colors font-medium"

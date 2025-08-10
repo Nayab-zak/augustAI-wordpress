@@ -3,6 +3,7 @@ import { Canvas, useFrame } from '@react-three/fiber'
 import { OrbitControls, Sphere, MeshDistortMaterial } from '@react-three/drei'
 import { Calendar, MessageCircle, Phone, ArrowRight, Bot, BarChart3, Shield, Workflow, Brain, Cloud, Zap } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { Dialog, DialogTrigger, DialogContent } from '@/components/ui/dialog'
 import { Card, CardContent } from '@/components/ui/card'
 import ContactForm from '../components/ContactForm'
 
@@ -20,21 +21,22 @@ function AnimatedSphere() {
   return (
     <Sphere ref={meshRef} args={[1, 100, 200]} scale={2}>
       <MeshDistortMaterial
-        color="#B77147"
+        color="#ffffff"
         attach="material"
         distort={0.3}
         speed={1.5}
         roughness={0.4}
-        metalness={0.8}
+        metalness={0.3}
+        transparent
+        opacity={0.15}
       />
     </Sphere>
   )
 }
 
 const HomePage = () => {
-  const openCalendly = () => {
-    window.open('https://calendly.com/admin-august/30min', '_blank')
-  }
+  // Calendly dialog state
+  const [calendlyOpen, setCalendlyOpen] = React.useState(false)
 
   const openWhatsApp = () => {
     window.open('https://wa.me/971554483607', '_blank')
@@ -107,12 +109,12 @@ const HomePage = () => {
   return (
     <div className="pt-16 lg:pt-20">
       {/* Hero Section */}
-      <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-gray-50 to-white">
+      <section className="relative min-h-screen flex items-center justify-center overflow-hidden surface-gradient-light">
         {/* 3D Background */}
-        <div className="absolute inset-0 opacity-20">
+        <div className="absolute inset-0 opacity-80">
           <Canvas camera={{ position: [0, 0, 5] }}>
-            <ambientLight intensity={0.5} />
-            <pointLight position={[10, 10, 10]} />
+            <ambientLight intensity={0.6} />
+            <pointLight position={[10, 10, 10]} intensity={0.8} />
             <AnimatedSphere />
             <OrbitControls enableZoom={false} enablePan={false} autoRotate autoRotateSpeed={0.5} />
           </Canvas>
@@ -120,52 +122,127 @@ const HomePage = () => {
 
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <div className="space-y-8">
+            {/* Startup-focused badge */}
+            <div className="inline-flex items-center px-4 py-2 rounded-full bg-gradient-to-r from-[var(--august-green)] to-[var(--august-blue)] bg-opacity-10 border border-[var(--august-green)] border-opacity-20">
+              <Bot className="w-4 h-4 text-white mr-2" />
+              <span className="text-sm font-semibold text-white">Smarter Solutions, Seamlessly — For Forward-Looking Businesses</span>
+            </div>
             <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold leading-tight">
-              Automate Everything,{' '}
-              <span className="brand-gradient">Focus on What Matters</span>
+              <span className="block mb-2">Smarter Solutions, Seamlessly</span>
+              <span className="block text-2xl md:text-3xl font-medium text-muted-foreground mt-2">AI that works as smart as you do.</span>
             </h1>
-            
-            <p className="text-xl md:text-2xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-              A results-driven AI studio based in Pakistan, serving clients worldwide.
+            <p className="text-xl md:text-2xl text-muted-foreground max-w-4xl mx-auto leading-relaxed">
+              Unlock AI workflow automation for your business—without the enterprise price tag. AugustAI delivers practical AI business solutions and copilots for SMEs worldwide. <span className="text-[var(--august-green)] font-semibold">Built by entrepreneurs, for entrepreneurs.</span>
             </p>
 
-            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-              <Button
-                onClick={openCalendly}
-                size="lg"
-                className="brand-gradient-bg text-white hover:opacity-90 text-lg px-8 py-4 flex items-center space-x-2"
-              >
-                <Calendar className="h-5 w-5" />
-                <span>Book a Call</span>
-              </Button>
+            {/* Startup metrics - honest and appealing */}
+            <div className="flex flex-wrap justify-center gap-8 py-4">
+              <div className="text-center">
+                <div className="text-2xl font-bold text-[var(--august-green)]">2025</div>
+                <div className="text-sm text-muted-foreground">Founded</div>
+              </div>
+              <div className="text-center">
+                <div className="text-2xl font-bold text-[var(--august-blue)]">60%</div>
+                <div className="text-sm text-muted-foreground">Avg Cost Savings</div>
+              </div>
+              <div className="text-center">
+                <div className="text-2xl font-bold text-[var(--august-green)]">3 Weeks</div>
+                <div className="text-sm text-muted-foreground">Avg Delivery</div>
+              </div>
+              <div className="text-center">
+                <div className="text-2xl font-bold text-[var(--august-blue)]">100%</div>
+                <div className="text-sm text-muted-foreground">Success Rate</div>
+              </div>
+            </div>
+
+            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-4">
+              <Dialog open={calendlyOpen} onOpenChange={setCalendlyOpen}>
+                <DialogTrigger asChild>
+                  <Button
+                    size="lg"
+                    className="brand-gradient-bg text-white hover:opacity-90 text-lg px-8 py-4 flex items-center space-x-2 shadow-lg hover:shadow-xl transition-all duration-300 pulse-success"
+                  >
+                    <Calendar className="h-5 w-5" />
+                    <span>Start Your Automation Journey</span>
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="max-w-2xl w-full p-0 overflow-hidden bg-background">
+                  <iframe
+                    src="https://calendly.com/admin-august/30min"
+                    title="Schedule a Meeting"
+                    width="100%"
+                    height="600"
+                    style={{ border: 'none', minHeight: 500 }}
+                    allow="camera; microphone; fullscreen"
+                  />
+                </DialogContent>
+              </Dialog>
               <Button
                 onClick={openWhatsApp}
                 variant="outline"
                 size="lg"
-                className="text-lg px-8 py-4 flex items-center space-x-2 hover:border-[var(--august-copper-accent)] hover:text-[var(--august-copper-accent)]"
+                className="btn-secondary text-lg px-8 py-4 flex items-center space-x-2 shadow-md hover:shadow-lg transition-all duration-300"
               >
                 <MessageCircle className="h-5 w-5" />
-                <span>Chat on WhatsApp</span>
+                <span>Chat with Founders</span>
               </Button>
+            </div>
+            
+            {/* Startup authenticity */}
+            <div className="pt-8">
+              <p className="text-sm text-muted-foreground mb-4">🚀 Fresh minds, proven results</p>
+              <div className="flex justify-center items-center space-x-6 opacity-40">
+                <div className="text-xs text-muted-foreground px-3 py-1 border border-[var(--august-green)] border-opacity-30 rounded-full">
+                  Pakistan-Based
+                </div>
+                <div className="text-xs text-muted-foreground px-3 py-1 border border-[var(--august-blue)] border-opacity-30 rounded-full">
+                  Global Reach
+                </div>
+                <div className="text-xs text-muted-foreground px-3 py-1 border border-[var(--august-green)] border-opacity-30 rounded-full">
+                  Startup-Friendly
+                </div>
+              </div>
             </div>
           </div>
         </div>
 
-        {/* Floating Elements */}
+        {/* Floating Elements - More Visible with Glow */}
         <div className="absolute top-20 left-10 floating">
-          <div className="w-16 h-16 bg-gradient-to-r from-blue-400 to-purple-500 rounded-full opacity-20"></div>
+          <div className="w-28 h-28 bg-gradient-to-r from-[var(--august-green)] via-white to-[var(--august-blue)] rounded-full opacity-80 blur-[3px] border-2 border-white/60 shadow-[0_0_30px_5px_rgba(0,255,196,0.18)]"></div>
         </div>
         <div className="absolute bottom-20 right-10 floating" style={{ animationDelay: '2s' }}>
-          <div className="w-12 h-12 bg-gradient-to-r from-green-400 to-blue-500 rounded-full opacity-20"></div>
+          <div className="w-24 h-24 bg-gradient-to-r from-[var(--august-blue)] via-white to-[var(--august-green)] rounded-full opacity-75 blur-[3px] border-2 border-white/60 shadow-[0_0_25px_4px_rgba(0,119,255,0.15)]"></div>
+        </div>
+        <div className="absolute top-1/2 right-20 floating" style={{ animationDelay: '4s' }}>
+          <div className="w-20 h-20 bg-gradient-to-r from-[var(--august-green-dark)] via-white to-[var(--august-blue-dark)] rounded-full opacity-80 blur-[3px] border-2 border-white/60 shadow-[0_0_20px_3px_rgba(0,212,170,0.12)]"></div>
+        </div>
+        
+        {/* Professional Grid Pattern Overlay - Subtle */}
+        <div className="absolute inset-0 opacity-3">
+          <div className="w-full h-full" style={{
+            backgroundImage: `radial-gradient(circle at 1px 1px, var(--august-green) 1px, transparent 0)`,
+            backgroundSize: '50px 50px'
+          }}></div>
         </div>
       </section>
 
-      {/* Pain Points Strip */}
-      <section className="py-16 bg-gray-900 text-white">
+      {/* Business Challenges Section */}
+      <section className="py-20 surface-primary">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
+              Smarter Solutions, Seamlessly — Remove the Roadblocks
+            </h2>
+            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+              Still stuck with manual, repetitive workflows? Struggling to connect data across legacy systems? Want to scale but can’t afford big tech overhead? Need AI copilots for SMEs, but don’t know where to start?
+            </p>
+          </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {painPoints.map((point, index) => (
-              <div key={index} className="text-center space-y-4">
+              <div key={index} className="text-center space-y-4 p-6 rounded-xl border border-opacity-20 border-[var(--august-green)] hover:border-opacity-40 transition-all duration-300">
+                <div className="w-16 h-16 mx-auto rounded-full bg-gradient-to-r from-red-500 to-orange-500 bg-opacity-20 flex items-center justify-center">
+                  <span className="text-2xl">⚠️</span>
+                </div>
                 <h3 className="text-xl font-semibold text-red-400">
                   {point.title}
                 </h3>
@@ -178,75 +255,64 @@ const HomePage = () => {
         </div>
       </section>
 
-      {/* Services Grid */}
-      <section className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center space-y-4 mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900">
-              Our Services
+      {/* Why Choose AugustAI */}
+      <section className="py-20 surface-gradient-light">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
+              Why Businesses Choose AugustAI
             </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Comprehensive AI solutions to transform your business operations
+            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+              We’re not just another tech company. We’re entrepreneurs who understand the need for real results, fast.
             </p>
           </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {services.map((service, index) => (
-              <Card key={index} className="card-3d group hover:shadow-xl transition-all duration-300 border-0 shadow-lg">
-                <CardContent className="p-6 space-y-4">
-                  <div className="flex items-center space-x-4">
-                    <div className="p-3 copper-accent-bg text-white rounded-lg group-hover:scale-110 transition-transform">
-                      <service.icon className="h-6 w-6" />
-                    </div>
-                    <h3 className="text-xl font-semibold text-gray-900">
-                      {service.title}
-                    </h3>
-                  </div>
-                  
-                  <p className="text-gray-600 leading-relaxed">
-                    {service.description}
-                  </p>
-                  
-                  <ul className="space-y-2">
-                    {service.features.map((feature, featureIndex) => (
-                      <li key={featureIndex} className="flex items-center space-x-2 text-sm text-gray-500">
-                        <ArrowRight className="h-4 w-4 copper-accent" />
-                        <span>{feature}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </CardContent>
-              </Card>
-            ))}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+            <div className="text-center p-6 rounded-xl card-dark hover:shadow-lg transition-all duration-300">
+              <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-r from-[var(--august-green)] to-[var(--august-blue)] flex items-center justify-center">
+                <Zap className="w-8 h-8 text-white" />
+              </div>
+              <h3 className="text-xl font-bold text-foreground mb-2">Fast & Agile</h3>
+              <p className="text-muted-foreground">No red tape. From idea to deployment in 2–4 weeks.</p>
+            </div>
+            <div className="text-center p-6 rounded-xl card-dark hover:shadow-lg transition-all duration-300">
+              <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-r from-[var(--august-blue)] to-[var(--august-green)] flex items-center justify-center">
+                <BarChart3 className="w-8 h-8 text-white" />
+              </div>
+              <h3 className="text-xl font-bold text-foreground mb-2">Startup-Friendly</h3>
+              <p className="text-muted-foreground">Flexible pricing and payment terms for growing businesses.</p>
+            </div>
+            <div className="text-center p-6 rounded-xl card-dark hover:shadow-lg transition-all duration-300">
+              <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-r from-[var(--august-green)] to-[var(--august-blue)] flex items-center justify-center">
+                <Brain className="w-8 h-8 text-white" />
+              </div>
+              <h3 className="text-xl font-bold text-foreground mb-2">Hands-On Support</h3>
+              <p className="text-muted-foreground">Direct access to founders. We’re invested in your success.</p>
+            </div>
+            <div className="text-center p-6 rounded-xl card-dark hover:shadow-lg transition-all duration-300">
+              <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-r from-[var(--august-blue)] to-[var(--august-green)] flex items-center justify-center">
+                <Workflow className="w-8 h-8 text-white" />
+              </div>
+              <h3 className="text-xl font-bold text-foreground mb-2">Built to Scale</h3>
+              <p className="text-muted-foreground">Solutions that grow with your business, wherever you are.</p>
+            </div>
           </div>
-        </div>
-      </section>
-
-      {/* Mini About */}
-      <section className="py-20 bg-gray-50">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-8">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900">
-            About AugustAI
-          </h2>
-          <div className="space-y-6 text-lg text-gray-600 leading-relaxed">
-            <p>
-              augustAI was founded in 2025 to give SMEs affordable automation. Small core team, elastic network of specialists. No bureaucracy—just delivery.
-            </p>
-            <p>
-              We believe that every business, regardless of size, should have access to cutting-edge AI solutions that drive real results and measurable ROI.
-            </p>
+          <div className="text-center">
+            <blockquote className="text-2xl font-medium text-foreground mb-4">
+              "Fresh perspective, solid execution. <span className="text-[var(--august-green)]">AugustAI gets the startup mindset.</span>"
+            </blockquote>
+            <cite className="text-muted-foreground">— Early customer feedback</cite>
           </div>
         </div>
       </section>
 
       {/* Contact Section */}
-      <section className="py-20 bg-white">
+      <section className="py-20 surface-secondary">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center space-y-4 mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900">
+            <h2 className="text-3xl md:text-4xl font-bold text-foreground">
               Let's Start Your <span className="brand-gradient">Automation Journey</span>
             </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
               Ready to transform your business with AI? Get in touch and let's discuss how we can help automate your workflows.
             </p>
           </div>
@@ -272,7 +338,7 @@ const HomePage = () => {
                 onClick={callPhone}
                 variant="outline"
                 size="lg"
-                className="bg-white text-[var(--august-copper-accent)] border-white hover:bg-gray-100 text-lg px-8 py-4 flex items-center space-x-2"
+                className="btn-secondary text-lg px-8 py-4 flex items-center space-x-2"
               >
                 <Phone className="h-5 w-5" />
                 <span>+971 58 306 6201</span>
@@ -281,19 +347,10 @@ const HomePage = () => {
                 onClick={openWhatsApp}
                 variant="outline"
                 size="lg"
-                className="bg-white text-green-600 border-white hover:bg-gray-100 text-lg px-8 py-4 flex items-center space-x-2"
+                className="btn-secondary text-success text-lg px-8 py-4 flex items-center space-x-2"
               >
                 <MessageCircle className="h-5 w-5" />
                 <span>WhatsApp</span>
-              </Button>
-              <Button
-                onClick={openCalendly}
-                variant="outline"
-                size="lg"
-                className="bg-white text-[var(--august-copper-accent)] border-white hover:bg-gray-100 text-lg px-8 py-4 flex items-center space-x-2"
-              >
-                <Calendar className="h-5 w-5" />
-                <span>Calendly</span>
               </Button>
             </div>
           </div>

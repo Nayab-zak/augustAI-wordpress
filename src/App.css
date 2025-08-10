@@ -43,96 +43,110 @@
 
 :root {
   --radius: 0.625rem;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
-  --chart-1: oklch(0.646 0.222 41.116);
-  --chart-2: oklch(0.6 0.118 184.704);
-  --chart-3: oklch(0.398 0.07 227.392);
-  --chart-4: oklch(0.828 0.189 84.429);
-  --chart-5: oklch(0.769 0.188 70.08);
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
+  /* Dark theme as default - navy backgrounds with cream text */
+  --background: oklch(0.15 0.02 250); /* Deep navy background */
+  --foreground: oklch(0.98 0.01 50); /* Brighter cream text for better contrast */
+  --card: oklch(0.18 0.02 250); /* Slightly lighter navy for cards */
+  --card-foreground: oklch(0.98 0.01 50); /* Brighter cream text on cards */
+  --popover: oklch(0.16 0.02 250); /* Navy popover */
+  --popover-foreground: oklch(0.98 0.01 50); /* Brighter cream text */
+  --primary: oklch(0.50 0.15 170); /* Updated to match original teal-green */
+  --primary-foreground: oklch(0.98 0.01 50); /* Brighter cream text on primary */
+  --secondary: oklch(0.25 0.03 250); /* Darker navy secondary */
+  --secondary-foreground: oklch(0.98 0.01 50); /* Brighter cream text */
+  --muted: oklch(0.22 0.02 250); /* Muted navy */
+  --muted-foreground: oklch(0.75 0.02 220); /* Light blue-gray text */
+  --accent: oklch(0.25 0.03 250); /* Navy accent */
+  --accent-foreground: oklch(0.98 0.01 50); /* Brighter cream text */
+  --destructive: oklch(0.65 0.20 25); /* Red for destructive actions */
+  --border: oklch(0.30 0.03 230); /* Subtle navy borders */
+  --input: oklch(0.25 0.03 250); /* Navy input background */
+  --ring: oklch(0.60 0.15 195); /* Blue focus ring */
+  --chart-1: oklch(0.60 0.15 170); /* Green for charts */
+  --chart-2: oklch(0.65 0.15 220); /* Blue for charts */
+  --chart-3: oklch(0.55 0.12 200); /* Cyan for charts */
+  --chart-4: oklch(0.70 0.10 160); /* Light green for charts */
+  --chart-5: oklch(0.60 0.12 240); /* Purple-blue for charts */
+  --sidebar: oklch(0.16 0.02 250); /* Navy sidebar */
+  --sidebar-foreground: oklch(0.98 0.01 50); /* Brighter cream sidebar text */
+  --sidebar-primary: oklch(0.55 0.15 170); /* Green sidebar primary */
+  --sidebar-primary-foreground: oklch(0.98 0.01 50); /* Brighter cream text */
+  --sidebar-accent: oklch(0.25 0.03 250); /* Navy sidebar accent */
+  --sidebar-accent-foreground: oklch(0.98 0.01 50); /* Brighter cream text */
+  --sidebar-border: oklch(0.30 0.03 230); /* Navy borders */
+  --sidebar-ring: oklch(0.60 0.15 195); /* Blue focus ring */
   
-  /* AugustAI Brand Colors */
-  --august-copper-start: #B77147;
-  --august-copper-end: #9B4F2E;
-  --august-copper-accent: #A55A35;
+  /* AugustAI Original Brand Colors */
+  --august-green: #00cc99; /* Original teal-green */
+  --august-blue: #0099ff; /* Original bright blue */
+  --august-green-dark: #00b386; /* Darker green for hover states */
+  --august-blue-dark: #0080e6; /* Darker blue for hover states */
+  --august-navy: #1a2332; /* Deeper navy base */
+  --august-cream: #f8f5f0; /* Warm cream for better contrast */
+  
+  /* Semantic color variables for consistent theming */
+  --surface-primary: #334155; /* slate-700 equivalent */
+  --surface-secondary: #1e293b; /* slate-800 equivalent */
+  --surface-tertiary: #0f172a; /* slate-900 equivalent */
+  --text-success: #10b981; /* emerald-500 */
+  --text-warning: #f59e0b; /* amber-500 */
+  --text-danger: #ef4444; /* red-500 */
+  --text-info: #3b82f6; /* blue-500 */
+  
+  /* Legacy compatibility - map old copper vars to new green colors */
+  --august-copper-accent: var(--august-green);
+  --august-copper-start: var(--august-green);
+  --august-copper-end: var(--august-blue);
 }
 
-.dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(55.437% 0.10919 234.752);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
-  --chart-1: oklch(0.488 0.243 264.376);
-  --chart-2: oklch(0.696 0.17 162.48);
-  --chart-3: oklch(0.769 0.188 70.08);
-  --chart-4: oklch(0.627 0.265 303.9);
-  --chart-5: oklch(0.645 0.246 16.439);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
+/* Light mode (legacy support - now optional) */
+.light {
+  --background: oklch(0.98 0.005 50); /* Off-white with warm tint */
+  --foreground: oklch(0.15 0.02 250); /* Dark navy text */
+  --card: oklch(1 0 0); /* Pure white cards */
+  --card-foreground: oklch(0.15 0.02 250); /* Dark navy text */
+  --popover: oklch(1 0 0); /* White popover */
+  --popover-foreground: oklch(0.15 0.02 250); /* Dark navy text */
+  --primary: oklch(0.55 0.15 170); /* Keep same green primary */
+  --primary-foreground: oklch(0.95 0.01 50); /* Cream text */
+  --secondary: oklch(0.95 0.01 50); /* Light secondary */
+  --secondary-foreground: oklch(0.15 0.02 250); /* Dark text */
+  --muted: oklch(0.96 0.005 230); /* Very light blue-gray */
+  --muted-foreground: oklch(0.45 0.05 230); /* Medium blue-gray */
+  --accent: oklch(0.95 0.01 50); /* Light accent */
+  --accent-foreground: oklch(0.15 0.02 250); /* Dark text */
+  --destructive: oklch(0.65 0.20 25); /* Keep same red */
+  --border: oklch(0.90 0.01 230); /* Light blue-gray borders */
+  --input: oklch(0.98 0.005 50); /* Off-white input */
+  --ring: oklch(0.60 0.15 195); /* Same blue focus ring */
 }
 
 @layer base {
   * {
     @apply border-border outline-ring/50;
   }
+  
+  /* Force dark theme globally */
+  html {
+    color-scheme: dark;
+  }
+  
   body {
     @apply bg-background text-foreground;
     font-family: 'Inter', sans-serif;
-    /* Enhanced warm, deep, multi-layered background */
-    background-color: #f6e0c6;
+    /* Modern dark tech background with subtle patterns */
+    background-color: var(--august-navy);
     background-image:
-      /* Subtle SVG pattern overlay */
-      url('data:image/svg+xml;utf8,<svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="20" cy="20" r="1.5" fill="%23e2b07a" fill-opacity="0.18"/><circle cx="10" cy="30" r="1" fill="%23b77147" fill-opacity="0.12"/><circle cx="30" cy="10" r="1" fill="%239b4f2e" fill-opacity="0.10"/></svg>'),
-      /* Radial gradient for depth */
-      radial-gradient(ellipse at 60% 20%, #ffe3b3 0%, #f7cfa3 40%, transparent 80%),
-      /* Linear gradient for warmth and brand */
-      linear-gradient(120deg, #f9e0c6 0%, #f3b97a 30%, var(--august-copper-start) 65%, var(--august-copper-end) 100%);
-    background-blend-mode: multiply, lighten, normal;
+      /* Subtle tech circuit pattern */
+      url('data:image/svg+xml;utf8,<svg width="60" height="60" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="28" y="28" width="4" height="4" fill="%2300d4aa" fill-opacity="0.1"/><rect x="10" y="45" width="2" height="2" fill="%230066ff" fill-opacity="0.15"/><rect x="45" y="10" width="2" height="2" fill="%2300b894" fill-opacity="0.08"/><path d="M30 0V15M30 45V60M0 30H15M45 30H60" stroke="%230066ff" stroke-opacity="0.05" stroke-width="0.5"/></svg>'),
+      /* Radial gradient for depth and focus */
+      radial-gradient(ellipse at 30% 20%, rgba(0, 212, 170, 0.15) 0%, rgba(0, 102, 255, 0.1) 40%, transparent 70%),
+      /* Subtle gradient overlay for warmth */
+      linear-gradient(135deg, var(--august-navy) 0%, rgba(26, 31, 54, 0.95) 50%, rgba(0, 102, 255, 0.05) 100%);
+    background-blend-mode: overlay, lighten, normal;
     background-attachment: fixed;
+    /* Ensure high contrast */
+    color: var(--august-cream);
   }
   
   h1, h2, h3, h4, h5, h6 {
@@ -141,9 +155,9 @@
 }
 
 @layer utilities {
-  /* AugustAI Brand Gradient */
+  /* AugustAI New Brand Gradient - Green to Blue */
   .brand-gradient {
-    background: linear-gradient(90deg, var(--august-copper-start) 0%, var(--august-copper-end) 100%);
+    background: linear-gradient(135deg, var(--august-green) 0%, var(--august-blue) 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -151,25 +165,184 @@
   }
   
   .brand-gradient-bg {
-    background: linear-gradient(90deg, var(--august-copper-start) 0%, var(--august-copper-end) 100%);
+    background: linear-gradient(135deg, var(--august-green) 0%, var(--august-blue) 100%);
+    color: var(--august-cream);
   }
   
+  .brand-gradient-bg:hover {
+    background: linear-gradient(135deg, var(--august-green-dark) 0%, var(--august-blue-dark) 100%);
+  }
+  
+  /* Surface/Background utilities */
+  .surface-primary {
+    background-color: var(--surface-primary);
+  }
+  
+  .surface-secondary {
+    background-color: var(--surface-secondary);
+  }
+  
+  .surface-tertiary {
+    background-color: var(--surface-tertiary);
+  }
+  
+  .surface-gradient-light {
+    background: linear-gradient(135deg, var(--surface-tertiary) 0%, var(--surface-secondary) 100%);
+  }
+  
+  /* Green accent utilities */
+  .green-accent {
+    color: var(--august-green);
+  }
+  
+  .green-accent-bg {
+    background-color: var(--august-green);
+    color: var(--august-navy);
+  }
+  
+  .green-accent-bg:hover {
+    background-color: var(--august-green-dark);
+  }
+  
+  /* Blue accent utilities */
+  .blue-accent {
+    color: var(--august-blue);
+  }
+  
+  .blue-accent-bg {
+    background-color: var(--august-blue);
+    color: var(--august-cream);
+  }
+  
+  .blue-accent-bg:hover {
+    background-color: var(--august-blue-dark);
+  }
+  
+  /* Button utilities */
+  .btn-primary {
+    background: linear-gradient(135deg, var(--august-green) 0%, var(--august-blue) 100%);
+    color: var(--august-cream);
+    border: none;
+  }
+  
+  .btn-primary:hover {
+    background: linear-gradient(135deg, var(--august-green-dark) 0%, var(--august-blue-dark) 100%);
+    opacity: 0.9;
+  }
+  
+  .btn-secondary {
+    background-color: var(--surface-primary);
+    color: var(--august-green);
+    border: 1px solid var(--surface-secondary);
+  }
+  
+  .btn-secondary:hover {
+    background-color: var(--surface-secondary);
+    border-color: var(--august-green);
+  }
+  
+  /* Text color utilities */
+  .text-success {
+    color: var(--text-success);
+  }
+  
+  .text-warning {
+    color: var(--text-warning);
+  }
+  
+  .text-danger {
+    color: var(--text-danger);
+  }
+  
+  .text-info {
+    color: var(--text-info);
+  }
+  
+  /* Legacy copper utilities - now map to new colors for compatibility */
   .copper-accent {
-    color: var(--august-copper-accent);
+    color: var(--august-green);
   }
   
   .copper-accent-bg {
-    background-color: var(--august-copper-accent);
+    background-color: var(--august-green);
+    color: var(--august-navy);
   }
   
-  /* 3D Effects */
+  /* Override gray text colors globally for dark theme */
+  .text-gray-900 {
+    color: var(--foreground) !important;
+  }
+  
+  .text-gray-700 {
+    color: var(--muted-foreground) !important;
+  }
+  
+  .text-gray-600 {
+    color: var(--muted-foreground) !important;
+  }
+  
+  .text-gray-500 {
+    color: var(--muted-foreground) !important;
+    opacity: 0.8;
+  }
+  
+  .text-gray-400 {
+    color: var(--muted-foreground) !important;
+    opacity: 0.7;
+  }
+  
+  /* Card utilities */
+  .card-dark {
+    background-color: var(--surface-primary);
+    border: 1px solid var(--border);
+    color: var(--foreground);
+  }
+  
+  .card-darker {
+    background-color: var(--surface-secondary);
+    border: 1px solid var(--border);
+    color: var(--foreground);
+  }
+  
+  /* Green accent utilities */
+  .green-accent {
+    color: var(--august-green);
+  }
+  
+  .green-accent-bg {
+    background-color: var(--august-green);
+    color: var(--august-navy);
+  }
+  
+  /* Blue accent utilities */
+  .blue-accent {
+    color: var(--august-blue);
+  }
+  
+  .blue-accent-bg {
+    background-color: var(--august-blue);
+    color: var(--august-cream);
+  }
+  
+  /* Legacy copper utilities - now map to new colors for compatibility */
+  .copper-accent {
+    color: var(--august-green);
+  }
+  
+  .copper-accent-bg {
+    background-color: var(--august-green);
+    color: var(--august-navy);
+  }
+  
+  /* 3D Effects and Animations */
   .card-3d {
     transform-style: preserve-3d;
-    transition: transform 0.3s ease;
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
   }
   
   .card-3d:hover {
-    transform: rotateY(5deg) rotateX(5deg) translateZ(20px);
+    transform: rotateY(2deg) rotateX(2deg) translateZ(10px) scale(1.02);
+    box-shadow: 0 25px 50px rgba(0, 255, 196, 0.15);
   }
   
   .floating {
@@ -184,5 +357,63 @@
   .parallax {
     transform: translateZ(0);
     will-change: transform;
+  }
+  
+  /* Professional hover effects */
+  .professional-hover {
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .professional-hover::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(0, 255, 196, 0.1), transparent);
+    transition: left 0.6s ease;
+  }
+  
+  .professional-hover:hover::before {
+    left: 100%;
+  }
+  
+  /* Pulse animation for CTAs */
+  .pulse-success {
+    animation: pulse-success 2s infinite;
+  }
+  
+  @keyframes pulse-success {
+    0% { box-shadow: 0 0 0 0 rgba(0, 255, 196, 0.4); }
+    70% { box-shadow: 0 0 0 10px rgba(0, 255, 196, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(0, 255, 196, 0); }
+  }
+
+  /* Enhanced dropdown hover behavior */
+  .dropdown-menu {
+    transition: opacity 300ms ease-in-out, visibility 300ms ease-in-out;
+  }
+  
+  .dropdown-menu.hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+  
+  .dropdown-menu.visible {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+  }
+  
+  /* Improved hover zones for nested menus */
+  .menu-item-with-submenu:hover .submenu,
+  .menu-item-with-submenu .submenu:hover {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
   }
 }

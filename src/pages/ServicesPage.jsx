@@ -1,18 +1,22 @@
 import React, { useState } from 'react'
+import { Link } from 'react-router-dom'
 import { ChevronDown, ChevronUp, Bot, BarChart3, Shield, Workflow, Brain, Cloud, Zap, Check, ArrowRight } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { Dialog, DialogTrigger, DialogContent } from '@/components/ui/dialog'
 import { Card, CardContent } from '@/components/ui/card'
 
 const ServicesPage = () => {
   const [expandedService, setExpandedService] = useState(null)
+  const [calendlyOpen, setCalendlyOpen] = useState(false)
 
-  const openCalendly = () => {
-    window.open('https://calendly.com/admin-august/30min', '_blank')
+  const toggleService = (serviceId) => {
+    setExpandedService(expandedService === serviceId ? null : serviceId)
   }
 
   const services = [
     {
       id: 1,
+      slug: 'intelligent-chatbots',
       icon: Bot,
       title: "Intelligent Chatbots",
       subtitle: "24/7 customer & employee answers backed by your documents",
@@ -37,6 +41,7 @@ const ServicesPage = () => {
     },
     {
       id: 2,
+      slug: 'real-time-dashboards',
       icon: BarChart3,
       title: "Real-Time Dashboards",
       subtitle: "Turn raw logs into live KPIs—no BI licence required",
@@ -61,6 +66,7 @@ const ServicesPage = () => {
     },
     {
       id: 3,
+      slug: 'private-ai-on-prem',
       icon: Shield,
       title: "Private AI on-prem",
       subtitle: "Keep data on your servers while leveraging cutting-edge models",
@@ -85,6 +91,7 @@ const ServicesPage = () => {
     },
     {
       id: 4,
+      slug: 'workflow-automation',
       icon: Workflow,
       title: "Workflow Automation",
       subtitle: "Let bots push the buttons so people don't have to",
@@ -109,6 +116,7 @@ const ServicesPage = () => {
     },
     {
       id: 5,
+      slug: 'agentic-ai-assistants',
       icon: Brain,
       title: "Agentic AI Assistants",
       subtitle: "Multi-step AI agents that plan, act, and report—so tasks finish themselves",
@@ -133,6 +141,7 @@ const ServicesPage = () => {
     },
     {
       id: 6,
+      slug: 'cloud-native-solutions',
       icon: Cloud,
       title: "Cloud-Native Solutions",
       subtitle: "Scale from zero to millions on AWS, Azure, or GCP without surprises",
@@ -157,6 +166,7 @@ const ServicesPage = () => {
     },
     {
       id: 7,
+      slug: 'mvp-rapid-prototyping',
       icon: Zap,
       title: "MVP Rapid Prototyping",
       subtitle: "Ideas → clickable demo in 14 days, fixed budget",
@@ -181,14 +191,10 @@ const ServicesPage = () => {
     }
   ]
 
-  const toggleService = (serviceId) => {
-    setExpandedService(expandedService === serviceId ? null : serviceId)
-  }
-
   return (
     <div className="pt-16 lg:pt-20">
       {/* Header */}
-      <section className="py-20 bg-gradient-to-br from-gray-50 to-white">
+      <section className="py-20 surface-gradient-light">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-6">
           <h1 className="text-4xl md:text-5xl font-bold text-gray-900">
             Our <span className="brand-gradient">Services</span>
@@ -200,11 +206,11 @@ const ServicesPage = () => {
       </section>
 
       {/* Services */}
-      <section className="py-20 bg-white">
+      <section className="py-20 surface-secondary">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="space-y-6">
             {services.map((service) => (
-              <Card key={service.id} className="overflow-hidden border-0 shadow-lg hover:shadow-xl transition-all duration-300">
+              <Card key={service.id} className="overflow-hidden border-0 shadow-lg hover:shadow-xl transition-all duration-300 card-dark">
                 <CardContent className="p-0">
                   {/* Service Header */}
                   <div 
@@ -217,12 +223,20 @@ const ServicesPage = () => {
                           <service.icon className="h-6 w-6" />
                         </div>
                         <div>
-                          <h3 className="text-2xl font-semibold text-gray-900">
-                            {service.title}
-                          </h3>
+                          <Link to={`/services/${service.slug}`}>
+                            <h3 className="text-2xl font-semibold text-gray-900 hover:text-teal-600 cursor-pointer transition-colors">
+                              {service.title}
+                            </h3>
+                          </Link>
                           <p className="text-gray-600 mt-1">
                             {service.subtitle}
                           </p>
+                          <Link 
+                            to={`/services/${service.slug}`}
+                            className="text-sm text-teal-600 hover:text-teal-800 mt-1 inline-block"
+                          >
+                            View full details →
+                          </Link>
                         </div>
                       </div>
                       <div className="flex items-center space-x-4">
@@ -303,12 +317,32 @@ const ServicesPage = () => {
                         </div>
 
                         <div className="pt-6 border-t">
-                          <Button
-                            onClick={openCalendly}
-                            className="brand-gradient-bg text-white hover:opacity-90"
-                          >
-                            Discuss This Service
-                          </Button>
+                          <div className="flex flex-col sm:flex-row gap-4">
+                            <Link
+                              to={`/services/${service.slug}`}
+                              className="inline-flex items-center justify-center px-6 py-3 border border-gray-300 text-gray-700 bg-white hover:bg-gray-50 rounded-lg font-medium transition-colors duration-200"
+                            >
+                              View Full Details
+                              <ArrowRight className="ml-2 h-4 w-4" />
+                            </Link>
+                            <Dialog open={calendlyOpen} onOpenChange={setCalendlyOpen}>
+                              <DialogTrigger asChild>
+                                <Button className="brand-gradient-bg text-white hover:opacity-90">
+                                  Discuss This Service
+                                </Button>
+                              </DialogTrigger>
+                              <DialogContent className="max-w-2xl w-full p-0 overflow-hidden bg-background">
+                                <iframe
+                                  src="https://calendly.com/admin-august/30min"
+                                  title="Schedule a Meeting"
+                                  width="100%"
+                                  height="600"
+                                  style={{ border: 'none', minHeight: 500 }}
+                                  allow="camera; microphone; fullscreen"
+                                />
+                              </DialogContent>
+                            </Dialog>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -329,13 +363,26 @@ const ServicesPage = () => {
           <p className="text-xl opacity-90">
             Let's discuss which services are right for your business and create a custom solution that delivers results.
           </p>
-          <Button
-            onClick={openCalendly}
-            size="lg"
-            className="bg-white text-[var(--august-copper-accent)] hover:bg-gray-100 text-lg px-8 py-4"
-          >
-            Schedule a Consultation
-          </Button>
+          <Dialog open={calendlyOpen} onOpenChange={setCalendlyOpen}>
+            <DialogTrigger asChild>
+              <Button
+                size="lg"
+                className="btn-secondary text-lg px-8 py-4"
+              >
+                Schedule a Consultation
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="max-w-2xl w-full p-0 overflow-hidden bg-background">
+              <iframe
+                src="https://calendly.com/admin-august/30min"
+                title="Schedule a Meeting"
+                width="100%"
+                height="600"
+                style={{ border: 'none', minHeight: 500 }}
+                allow="camera; microphone; fullscreen"
+              />
+            </DialogContent>
+          </Dialog>
         </div>
       </section>
     </div>

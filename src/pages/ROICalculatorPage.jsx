@@ -11,6 +11,7 @@ import {
 } from 'chart.js'
 import { Calculator, DollarSign, Clock, Calendar, TrendingUp, ArrowRight } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { Dialog, DialogTrigger, DialogContent } from '@/components/ui/dialog'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -29,10 +30,7 @@ const ROICalculatorPage = () => {
   const [hourlyCost, setHourlyCost] = useState(50)
   const [months, setMonths] = useState(12)
   const [results, setResults] = useState(null)
-
-  const openCalendly = () => {
-    window.open('https://calendly.com/admin-august/30min', '_blank')
-  }
+  const [calendlyOpen, setCalendlyOpen] = useState(false)
 
   const calculateROI = () => {
     // Formula: roi = hours_saved_per_week * hourly_cost * 4 * months
@@ -77,12 +75,12 @@ const ROICalculatorPage = () => {
         label: 'Amount (USD)',
         data: [results.estimatedInvestment, results.totalSavings, results.netSavings],
         backgroundColor: [
-          'rgba(167, 90, 53, 0.8)',  // August copper for investment
+          'rgba(0, 255, 196, 0.8)',  // Brighter August teal-green for investment
           'rgba(34, 197, 94, 0.8)',  // Green for savings
           'rgba(59, 130, 246, 0.8)', // Blue for profit
         ],
         borderColor: [
-          'rgba(167, 90, 53, 1)',
+          'rgba(0, 255, 196, 1)',
           'rgba(34, 197, 94, 1)',
           'rgba(59, 130, 246, 1)',
         ],
@@ -157,7 +155,7 @@ const ROICalculatorPage = () => {
   return (
     <div className="pt-16 lg:pt-20">
       {/* Header */}
-      <section className="py-20 bg-gradient-to-br from-gray-50 to-white">
+      <section className="py-20 surface-gradient-light">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-6">
           <div className="flex justify-center mb-6">
             <div className="p-4 copper-accent-bg text-white rounded-full">
@@ -175,13 +173,13 @@ const ROICalculatorPage = () => {
       </section>
 
       {/* Calculator */}
-      <section className="py-20 bg-white">
+      <section className="py-20 surface-secondary">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
             {/* Input Form */}
-            <Card className="shadow-lg border-0">
+            <Card className="shadow-lg border-0 card-dark">
               <CardHeader>
-                <CardTitle className="text-2xl font-bold text-gray-900 flex items-center space-x-2">
+                <CardTitle className="text-2xl font-bold text-foreground flex items-center space-x-2">
                   <DollarSign className="h-6 w-6 copper-accent" />
                   <span>Calculate Your Savings</span>
                 </CardTitle>
@@ -245,12 +243,23 @@ const ROICalculatorPage = () => {
                 </div>
 
                 <div className="pt-4 border-t">
-                  <Button
-                    onClick={openCalendly}
-                    className="w-full brand-gradient-bg text-white hover:opacity-90 text-lg py-3"
-                  >
-                    Discuss Your Automation Project
-                  </Button>
+                  <Dialog open={calendlyOpen} onOpenChange={setCalendlyOpen}>
+                    <DialogTrigger asChild>
+                      <Button className="w-full brand-gradient-bg text-white hover:opacity-90 text-lg py-3">
+                        Discuss Your Automation Project
+                      </Button>
+                    </DialogTrigger>
+                    <DialogContent className="max-w-2xl w-full p-0 overflow-hidden bg-background">
+                      <iframe
+                        src="https://calendly.com/admin-august/30min"
+                        title="Schedule a Meeting"
+                        width="100%"
+                        height="600"
+                        style={{ border: 'none', minHeight: 500 }}
+                        allow="camera; microphone; fullscreen"
+                      />
+                    </DialogContent>
+                  </Dialog>
                 </div>
               </CardContent>
             </Card>
@@ -301,7 +310,7 @@ const ROICalculatorPage = () => {
                     </div>
                     <div className="flex justify-between items-center py-2 font-bold text-lg">
                       <span className="text-gray-900">Net Profit:</span>
-                      <span className={results.netSavings > 0 ? "text-green-600" : "text-orange-600"}>
+                      <span className={results.netSavings > 0 ? "green-accent" : "text-red-400"}>
                         {formatCurrency(results.netSavings)}
                       </span>
                     </div>
@@ -337,12 +346,23 @@ const ROICalculatorPage = () => {
                     {generateROINarrative()}
                   </p>
                   <div className="mt-6">
-                    <Button
-                      onClick={openCalendly}
-                      className="brand-gradient-bg text-white hover:opacity-90"
-                    >
-                      Let's Make This Reality
-                    </Button>
+                    <Dialog open={calendlyOpen} onOpenChange={setCalendlyOpen}>
+                      <DialogTrigger asChild>
+                        <Button className="brand-gradient-bg text-white hover:opacity-90">
+                          Let's Make This Reality
+                        </Button>
+                      </DialogTrigger>
+                      <DialogContent className="max-w-2xl w-full p-0 overflow-hidden bg-background">
+                        <iframe
+                          src="https://calendly.com/admin-august/30min"
+                          title="Schedule a Meeting"
+                          width="100%"
+                          height="600"
+                          style={{ border: 'none', minHeight: 500 }}
+                          allow="camera; microphone; fullscreen"
+                        />
+                      </DialogContent>
+                    </Dialog>
                   </div>
                 </CardContent>
               </Card>
@@ -360,13 +380,26 @@ const ROICalculatorPage = () => {
           <p className="text-xl opacity-90">
             These calculations are just the beginning. Let's discuss your specific automation needs and create a custom solution.
           </p>
-          <Button
-            onClick={openCalendly}
-            size="lg"
-            className="bg-white text-[var(--august-copper-accent)] hover:bg-gray-100 text-lg px-8 py-4"
-          >
-            Schedule Your Consultation
-          </Button>
+          <Dialog open={calendlyOpen} onOpenChange={setCalendlyOpen}>
+            <DialogTrigger asChild>
+              <Button
+                size="lg"
+                className="btn-secondary text-lg px-8 py-4"
+              >
+                Schedule Your Consultation
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="max-w-2xl w-full p-0 overflow-hidden bg-background">
+              <iframe
+                src="https://calendly.com/admin-august/30min"
+                title="Schedule a Meeting"
+                width="100%"
+                height="600"
+                style={{ border: 'none', minHeight: 500 }}
+                allow="camera; microphone; fullscreen"
+              />
+            </DialogContent>
+          </Dialog>
         </div>
       </section>
     </div>

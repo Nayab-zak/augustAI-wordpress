@@ -6,7 +6,7 @@ const PrivacyPage = () => {
   return (
     <div className="pt-16 lg:pt-20">
       {/* Header */}
-      <section className="py-20 bg-gradient-to-br from-gray-50 to-white">
+      <section className="py-20 surface-gradient-light">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-6">
           <div className="flex justify-center mb-6">
             <div className="p-4 copper-accent-bg text-white rounded-full">
@@ -23,16 +23,16 @@ const PrivacyPage = () => {
       </section>
 
       {/* Privacy Policy Content */}
-      <section className="py-20 bg-white">
+      <section className="py-20 surface-secondary">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <Card className="shadow-lg border-0">
+          <Card className="shadow-lg border-0 card-dark">
             <CardContent className="p-8 space-y-8">
-              <div className="text-sm text-gray-500 mb-8">
+              <div className="text-sm text-muted-foreground mb-8">
                 Last updated: January 2025
               </div>
 
               <section className="space-y-4">
-                <h2 className="text-2xl font-bold text-gray-900">1. Information We Collect</h2>
+                <h2 className="text-2xl font-bold text-foreground">1. Information We Collect</h2>
                 <div className="space-y-3 text-gray-700 leading-relaxed">
                   <p>
                     We collect information you provide directly to us, such as when you:
